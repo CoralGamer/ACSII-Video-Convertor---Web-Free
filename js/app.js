@@ -155,6 +155,32 @@ document.addEventListener('DOMContentLoaded', () => {
         translateStaticPage(currentLang);
     }
 
+    // Fetch real-time GitHub repository stargazers count
+    async function fetchGitHubStars() {
+        try {
+            const response = await fetch('https://api.github.com/repos/CoralGamer/ACSII-Video-Convertor---Web-Free');
+            if (response.ok) {
+                const data = await response.json();
+                const starsCount = data.stargazers_count;
+                
+                // Update header stars badge
+                const headerCountEl = document.getElementById('github-stars-count');
+                if (headerCountEl) {
+                    headerCountEl.textContent = starsCount;
+                }
+                
+                // Update body promotion card
+                const bodyCountEl = document.getElementById('github-stars-count-body');
+                if (bodyCountEl) {
+                    bodyCountEl.textContent = starsCount;
+                }
+            }
+        } catch (e) {
+            console.warn("Failed to fetch GitHub stars:", e);
+        }
+    }
+    fetchGitHubStars();
+
     // -------------------------------------------------------------
     // 2. Tab Navigation
     // -------------------------------------------------------------

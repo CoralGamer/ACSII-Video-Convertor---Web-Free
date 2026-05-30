@@ -145,6 +145,14 @@
             </nav>
 
             <div class="nav-actions">
+                <!-- GitHub Stars Badge -->
+                <a href="https://github.com/CoralGamer/ACSII-Video-Convertor---Web-Free" target="_blank" rel="noopener noreferrer" class="github-stars-badge" id="header-github-stars" title="¡Danos una estrella en GitHub!">
+                    <svg class="github-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                    <span>Star</span>
+                    <span class="stars-separator">|</span>
+                    <span class="stars-num" id="github-stars-count">--</span>
+                </a>
+
                 <!-- Language Selector UI component -->
                 <div class="lang-selector">
                     <button class="lang-select-btn" id="lang-btn">
@@ -471,6 +479,33 @@
                                 <span id="lbl-export-anim" data-key="lbl_export_anim">Exportar Animación</span>
                             </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- GitHub Star Support Section --- -->
+        <section class="section github-support-section" id="github-support-anchor">
+            <div class="github-support-card panel-card">
+                <div class="github-support-badge" data-key="star_badge">★ APOYA EL PROYECTO</div>
+                <div class="github-support-content">
+                    <div class="github-support-text">
+                        <h2 class="github-support-title" data-key="star_title">¡Danos una estrella en GitHub! ⭐</h2>
+                        <p class="github-support-p" data-key="star_desc">Si te gusta este convertidor retro 100% gratuito y privado, apoya nuestro trabajo dándole una estrella a nuestro repositorio oficial de GitHub. Tu apoyo nos ayuda a seguir expandiendo el motor de arte ASCII y mantenerlo libre de servidores para siempre.</p>
+                        
+                        <div class="github-live-counter">
+                            <span class="counter-label" data-key="star_live_counter">Estrellas actuales en tiempo real:</span>
+                            <div class="counter-badge">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <span class="stars-count-val" id="github-stars-count-body">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="github-support-action">
+                        <a href="https://github.com/CoralGamer/ACSII-Video-Convertor---Web-Free" target="_blank" rel="noopener noreferrer" class="btn btn-github-star">
+                            <svg class="github-icon" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                            <span data-key="star_btn">Dar Estrella en GitHub</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -970,7 +1005,12 @@
                 cli_step2_t: "Instala las Dependencias",
                 cli_step3_t: "Ejecuta la Suite Guiada",
                 cli_btn_text: "Ver Repositorio CLI",
-                cli_author_note: "Desarrollado al 100% por CoralGamer"
+                cli_author_note: "Desarrollado al 100% por CoralGamer",
+                star_badge: "★ APOYA EL PROYECTO",
+                star_title: "¡Danos una estrella en GitHub! ⭐",
+                star_desc: "Si te gusta este convertidor retro 100% gratuito y privado, apoya nuestro trabajo dándole una estrella a nuestro repositorio oficial de GitHub. Tu apoyo nos ayuda a seguir expandiendo el motor de arte ASCII y mantenerlo libre de servidores para siempre.",
+                star_live_counter: "Estrellas actuales en tiempo real:",
+                star_btn: "Dar Estrella en GitHub"
             },
             en: {
                 title: "Free Online Video to ASCII Converter & AI Prompt Generator",
@@ -1041,7 +1081,12 @@
                 cli_step2_t: "Install Dependencies",
                 cli_step3_t: "Run the Guided Suite",
                 cli_btn_text: "View CLI Repository",
-                cli_author_note: "100% Developed by CoralGamer"
+                cli_author_note: "100% Developed by CoralGamer",
+                star_badge: "★ SUPPORT THE PROJECT",
+                star_title: "Give us a star on GitHub! ⭐",
+                star_desc: "If you love this 100% free and private retro converter, support our work by giving a star to our official GitHub repository. Your support helps us keep expanding the ASCII art engine and keep it server-free forever.",
+                star_live_counter: "Current stars in real-time:",
+                star_btn: "Star on GitHub"
             },
             fr: {
                 title: "Convertisseur Vidéo en ASCII Gratuit & Générateur de Prompts IA",
@@ -1112,7 +1157,12 @@
                 cli_step2_t: "Installez les Dépendances",
                 cli_step3_t: "Exécutez la Suite Guidée",
                 cli_btn_text: "Voir le Dépôt CLI",
-                cli_author_note: "Développé à 100% par CoralGamer"
+                cli_author_note: "Développé à 100% par CoralGamer",
+                star_badge: "★ SOUTENIR LE PROJET",
+                star_title: "Donnez-nous une étoile sur GitHub ! ⭐",
+                star_desc: "Si vous aimez ce convertisseur rétro 100% gratuit et privé, soutenez notre travail en donnant une étoile à notre dépôt GitHub officiel. Votre soutien nous aide à continuer d'étendre le moteur d'art ASCII et à le garder sans serveur pour toujours.",
+                star_live_counter: "Étoiles actuelles en temps réel :",
+                star_btn: "Donner une Étoile"
             },
             pt: {
                 title: "Conversor de Vídeo para ASCII Grátis & Gerador de Prompts IA",
@@ -1183,7 +1233,12 @@
                 cli_step2_t: "Instale as Dependências",
                 cli_step3_t: "Execute a Suíte Guiada",
                 cli_btn_text: "Ver Repositório CLI",
-                cli_author_note: "Desenvolvido 100% por CoralGamer"
+                cli_author_note: "Desenvolvido 100% por CoralGamer",
+                star_badge: "★ APOIE O PROJETO",
+                star_title: "Dê-nos uma estrela no GitHub! ⭐",
+                star_desc: "Se você gosta deste conversor retrô 100% gratuito e privado, apoie nosso trabalho dando uma estrela ao nosso repositório oficial do GitHub. Seu apoio nos ajuda a continuar expandindo o motor de arte ASCII e mantê-lo livre de servidores para sempre.",
+                star_live_counter: "Estrelas atuais em tempo real:",
+                star_btn: "Dar Estrela no GitHub"
             },
             de: {
                 title: "Kostenloser Online-Video-zu-ASCII-Konverter & KI-Prompt-Generator",
@@ -1254,7 +1309,12 @@
                 cli_step2_t: "Installieren Sie die Abhängigkeiten",
                 cli_step3_t: "Führen Sie die geführte Suite aus",
                 cli_btn_text: "CLI-Repository anzeigen",
-                cli_author_note: "Zu 100 % von CoralGamer entwickelt"
+                cli_author_note: "Zu 100 % von CoralGamer entwickelt",
+                star_badge: "★ UNTERSTÜTZE DAS PROJEKT",
+                star_title: "Gib uns einen Stern auf GitHub! ⭐",
+                star_desc: "Wenn dir dieser 100 % kostenlose und private Retro-Konverter gefällt, unterstütze unsere Arbeit, indem du unserem offiziellen GitHub-Repository einen Stern gibst. Deine Unterstützung hilft uns, die ASCII-Videokunst-Engine weiter auszubauen und für immer serverfrei zu halten.",
+                star_live_counter: "Aktuelle Sterne in Echtzeit:",
+                star_btn: "Stern auf GitHub geben"
             }
         };
     </script>
