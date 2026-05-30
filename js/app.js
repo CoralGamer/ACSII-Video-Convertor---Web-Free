@@ -200,6 +200,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const unmuteIcon = document.getElementById('unmute-icon');
     const muteIcon = document.getElementById('mute-icon');
 
+    // Advanced Seeker and Time controls
+    const playerSeek = document.getElementById('player-seek');
+    const playerTimeDisplay = document.getElementById('player-time-display');
+    let isSeeking = false;
+
     let converter = null;
 
     // Instantiation
@@ -233,6 +238,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Format seconds to MM:SS format
+    function formatTime(seconds) {
+        if (isNaN(seconds) || seconds === Infinity) return '00:00';
+        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+    }
+
     function loadVideo(file) {
         if (!file.type.startsWith('video/')) {
             alert(currentLang === 'es' ? 'Por favor, cargue un archivo de video compatible.' : 'Please load a compatible video file.');
@@ -261,6 +274,12 @@ document.addEventListener('DOMContentLoaded', () => {
             videoPlayer.muted = false;
             videoPlayer.loop = true;
             btnLoop.classList.add('active');
+
+            // Reset scrubber and timer displays
+            if (playerSeek) playerSeek.value = 0;
+            if (playerTimeDisplay) {
+                playerTimeDisplay.textContent = `00:00 / ${formatTime(videoPlayer.duration)}`;
+            }
 
             // Play and start loop
             videoPlayer.play();
@@ -312,6 +331,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (checkInvert) checkInvert.addEventListener('change', updateConverterOptions);
+
+    // Dynamic Video Scrubber Update Loops
+    if (videoPlayer) {
+        videoPlayer.addEventListener('timeupdate', () => {
+            if (!isSeeking && playerSeek && playerTimeDisplay) {
+                playerSeek.value = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+                playerTimeDisplay.textContent = `${formatTime(videoPlayer.currentTime)} / ${formatTime(videoPlayer.duration)}`;
+            }
+            
+            // Draw a single frame even if paused, to ensure seek previews translate immediately to ASCII!
+            if (videoPlayer.paused && converter && converter.isProcessing) {
+                converter.processFrame();
+            }
+        });
+
+        videoPlayer.addEventListener('durationchange', () => {
+            if (playerTimeDisplay) {
+                playerTimeDisplay.textContent = `${formatTime(videoPlayer.currentTime)} / ${formatTime(videoPlayer.duration)}`;
+            }
+        });
+    }
+
+    // Drag Seek controls behavior
+    if (playerSeek) {
+        playerSeek.addEventListener('mousedown', () => { isSeeking = true; });
+        playerSeek.addEventListener('touchstart', () => { isSeeking = true; });
+
+        playerSeek.addEventListener('input', () => {
+            if (videoPlayer.duration) {
+                const seekTo = (playerSeek.value / 100) * videoPlayer.duration;
+                videoPlayer.currentTime = seekTo;
+                if (playerTimeDisplay) {
+                    playerTimeDisplay.textContent = `${formatTime(seekTo)} / ${formatTime(videoPlayer.duration)}`;
+                }
+            }
+        });
+
+        playerSeek.addEventListener('mouseup', () => { isSeeking = false; });
+        playerSeek.addEventListener('touchend', () => { isSeeking = false; });
+    }
 
     // Audio / Loop Control buttons actions
     if (btnPlayPause) {

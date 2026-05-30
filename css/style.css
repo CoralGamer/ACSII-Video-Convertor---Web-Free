@@ -410,20 +410,23 @@ nav a:hover::after {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- App Main Grid Layout --- */
+/* --- App Main Stack Layout --- */
 .app-grid {
     display: grid;
-    grid-template-columns: 1fr 380px;
+    grid-template-columns: 1fr; /* Stack layout */
     gap: 2rem;
     align-items: start;
     margin-bottom: 5rem;
+    width: 100%;
 }
 
-@media (max-width: 1024px) {
-    .app-grid {
-        grid-template-columns: 1fr;
-    }
+.panel-controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
 }
+
 
 /* Glassmorphic Cards */
 .panel-card {
@@ -843,14 +846,69 @@ nav a:hover::after {
 .preview-controls {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 0.75rem 1.5rem;
-    margin-top: 1rem;
+    justify-content: space-between;
+    gap: 1.25rem;
+    background: rgba(13, 16, 23, 0.95);
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+    margin-top: 0; /* Integrated seamlessly with the terminal-body */
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
+
+.player-scrubber-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin: 0 0.5rem;
+}
+
+.player-scrubber {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.player-scrubber::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+}
+
+.player-scrubber::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(0, 242, 254, 0.8);
+    margin-top: -4px; /* Center thumb vertically */
+    transition: var(--transition-fast);
+}
+
+.player-scrubber::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: var(--color-secondary);
+    box-shadow: 0 0 8px rgba(217, 70, 239, 0.8);
+}
+
+.player-time {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    min-width: 105px;
+    text-align: center;
+    user-select: none;
+}
+
 
 .ctrl-icon-btn {
     background: none;

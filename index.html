@@ -175,6 +175,15 @@
                                 <svg id="play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                 <svg id="pause-icon" style="display:none;" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                             </button>
+                            
+                            <!-- Video scrubber progress track -->
+                            <div class="player-scrubber-container">
+                                <input type="range" class="player-scrubber" id="player-seek" min="0" max="100" value="0">
+                            </div>
+                            
+                            <!-- Dynamic video runtime clock -->
+                            <div class="player-time" id="player-time-display">00:00 / 00:00</div>
+
                             <button class="ctrl-icon-btn" id="btn-loop">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 1 1 21.306 7M20 9h-5.582"/></svg>
                             </button>
@@ -186,68 +195,70 @@
                     </div>
                 </div>
 
-                <!-- Parameters Controls Panel -->
+                <!-- Parameters Controls Panel (Under the video, in multiple columns) -->
                 <div class="panel-card">
                     <h3 class="panel-title" data-key="panel_adjustments">
                         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
                         Ajustes del Renderizado
                     </h3>
                     
-                    <div class="control-group">
-                        <label class="control-label" for="slider-columns">
-                            <span data-key="label_columns">Ancho de Resolución (Columnas):</span>
-                            <span id="val-columns">100</span>
-                        </label>
-                        <input type="range" class="slider-input" id="slider-columns" min="40" max="180" step="5" value="100">
-                    </div>
+                    <div class="panel-controls-grid">
+                        <div class="control-group">
+                            <label class="control-label" for="slider-columns">
+                                <span data-key="label_columns">Ancho de Resolución (Columnas):</span>
+                                <span id="val-columns">100</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-columns" min="40" max="180" step="5" value="100">
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="select-palette" data-key="label_palette">Paleta de Caracteres:</label>
-                        <select class="select-input" id="select-palette">
-                            <option value="standard" selected data-key="palette_std">Estándar (Básico)</option>
-                            <option value="extended" data-key="palette_ext">Extendido (Detallado)</option>
-                            <option value="blocks" data-key="palette_blocks">Bloques (Pixel Art)</option>
-                            <option value="binary" data-key="palette_bin">Binario (Matrix)</option>
-                        </select>
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="select-palette" data-key="label_palette">Paleta de Caracteres:</label>
+                            <select class="select-input" id="select-palette">
+                                <option value="standard" selected data-key="palette_std">Estándar (Básico)</option>
+                                <option value="extended" data-key="palette_ext">Extendido (Detallado)</option>
+                                <option value="blocks" data-key="palette_blocks">Bloques (Pixel Art)</option>
+                                <option value="binary" data-key="palette_bin">Binario (Matrix)</option>
+                            </select>
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="select-color" data-key="label_color">Modo de Color:</label>
-                        <select class="select-input" id="select-color">
-                            <option value="monochrome" selected data-key="color_mono">Monocromo CRT (Blanco)</option>
-                            <option value="green" data-key="color_green"> CRT Fósforo Verde</option>
-                            <option value="amber" data-key="color_amber"> CRT Ámbar Retro</option>
-                            <option value="colorized" data-key="color_real">Color Real RGB</option>
-                        </select>
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="select-color" data-key="label_color">Modo de Color:</label>
+                            <select class="select-input" id="select-color">
+                                <option value="monochrome" selected data-key="color_mono">Monocromo CRT (Blanco)</option>
+                                <option value="green" data-key="color_green"> CRT Fósforo Verde</option>
+                                <option value="amber" data-key="color_amber"> CRT Ámbar Retro</option>
+                                <option value="colorized" data-key="color_real">Color Real RGB</option>
+                            </select>
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="slider-contrast">
-                            <span data-key="label_contrast">Contraste de Imagen:</span>
-                            <span id="val-contrast">0</span>
-                        </label>
-                        <input type="range" class="slider-input" id="slider-contrast" min="-100" max="100" step="5" value="0">
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="slider-contrast">
+                                <span data-key="label_contrast">Contraste de Imagen:</span>
+                                <span id="val-contrast">0</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-contrast" min="-100" max="100" step="5" value="0">
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="slider-brightness">
-                            <span data-key="label_brightness">Brillo de Imagen:</span>
-                            <span id="val-brightness">0</span>
-                        </label>
-                        <input type="range" class="slider-input" id="slider-brightness" min="-100" max="100" step="5" value="0">
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="slider-brightness">
+                                <span data-key="label_brightness">Brillo de Imagen:</span>
+                                <span id="val-brightness">0</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-brightness" min="-100" max="100" step="5" value="0">
+                        </div>
 
-                    <div class="control-group">
-                        <label class="checkbox-option">
-                            <input type="checkbox" id="check-invert">
-                            <span data-key="label_invert">Invertir Colores de Salida</span>
-                        </label>
+                        <div class="control-group" style="display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
+                            <label class="checkbox-option">
+                                <input type="checkbox" id="check-invert">
+                                <span data-key="label_invert">Invertir Colores de Salida</span>
+                            </label>
+                            
+                            <button class="btn" id="btn-export-video" disabled>
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span data-key="btn_export">Exportar a Video MP4</span>
+                            </button>
+                        </div>
                     </div>
-
-                    <button class="btn" id="btn-export-video" disabled>
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        <span data-key="btn_export">Exportar a Video MP4</span>
-                    </button>
                 </div>
             </div>
         </section>
@@ -304,47 +315,51 @@
                         Ajustes del Prompt
                     </h3>
                     
-                    <div class="control-group">
-                        <label class="control-label" for="slider-prompt-columns">
-                            <span data-key="label_columns">Ancho de Resolución (Columnas):</span>
-                            <span id="val-prompt-columns">100</span>
-                        </label>
-                        <input type="range" class="slider-input" id="slider-prompt-columns" min="40" max="150" step="5" value="100">
-                    </div>
+                    <div class="panel-controls-grid">
+                        <div class="control-group">
+                            <label class="control-label" for="slider-prompt-columns">
+                                <span data-key="label_columns">Ancho de Resolución (Columnas):</span>
+                                <span id="val-prompt-columns">100</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-prompt-columns" min="40" max="150" step="5" value="100">
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="slider-prompt-speed">
-                            <span id="lbl-anim-speed">Velocidad de Animación:</span>
-                            <span id="val-prompt-speed">1.0x</span>
-                        </label>
-                        <input type="range" class="slider-input" id="slider-prompt-speed" min="0.2" max="3.0" step="0.1" value="1.0">
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="slider-prompt-speed">
+                                <span id="lbl-anim-speed">Velocidad de Animación:</span>
+                                <span id="val-prompt-speed">1.0x</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-prompt-speed" min="0.2" max="3.0" step="0.1" value="1.0">
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="select-prompt-palette" data-key="label_palette">Paleta de Caracteres:</label>
-                        <select class="select-input" id="select-prompt-palette">
-                            <option value="standard" selected data-key="palette_std">Estándar (Básico)</option>
-                            <option value="extended" data-key="palette_ext">Extendido (Detallado)</option>
-                            <option value="blocks" data-key="palette_blocks">Bloques (Pixel Art)</option>
-                            <option value="binary" data-key="palette_bin">Binario (Matrix)</option>
-                        </select>
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="select-prompt-palette" data-key="label_palette">Paleta de Caracteres:</label>
+                            <select class="select-input" id="select-prompt-palette">
+                                <option value="standard" selected data-key="palette_std">Estándar (Básico)</option>
+                                <option value="extended" data-key="palette_ext">Extendido (Detallado)</option>
+                                <option value="blocks" data-key="palette_blocks">Bloques (Pixel Art)</option>
+                                <option value="binary" data-key="palette_bin">Binario (Matrix)</option>
+                            </select>
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="select-prompt-theme" id="lbl-color-theme">Tema de Colores:</label>
-                        <select class="select-input" id="select-prompt-theme">
-                            <option value="matrix" selected>Matrix Digital (Verde)</option>
-                            <option value="fire">Cyberpunk Fire (Fuego)</option>
-                            <option value="cyberpunk">Digital Synthwave (Cian/Rosa)</option>
-                            <option value="neon">Neon RGB (Color Original)</option>
-                            <option value="monochrome">Classic CRT (Monocromo)</option>
-                        </select>
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="select-prompt-theme" id="lbl-color-theme">Tema de Colores:</label>
+                            <select class="select-input" id="select-prompt-theme">
+                                <option value="matrix" selected>Matrix Digital (Verde)</option>
+                                <option value="fire">Cyberpunk Fire (Fuego)</option>
+                                <option value="cyberpunk">Digital Synthwave (Cian/Rosa)</option>
+                                <option value="neon">Neon RGB (Color Original)</option>
+                                <option value="monochrome">Classic CRT (Monocromo)</option>
+                            </select>
+                        </div>
 
-                    <button class="btn" id="btn-export-prompt-video">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        <span id="lbl-export-anim">Exportar Animación</span>
-                    </button>
+                        <div class="control-group" style="display: flex; align-items: center; justify-content: center;">
+                            <button class="btn" id="btn-export-prompt-video" style="margin-top: 1rem;">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span id="lbl-export-anim">Exportar Animación</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

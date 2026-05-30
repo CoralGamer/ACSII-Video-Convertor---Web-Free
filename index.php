@@ -475,6 +475,15 @@ $t = $translations[$lang];
                                 <svg id="play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                 <svg id="pause-icon" style="display:none;" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                             </button>
+                            
+                            <!-- Video scrubber progress track -->
+                            <div class="player-scrubber-container">
+                                <input type="range" class="player-scrubber" id="player-seek" min="0" max="100" value="0">
+                            </div>
+                            
+                            <!-- Dynamic video runtime clock -->
+                            <div class="player-time" id="player-time-display">00:00 / 00:00</div>
+
                             <button class="ctrl-icon-btn" id="btn-loop">
                                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 1 1 21.306 7M20 9h-5.582"/></svg>
                             </button>
@@ -486,68 +495,70 @@ $t = $translations[$lang];
                     </div>
                 </div>
 
-                <!-- Parameters Controls Panel -->
+                <!-- Parameters Controls Panel (Under the video, in multiple columns) -->
                 <div class="panel-card">
                     <h3 class="panel-title">
                         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
                         <?php echo htmlspecialchars($t['panel_adjustments']); ?>
                     </h3>
                     
-                    <div class="control-group">
-                        <label class="control-label" for="slider-columns">
-                            <span><?php echo htmlspecialchars($t['label_columns']); ?></span>
-                            <span id="val-columns">100</span>
-                        </label>
-                        <input type="range" class="slider-input" id="slider-columns" min="40" max="180" step="5" value="100">
-                    </div>
+                    <div class="panel-controls-grid">
+                        <div class="control-group">
+                            <label class="control-label" for="slider-columns">
+                                <span><?php echo htmlspecialchars($t['label_columns']); ?></span>
+                                <span id="val-columns">100</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-columns" min="40" max="180" step="5" value="100">
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="select-palette"><?php echo htmlspecialchars($t['label_palette']); ?></label>
-                        <select class="select-input" id="select-palette">
-                            <option value="standard" selected><?php echo htmlspecialchars($t['palette_std']); ?></option>
-                            <option value="extended"><?php echo htmlspecialchars($t['palette_ext']); ?></option>
-                            <option value="blocks"><?php echo htmlspecialchars($t['palette_blocks']); ?></option>
-                            <option value="binary"><?php echo htmlspecialchars($t['palette_bin']); ?></option>
-                        </select>
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="select-palette"><?php echo htmlspecialchars($t['label_palette']); ?></label>
+                            <select class="select-input" id="select-palette">
+                                <option value="standard" selected><?php echo htmlspecialchars($t['palette_std']); ?></option>
+                                <option value="extended"><?php echo htmlspecialchars($t['palette_ext']); ?></option>
+                                <option value="blocks"><?php echo htmlspecialchars($t['palette_blocks']); ?></option>
+                                <option value="binary"><?php echo htmlspecialchars($t['palette_bin']); ?></option>
+                            </select>
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="select-color"><?php echo htmlspecialchars($t['label_color']); ?></label>
-                        <select class="select-input" id="select-color">
-                            <option value="monochrome" selected><?php echo htmlspecialchars($t['color_mono']); ?></option>
-                            <option value="green"><?php echo htmlspecialchars($t['color_green']); ?></option>
-                            <option value="amber"><?php echo htmlspecialchars($t['color_amber']); ?></option>
-                            <option value="colorized"><?php echo htmlspecialchars($t['color_real']); ?></option>
-                        </select>
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="select-color"><?php echo htmlspecialchars($t['label_color']); ?></label>
+                            <select class="select-input" id="select-color">
+                                <option value="monochrome" selected><?php echo htmlspecialchars($t['color_mono']); ?></option>
+                                <option value="green"><?php echo htmlspecialchars($t['color_green']); ?></option>
+                                <option value="amber"><?php echo htmlspecialchars($t['color_amber']); ?></option>
+                                <option value="colorized"><?php echo htmlspecialchars($t['color_real']); ?></option>
+                            </select>
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="slider-contrast">
-                            <span><?php echo htmlspecialchars($t['label_contrast']); ?></span>
-                            <span id="val-contrast">0</span>
-                        </label>
-                        <input type="range" class="slider-input" id="slider-contrast" min="-100" max="100" step="5" value="0">
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="slider-contrast">
+                                <span><?php echo htmlspecialchars($t['label_contrast']); ?></span>
+                                <span id="val-contrast">0</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-contrast" min="-100" max="100" step="5" value="0">
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="slider-brightness">
-                            <span><?php echo htmlspecialchars($t['label_brightness']); ?></span>
-                            <span id="val-brightness">0</span>
-                        </label>
-                        <input type="range" class="slider-input" id="slider-brightness" min="-100" max="100" step="5" value="0">
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="slider-brightness">
+                                <span><?php echo htmlspecialchars($t['label_brightness']); ?></span>
+                                <span id="val-brightness">0</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-brightness" min="-100" max="100" step="5" value="0">
+                        </div>
 
-                    <div class="control-group">
-                        <label class="checkbox-option">
-                            <input type="checkbox" id="check-invert">
-                            <span><?php echo htmlspecialchars($t['label_invert']); ?></span>
-                        </label>
+                        <div class="control-group" style="display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
+                            <label class="checkbox-option">
+                                <input type="checkbox" id="check-invert">
+                                <span><?php echo htmlspecialchars($t['label_invert']); ?></span>
+                            </label>
+                            
+                            <button class="btn" id="btn-export-video" disabled>
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <?php echo htmlspecialchars($t['btn_export']); ?>
+                            </button>
+                        </div>
                     </div>
-
-                    <button class="btn" id="btn-export-video" disabled>
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        <?php echo htmlspecialchars($t['btn_export']); ?>
-                    </button>
                 </div>
             </div>
         </section>
@@ -604,47 +615,51 @@ $t = $translations[$lang];
                         <?php echo $lang === 'es' ? 'Ajustes del Prompt' : 'Prompt Adjustments'; ?>
                     </h3>
                     
-                    <div class="control-group">
-                        <label class="control-label" for="slider-prompt-columns">
-                            <span><?php echo htmlspecialchars($t['label_columns']); ?></span>
-                            <span id="val-prompt-columns">100</span>
-                        </label>
-                        <input type="range" class="slider-input" id="slider-prompt-columns" min="40" max="150" step="5" value="100">
-                    </div>
+                    <div class="panel-controls-grid">
+                        <div class="control-group">
+                            <label class="control-label" for="slider-prompt-columns">
+                                <span><?php echo htmlspecialchars($t['label_columns']); ?></span>
+                                <span id="val-prompt-columns">100</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-prompt-columns" min="40" max="150" step="5" value="100">
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="slider-prompt-speed">
-                            <span><?php echo $lang === 'es' ? 'Velocidad de Animación:' : 'Animation Speed:'; ?></span>
-                            <span id="val-prompt-speed">1.0x</span>
-                        </label>
-                        <input type="range" class="slider-input" id="slider-prompt-speed" min="0.2" max="3.0" step="0.1" value="1.0">
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="slider-prompt-speed">
+                                <span><?php echo $lang === 'es' ? 'Velocidad de Animación:' : 'Animation Speed:'; ?></span>
+                                <span id="val-prompt-speed">1.0x</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-prompt-speed" min="0.2" max="3.0" step="0.1" value="1.0">
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="select-prompt-palette"><?php echo htmlspecialchars($t['label_palette']); ?></label>
-                        <select class="select-input" id="select-prompt-palette">
-                            <option value="standard" selected><?php echo htmlspecialchars($t['palette_std']); ?></option>
-                            <option value="extended"><?php echo htmlspecialchars($t['palette_ext']); ?></option>
-                            <option value="blocks"><?php echo htmlspecialchars($t['palette_blocks']); ?></option>
-                            <option value="binary"><?php echo htmlspecialchars($t['palette_bin']); ?></option>
-                        </select>
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="select-prompt-palette"><?php echo htmlspecialchars($t['label_palette']); ?></label>
+                            <select class="select-input" id="select-prompt-palette">
+                                <option value="standard" selected><?php echo htmlspecialchars($t['palette_std']); ?></option>
+                                <option value="extended"><?php echo htmlspecialchars($t['palette_ext']); ?></option>
+                                <option value="blocks"><?php echo htmlspecialchars($t['palette_blocks']); ?></option>
+                                <option value="binary"><?php echo htmlspecialchars($t['palette_bin']); ?></option>
+                            </select>
+                        </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="select-prompt-theme"><?php echo $lang === 'es' ? 'Tema de Colores:' : 'Color Theme:'; ?></label>
-                        <select class="select-input" id="select-prompt-theme">
-                            <option value="matrix" selected>Matrix Digital (Verde)</option>
-                            <option value="fire">Cyberpunk Fire (Fuego)</option>
-                            <option value="cyberpunk">Digital Synthwave (Cian/Rosa)</option>
-                            <option value="neon">Neon RGB (Color Original)</option>
-                            <option value="monochrome">Classic CRT (Monocromo)</option>
-                        </select>
-                    </div>
+                        <div class="control-group">
+                            <label class="control-label" for="select-prompt-theme"><?php echo $lang === 'es' ? 'Tema de Colores:' : 'Color Theme:'; ?></label>
+                            <select class="select-input" id="select-prompt-theme">
+                                <option value="matrix" selected>Matrix Digital (Verde)</option>
+                                <option value="fire">Cyberpunk Fire (Fuego)</option>
+                                <option value="cyberpunk">Digital Synthwave (Cian/Rosa)</option>
+                                <option value="neon">Neon RGB (Color Original)</option>
+                                <option value="monochrome">Classic CRT (Monocromo)</option>
+                            </select>
+                        </div>
 
-                    <button class="btn" id="btn-export-prompt-video">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        <?php echo $lang === 'es' ? 'Exportar Animación' : 'Export Animation'; ?>
-                    </button>
+                        <div class="control-group" style="display: flex; align-items: center; justify-content: center;">
+                            <button class="btn" id="btn-export-prompt-video" style="margin-top: 1rem;">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <?php echo $lang === 'es' ? 'Exportar Animación' : 'Export Animation'; ?>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
