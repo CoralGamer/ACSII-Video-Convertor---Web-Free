@@ -15,12 +15,13 @@ dist/
 *.mp4
 *.webm
 
-# Ignore standard temp images but keep assets
+# Ignore standard temp images but keep assets recursively
 *.png
 *.jpg
 *.gif
 !assets/
-!assets/*.png
-!assets/*.jpg
-!assets/*.gif
+!assets/**/*.png
+!assets/**/*.jpg
+!assets/**/*.gif
+!assets/**/*.svg
 
