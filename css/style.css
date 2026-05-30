@@ -1298,3 +1298,151 @@ footer {
     color: #fff;
     transform: translateY(-2px);
 }
+
+/* ==========================================================================
+   Advanced Multilingual SEO Articles Cyberpunk Styles
+   ========================================================================== */
+.seo-guide-section {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px dashed var(--border-color);
+}
+
+.seo-article {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.seo-article::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--color-primary), var(--color-secondary));
+}
+
+.seo-article-header {
+    margin-bottom: 2rem;
+}
+
+.seo-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(0, 242, 254, 0.08);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    color: var(--color-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-family: 'Fira Code', monospace;
+}
+
+.seo-h2 {
+    font-size: 2rem;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.seo-h2 strong {
+    color: var(--color-primary);
+}
+
+.seo-lead {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.seo-divider {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    margin: 2rem 0;
+}
+
+.seo-subsection {
+    margin-bottom: 2.5rem;
+}
+
+.seo-subsection:last-child {
+    margin-bottom: 0;
+}
+
+.seo-h3 {
+    font-size: 1.35rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.seo-h3::before {
+    content: '>';
+    color: var(--color-secondary);
+    font-family: 'Fira Code', monospace;
+    font-weight: bold;
+}
+
+.seo-p {
+    font-size: 0.975rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+}
+
+.seo-p strong {
+    color: #fff;
+    font-weight: 600;
+}
+
+.seo-p code {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    color: var(--color-secondary);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.875rem;
+}
+
+.seo-list, .seo-list-ordered {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.975rem;
+    line-height: 1.7;
+}
+
+.seo-list li, .seo-list-ordered li {
+    margin-bottom: 0.75rem;
+}
+
+.seo-list li strong, .seo-list-ordered li strong {
+    color: #fff;
+}
+
+.seo-list li code {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    color: var(--color-primary);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.875rem;
+}

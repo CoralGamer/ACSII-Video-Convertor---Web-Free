@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap Location
+Sitemap: https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/sitemap.xml

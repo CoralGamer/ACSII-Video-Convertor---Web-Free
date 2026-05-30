@@ -26,8 +26,8 @@ if (isset($_GET['lang']) && in_array($_GET['lang'], $supported_langs)) {
 $translations = [
     'es' => [
         'title' => 'Conversor de Video a ASCII Online Gratis y Generador de Prompts IA',
-        'meta_desc' => 'Convierte tus videos locales a código ASCII animado en tiempo real. Procesa video y genera arte ASCII en 3D/2D con prompts de IA de forma 100% local, privada y segura.',
-        'meta_keys' => 'conversor video ascii, ascii video player, video a ascii gratis, ia prompt ascii, texto ascii animado, procesador de video local, renderizador 3d ascii',
+        'meta_desc' => 'Convierte tus videos locales a código ASCII animado en tiempo real. Procesa video y genera arte ASCII en 3D/2D con prompts de IA. 100% local, privado, gratis y seguro.',
+        'meta_keys' => 'conversor de video a ascii online gratis, video a ascii gratis online, convertir video a ascii, reproductor de video ascii, lluvia de letras matrix ascii, generador de prompts ia a ascii, crear arte ascii animado, procesar video localmente en el navegador, convertidor de texto ascii retro, renderizar animacion ascii 3d, descargar video en ascii mp4',
         'hero_tag' => 'Tecnología 100% Local y Privada (Sin Servidores)',
         'hero_h1' => 'Crea y Reproduce Asombroso <span>Arte de Video ASCII</span>',
         'hero_p' => 'Convierte videos locales en animaciones retro ASCII al instante o genera impresionantes gráficos y formas en 3D procedimentales usando prompts como si fuera una Inteligencia Artificial. Todo procesado directamente en tu PC.',
@@ -80,8 +80,8 @@ $translations = [
     ],
     'en' => [
         'title' => 'Free Online Video to ASCII Converter & AI Prompt Generator',
-        'meta_desc' => 'Convert your local videos to animated ASCII code in real-time. Process video and generate 3D/2D ASCII art with AI prompts 100% locally, privately, and securely.',
-        'meta_keys' => 'video to ascii converter, ascii video player, free video to ascii, ai prompt ascii, animated ascii text, local video processor, 3d ascii renderer',
+        'meta_desc' => 'Convert local videos to animated ASCII code in real-time. Process video and generate 3D/2D ASCII art with AI prompts. 100% local, free, and secure.',
+        'meta_keys' => 'free online video to ascii converter, video to ascii online free, convert video to ascii art, ascii video player, matrix code rain ascii generator, ai prompt to ascii text, create animated ascii art, local client-side video processor, retro ascii converter, 3d ascii rendering engine, export ascii video mp4 webm',
         'hero_tag' => '100% Local & Private Device Computing (No Servers)',
         'hero_h1' => 'Create & Play Stunning <span>ASCII Video Art</span>',
         'hero_p' => 'Instantly convert local videos into retro ASCII animations or generate amazing procedural 3D/2D graphics using text prompts just like an AI. All processed directly on your PC.',
@@ -338,30 +338,88 @@ $t = $translations[$lang];
     <!-- Style sheet link -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- JSON-LD Structured Data Schema.org for WebApplication -->
+    <!-- JSON-LD Structured Data Schema.org with Internationalization -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "ASCII Player Video Creator & AI Prompt Generator",
-        "alternateName": "ASCII Converter Web",
-        "description": "Convert local videos to ASCII and procedurally generate ASCII arts with AI text prompts. All running client-side with 100% security.",
-        "url": "https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/",
-        "image": "https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/assets/og-image.png",
-        "applicationCategory": "MultimediaApplication",
-        "operatingSystem": "Windows, macOS, Linux, Android, iOS",
-        "browserRequirements": "Requires HTML5 Canvas, MediaRecorder, WebGL",
-        "offers": {
-            "@type": "Offer",
-            "price": "0.00",
-            "priceCurrency": "USD"
-        },
-        "featureList": [
-            "Client-Side offline conversion",
-            "No upload file size limits",
-            "Dynamic AI Prompt-to-ASCII procedural drawing engine",
-            "Monochrome green, amber and RGB colorful ASCII video formats",
-            "Direct local MP4/WebM recording export with audio"
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "@id": "https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/#webapp",
+                "name": "ASCII Player Video Creator & AI Prompt Generator",
+                "alternateName": "ASCII Converter Web",
+                "description": "<?php echo addslashes($t['meta_desc']); ?>",
+                "url": "https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/",
+                "image": "https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/assets/og-image.png",
+                "applicationCategory": "MultimediaApplication",
+                "operatingSystem": "Windows, macOS, Linux, Android, iOS",
+                "browserRequirements": "Requires HTML5 Canvas, MediaRecorder, WebGL",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0.00",
+                    "priceCurrency": "USD"
+                },
+                "featureList": [
+                    "Client-Side offline conversion",
+                    "No upload file size limits",
+                    "Dynamic AI Prompt-to-ASCII procedural drawing engine",
+                    "Monochrome green, amber and RGB colorful ASCII video formats",
+                    "Direct local MP4/WebM recording export with audio"
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "@id": "https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/#faq",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "<?php echo addslashes($t['faq_1_q']); ?>",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "<?php echo addslashes($t['faq_1_a']); ?>"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "<?php echo addslashes($t['faq_2_q']); ?>",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "<?php echo addslashes($t['faq_2_a']); ?>"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "<?php echo addslashes($t['faq_3_q']); ?>",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "<?php echo addslashes($t['faq_3_a']); ?>"
+                        }
+                    }
+                ]
+            },
+            {
+                "@type": "HowTo",
+                "@id": "https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/#howto",
+                "name": "<?php echo $lang === 'es' ? 'Cómo convertir Videos a ASCII' : 'How to convert Videos to ASCII'; ?>",
+                "description": "<?php echo $lang === 'es' ? 'Aprende a transformar videos locales en animaciones de texto ASCII en 3 pasos' : 'Learn how to transform local videos into ASCII text animations in 3 simple steps'; ?>",
+                "step": [
+                    {
+                        "@type": "HowToStep",
+                        "name": "<?php echo $lang === 'es' ? 'Carga tu archivo' : 'Load your file'; ?>",
+                        "text": "<?php echo addslashes($t['upload_title']); ?>"
+                    },
+                    {
+                        "@type": "HowToStep",
+                        "name": "<?php echo $lang === 'es' ? 'Ajusta el renderizado' : 'Adjust the rendering'; ?>",
+                        "text": "<?php echo addslashes($t['panel_adjustments']); ?>"
+                    },
+                    {
+                        "@type": "HowToStep",
+                        "name": "<?php echo $lang === 'es' ? 'Exporta el video' : 'Export the video'; ?>",
+                        "text": "<?php echo addslashes($t['btn_export']); ?>"
+                    }
+                ]
+            }
         ]
     }
     </script>
@@ -734,6 +792,113 @@ $t = $translations[$lang];
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- --- Advanced Multilingual SEO Article Section --- -->
+        <section class="section seo-guide-section" id="seo-article-anchor">
+            <?php if ($lang === 'es'): ?>
+            <!-- Article in Spanish -->
+            <article class="seo-article panel-card" id="seo-article-es">
+                <header class="seo-article-header">
+                    <span class="seo-badge">Guía Definitiva y Manual Técnico</span>
+                    <h2 class="seo-h2">Cómo Convertir Videos a ASCII y Generar Arte de Texto con Inteligencia Artificial</h2>
+                    <p class="seo-lead">Descubre la ciencia, la historia y la tecnología detrás de nuestro conversor de video a ASCII online gratis. Aprende a crear impresionantes animaciones retro y gráficos 3D directamente en tu navegador de forma 100% local y privada.</p>
+                </header>
+                
+                <hr class="seo-divider">
+
+                <div class="seo-article-content">
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">1. ¿Qué es la conversión de video a ASCII?</h3>
+                        <p class="seo-p">La conversión de <strong>video a ASCII</strong> es un proceso de renderizado que transforma cada cuadro (frame) de un archivo de video digital en una matriz de caracteres de texto. El arte ASCII (American Standard Code for Information Interchange) tiene sus raíces en las primeras décadas de la computación, cuando las terminales de teletipo y los sistemas BBS no tenían la capacidad de representar gráficos de mapas de bits. Hoy en día, esta técnica se ha convertido en una disciplina estética retro y de estilo cyberpunk sumamente valorada por entusiastas del diseño digital.</p>
+                        <p class="seo-p">Nuestro <strong>reproductor de video ASCII</strong> de última generación automatiza este proceso de mapeo lumínico en tiempo real, permitiéndote revivir la nostalgia de los monitores de fósforo verde y ámbar desde la comodidad de una interfaz web premium.</p>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">2. ¿Cómo funciona la tecnología de nuestro convertidor de video a ASCII online y gratuito?</h3>
+                        <p class="seo-p">A diferencia de otras herramientas que requieren subir pesados archivos a servidores externos, nuestro software opera bajo el principio de <strong>cómputo 100% local en cliente</strong>. El proceso técnico detallado se divide en los siguientes pasos:</p>
+                        <ul class="seo-list">
+                            <li><strong>Decodificación de Video Local:</strong> El navegador decodifica el flujo de video (MP4 o WebM) cargado por el usuario a través de la API HTML5 Video, reproduciéndolo en un búfer de memoria oculto.</li>
+                            <li><strong>Downsampling y Análisis de Píxeles:</strong> Cada cuadro del video se dibuja en un canvas temporal, donde se extraen sus componentes de color rojo, verde y azul (RGB) de cada píxel para calcular su valor de luminancia media utilizando la fórmula estándar: <code>Y = 0.2126*R + 0.7152*G + 0.0722*B</code>.</li>
+                            <li><strong>Mapeo de Densidad ASCII:</strong> El nivel de brillo resultante se mapea matemáticamente a un índice de nuestra paleta de caracteres. Los píxeles oscuros se representan con espacios vacíos o puntos de baja densidad, mientras que los píxeles brillantes se corresponden con caracteres densos como el símbolo <code>@</code> o <code>#</code>.</li>
+                            <li><strong>Renderizado y Filtros Retro:</strong> El texto mapeado se dibuja dinámicamente en pantalla con fuentes de ancho fijo (monoespaciadas) aplicando filtros de simulación CRT, como scanlines y fósforo verde o ámbar, o en color real RGB.</li>
+                            <li><strong>Exportación Directa a MP4:</strong> Al presionar exportar, capturamos los cuadros del canvas de salida junto con el canal de audio del reproductor y los compilamos directamente en un video descargable usando la API <code>MediaRecorder</code> del navegador.</li>
+                        </ul>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">3. Generador de Arte ASCII Animado Mediante Prompts e IA</h3>
+                        <p class="seo-p">¿No tienes un video propio a mano? Nuestro innovador <strong>generador de prompts IA a ASCII</strong> interpreta solicitudes en lenguaje natural para compilar y ejecutar algoritmos gráficos procedimentales al instante. Si escribes comandos como <em>"lluvia matrix"</em>, <em>"cubo 3D rotando"</em> o <em>"fuego cyberpunk"</em>, la aplicación traduce semánticamente la instrucción y activa simulaciones físicas y proyecciones tridimensionales en vivo:</p>
+                        <ul class="seo-list">
+                            <li><strong>Lluvia Matrix en ASCII:</strong> Una recreación física del icónico código de la película Matrix, con caracteres que caen a distintas velocidades y se desvanecen con estelas luminiscentes.</li>
+                            <li><strong>Motores 3D por Software:</strong> Un motor matemático real que calcula la rotación tridimensional en los ejes X, Y y Z de figuras geométricas como cubos y toroide, aplicando sombreado plano basado en la dirección de la luz virtual.</li>
+                            <li><strong>Autómatas Celulares de Fuego:</strong> Algoritmos de propagación de calor en tiempo real para generar llamas dinámicas simuladas en texto de colores cian, rosa y fuego.</li>
+                        </ul>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">4. Ventajas de un Conversor 100% Local frente a Procesadores en Servidor</h3>
+                        <p class="seo-p">El uso de procesamiento web local en lugar de servidores tradicionales aporta tres beneficios fundamentales:</p>
+                        <ol class="seo-list-ordered">
+                            <li><strong>Privacidad y Seguridad Absoluta:</strong> Tus videos nunca se transmiten por internet. No hay bases de datos intermedias, lo que elimina cualquier riesgo de filtración de contenido sensible.</li>
+                            <li><strong>Sin Límites de Tamaño ni Duración:</strong> Al no consumir ancho de banda de carga (upload), puedes procesar videos de alta resolución y larga duración sin restricciones de cuotas.</li>
+                            <li><strong>Velocidad Instantánea:</strong> La velocidad de renderizado depende únicamente de la potencia de la GPU y CPU de tu propio dispositivo, logrando tasas superiores a los 60 cuadros por segundo en equipos modernos.</li>
+                        </ol>
+                    </section>
+                </div>
+            </article>
+            <?php else: ?>
+            <!-- Article in English -->
+            <article class="seo-article panel-card" id="seo-article-en">
+                <header class="seo-article-header">
+                    <span class="seo-badge">Ultimate Guide & Technical Manual</span>
+                    <h2 class="seo-h2">How to Convert Video to ASCII & Generate Text Art with AI Prompts</h2>
+                    <p class="seo-lead">Discover the science, history, and engineering behind our free online video to ASCII converter. Learn to create stunning retro text animations and 3D graphics directly in your browser with 100% private, client-side computing.</p>
+                </header>
+                
+                <hr class="seo-divider">
+
+                <div class="seo-article-content">
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">1. What is Video to ASCII conversion?</h3>
+                        <p class="seo-p">The conversion of <strong>video to ASCII</strong> is a digital rendering process that translates each frame of a digital video file into a grid of text characters. ASCII art (American Standard Code for Information Interchange) dates back to the early decades of computing when teletypes and BBS terminals lacked bitmap graphics capabilities. Today, it has evolved into a retro-futuristic and cyberpunk aesthetic highly appreciated by digital artists worldwide.</p>
+                        <p class="seo-p">Our state-of-the-art <strong>ASCII video player</strong> automates this light mapping process in real-time, allowing you to relive the nostalgia of green and amber phosphor screen terminals directly on a premium modern interface.</p>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">2. How does our free online video to ASCII converter operate technically?</h3>
+                        <p class="seo-p">Unlike typical web apps that require uploading bulky video files to remote servers, our converter runs entirely on <strong>100% client-side local computing</strong>. Here is the step-by-step technical breakdown of the rendering pipeline:</p>
+                        <ul class="seo-list">
+                            <li><strong>Local Video Decoding:</strong> The browser decodes your uploaded MP4 or WebM video file locally via the HTML5 Video API, playing it back inside an offscreen memory buffer.</li>
+                            <li><strong>Downsampling & Pixel Analysis:</strong> Each video frame is drawn onto a temporary canvas, where the Red, Green, and Blue (RGB) subpixels are extracted to compute the average luminance value using the standard Formula: <code>Y = 0.2126*R + 0.7152*G + 0.0722*B</code>.</li>
+                            <li><strong>Density Character Mapping:</strong> The resulting grayscale brightness index is mathematically mapped to a specific index of our selected text character palette. Darker pixels are mapped to blank spaces or sparse dots, while bright pixels align with high-density characters like <code>@</code> or <code>#</code>.</li>
+                            <li><strong>CRT Scanline & Color Filtering:</strong> The mapped ASCII string is dynamically printed to the terminal viewport with fixed-width (monospace) fonts, simulating classic CRT phosphor sweeps (Green/Amber) or vibrant real-color RGB styling.</li>
+                            <li><strong>Direct Browser Recording & Export:</strong> When clicking export, we capture the compiled output canvas stream alongside the original audio channel, compiling them into a downloadable WebM/MP4 file using the browser's <code>MediaRecorder</code> API.</li>
+                        </ul>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">3. Procedural ASCII Art Generator from AI Text Prompts</h3>
+                        <p class="seo-p">Don't have a local video file ready? Our interactive <strong>AI prompt to ASCII text generator</strong> parses natural language prompts to construct and run math-driven visual scripts in real-time. If you input instructions like <em>"matrix rain"</em>, <em>"rotating 3D cube"</em>, or <em>"cyberpunk cellular fire"</em>, the semantic AI engine boots up dedicated fluid simulations and geometric matrices:</p>
+                        <ul class="seo-list">
+                            <li><strong>Matrix Code Rain ASCII:</strong> A realistic physics recreation of the Matrix terminal waterfall, featuring characters falling at independent velocities with glowing fading trails.</li>
+                            <li><strong>3D software projection:</strong> A mathematical engine that performs 3D coordinate transformations, applying rotation matrices (pitch, yaw, roll) to draw wireframe geometries like spheres, toruses, and cubes with real lighting shadow algorithms.</li>
+                            <li><strong>Cellular Automata Cyberpunk Fire:</strong> Real-time heat dispersion grid equations that simulate rising hot flames using neon cyan, pink, or amber color layers.</li>
+                        </ul>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">4. Key Advantages of 100% Offline Client-Side Converting</h3>
+                        <p class="seo-p">Harnessing client-side computing instead of remote backend servers provides three massive competitive edges:</p>
+                        <ol class="seo-list-ordered">
+                            <li><strong>Absolute Security and Privacy:</strong> Your videos never leave your local machine. They are never transmitted over the internet, completely eliminating privacy leak risks.</li>
+                            <li><strong>No Upload File Limits:</strong> Since there is zero upload bandwidth cost, you can convert high-definition and very long videos without data caps or size restrictions.</li>
+                            <li><strong>Extreme Frame Rates:</strong> Rendering speeds depend entirely on your own local GPU/CPU hardware, achieving fluid frame rates over 60 FPS on standard modern computers.</li>
+                        </ol>
+                    </section>
+                </div>
+            </article>
+            <?php endif; ?>
         </section>
 
     </main>

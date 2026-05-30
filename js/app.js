@@ -91,6 +91,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update document title and html lang attribute
         document.title = dict['title'];
         document.documentElement.lang = lang;
+
+        // Show/hide correct SEO articles based on language (ES / fallback to EN)
+        const articleEs = document.getElementById('seo-article-es');
+        const articleEn = document.getElementById('seo-article-en');
+        if (articleEs && articleEn) {
+            if (lang === 'es') {
+                articleEs.style.display = 'block';
+                articleEn.style.display = 'none';
+            } else {
+                articleEs.style.display = 'none';
+                articleEn.style.display = 'block';
+            }
+        }
     }
 
     // Set up language selector toggle behavior
