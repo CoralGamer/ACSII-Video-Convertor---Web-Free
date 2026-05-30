@@ -1,0 +1,776 @@
+<?php
+/**
+ * ASCII Player Video Creator & AI Prompt Generator - SEO-optimized entry point
+ * Detects browser language, serves custom SEO tags and dynamic translation panels.
+ */
+
+// Supported languages
+$supported_langs = ['es', 'en', 'fr', 'pt', 'de'];
+$default_lang = 'es';
+
+// Get active language
+$lang = $default_lang;
+if (isset($_GET['lang']) && in_array($_GET['lang'], $supported_langs)) {
+    $lang = $_GET['lang'];
+} else {
+    // Detect from browser headers
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+        if (in_array($browser_lang, $supported_langs)) {
+            $lang = $browser_lang;
+        }
+    }
+}
+
+// Translations data
+$translations = [
+    'es' => [
+        'title' => 'Conversor de Video a ASCII Online Gratis y Generador de Prompts IA',
+        'meta_desc' => 'Convierte tus videos locales a código ASCII animado en tiempo real. Procesa video y genera arte ASCII en 3D/2D con prompts de IA de forma 100% local, privada y segura.',
+        'meta_keys' => 'conversor video ascii, ascii video player, video a ascii gratis, ia prompt ascii, texto ascii animado, procesador de video local, renderizador 3d ascii',
+        'hero_tag' => 'Tecnología 100% Local y Privada (Sin Servidores)',
+        'hero_h1' => 'Crea y Reproduce Asombroso <span>Arte de Video ASCII</span>',
+        'hero_p' => 'Convierte videos locales en animaciones retro ASCII al instante o genera impresionantes gráficos y formas en 3D procedimentales usando prompts como si fuera una Inteligencia Artificial. Todo procesado directamente en tu PC.',
+        'tab_video' => 'Conversor de Video',
+        'tab_prompt' => 'Prompts IA a ASCII',
+        'upload_title' => 'Arrastra tu archivo de video aquí',
+        'upload_sub' => 'o haz clic para buscar en tu dispositivo (Formatos: MP4, WebM)',
+        'upload_notice' => 'Nota: Su video nunca sale de su computadora. Se procesa completamente en su navegador.',
+        'panel_adjustments' => 'Ajustes del Renderizado',
+        'label_columns' => 'Ancho de Resolución (Columnas):',
+        'label_palette' => 'Paleta de Caracteres:',
+        'palette_std' => 'Estándar (Básico)',
+        'palette_ext' => 'Extendido (Detallado)',
+        'palette_blocks' => 'Bloques (Pixel Art)',
+        'palette_bin' => 'Binario (Matrix)',
+        'label_color' => 'Modo de Color:',
+        'color_mono' => 'Monocromo CRT (Blanco)',
+        'color_green' => ' CRT Fósforo Verde',
+        'color_amber' => ' CRT Ámbar Retro',
+        'color_real' => 'Color Real RGB',
+        'label_contrast' => 'Contraste de Imagen:',
+        'label_brightness' => 'Brillo de Imagen:',
+        'label_invert' => 'Invertir Colores de Salida',
+        'btn_export' => 'Exportar a Video MP4',
+        'btn_exporting' => 'Compilando vídeo localmente...',
+        'placeholder_prompt' => 'Escribe un prompt como "lluvia matrix", "cubo 3D rotando", "fuego cyberpunk", "ondas de agua"...',
+        'btn_generate' => 'Generar',
+        'sug_title' => 'Prueba estas ideas:',
+        'sug_matrix' => 'Lluvia Matrix',
+        'sug_cube' => 'Cubo 3D Rotativo',
+        'sug_torus' => 'Toroide de Neon 3D',
+        'sug_fire' => 'Fuego Cyberpunk',
+        'sug_ocean' => 'Ondas del Océano',
+        'sug_fractal' => 'Zoom de Fractal',
+        'sec_features_title' => 'Características <span>Exclusivas</span>',
+        'feat_1_title' => 'Cómputo 100% en Cliente',
+        'feat_1_desc' => 'Nuestra tecnología convierte tus archivos usando el procesador gráfico y procesador local de tu dispositivo. No requiere subir archivos ni consumir tus datos de red.',
+        'feat_2_title' => 'Generador Dinámico de Prompts',
+        'feat_2_desc' => 'Escribe una idea en lenguaje natural y el motor interpretará los algoritmos procedimentales de luz, física y proyección 3D para dibujar animaciones en texto ASCII.',
+        'feat_3_title' => 'Exportación Local Directa',
+        'feat_3_desc' => 'Graba la salida del renderizado con la API MediaRecorder del navegador y descarga el archivo WebM/MP4 codificado con audio y video sincronizados de inmediato.',
+        'sec_faq_title' => 'Preguntas <span>Frecuentes (FAQ)</span>',
+        'faq_1_q' => '¿Mi video se sube a algún sitio o servidor?',
+        'faq_1_a' => 'No. Toda la decodificación, el rediseño a caracteres ASCII y la codificación final se realiza en el procesador local de su computadora. Sus videos permanecen completamente privados.',
+        'faq_2_q' => '¿Cómo funciona la IA a ASCII?',
+        'faq_2_a' => 'El generador procesa semánticamente tu solicitud en Javascript e inicia scripts matemáticos en vivo (como proyección de matrices 3D, autómatas celulares o simulaciones de física de fluidos) traduciéndolos al instante en arte ASCII.',
+        'faq_3_q' => '¿Es gratuito y sin límites?',
+        'faq_3_a' => 'Sí, es 100% gratuito, libre de anuncios invasivos y sin límites de duración o tamaño de archivo, ya que el poder de procesamiento proviene de tu propio dispositivo.',
+        'footer_desc' => 'Crea, convierte y reproduce arte digital en formato retro ASCII usando tu dispositivo. Cero servidores, máxima velocidad y total privacidad.'
+    ],
+    'en' => [
+        'title' => 'Free Online Video to ASCII Converter & AI Prompt Generator',
+        'meta_desc' => 'Convert your local videos to animated ASCII code in real-time. Process video and generate 3D/2D ASCII art with AI prompts 100% locally, privately, and securely.',
+        'meta_keys' => 'video to ascii converter, ascii video player, free video to ascii, ai prompt ascii, animated ascii text, local video processor, 3d ascii renderer',
+        'hero_tag' => '100% Local & Private Device Computing (No Servers)',
+        'hero_h1' => 'Create & Play Stunning <span>ASCII Video Art</span>',
+        'hero_p' => 'Instantly convert local videos into retro ASCII animations or generate amazing procedural 3D/2D graphics using text prompts just like an AI. All processed directly on your PC.',
+        'tab_video' => 'Video Converter',
+        'tab_prompt' => 'AI Prompt to ASCII',
+        'upload_title' => 'Drag & drop your video file here',
+        'upload_sub' => 'or click to browse your device (Formats: MP4, WebM)',
+        'upload_notice' => 'Note: Your video never leaves your computer. It is processed entirely in your browser.',
+        'panel_adjustments' => 'Render Adjustments',
+        'label_columns' => 'Resolution Width (Columns):',
+        'label_palette' => 'Character Palette:',
+        'palette_std' => 'Standard (Basic)',
+        'palette_ext' => 'Extended (Detailed)',
+        'palette_blocks' => 'Blocks (Pixel Art)',
+        'palette_bin' => 'Binary (Matrix)',
+        'label_color' => 'Color Mode:',
+        'color_mono' => 'Monochrome CRT (White)',
+        'color_green' => 'Green Phosphor CRT',
+        'color_amber' => 'Retro Amber CRT',
+        'color_real' => 'RGB Real Color',
+        'label_contrast' => 'Image Contrast:',
+        'label_brightness' => 'Image Brightness:',
+        'label_invert' => 'Invert Output Colors',
+        'btn_export' => 'Export to MP4 Video',
+        'btn_exporting' => 'Compiling video locally...',
+        'placeholder_prompt' => 'Enter a prompt like "matrix rain", "3D rotating cube", "cyberpunk fire", "water waves"...',
+        'btn_generate' => 'Generate',
+        'sug_title' => 'Try these ideas:',
+        'sug_matrix' => 'Matrix Rain',
+        'sug_cube' => 'Rotating 3D Cube',
+        'sug_torus' => '3D Neon Torus',
+        'sug_fire' => 'Cyberpunk Fire',
+        'sug_ocean' => 'Ocean Waves',
+        'sug_fractal' => 'Fractal Zoom',
+        'sec_features_title' => 'Exclusive <span>Features</span>',
+        'feat_1_title' => '100% Client-Side Computing',
+        'feat_1_desc' => 'Our technology converts your files using your device\'s local GPU and CPU. No file uploads required, zero internet data usage.',
+        'feat_2_title' => 'Dynamic Prompt Generator',
+        'feat_2_desc' => 'Write an idea in natural language and the engine interprets procedural physics, lighting, and 3D projections to draw moving ASCII text art.',
+        'feat_3_title' => 'Direct Local Export',
+        'feat_3_desc' => 'Record rendering outputs using the browser\'s MediaRecorder API and download compiled WebM/MP4 videos with synchronized audio instantly.',
+        'sec_faq_title' => 'Frequently <span>Asked Questions</span>',
+        'faq_1_q' => 'Is my video uploaded anywhere or to any server?',
+        'faq_1_a' => 'No. All decoding, ASCII mapping, and final encoding are done locally inside your computer\'s browser. Your videos remain 100% private.',
+        'faq_2_q' => 'How does the AI-to-ASCII feature work?',
+        'faq_2_a' => 'The prompt engine parses your request semantically in Javascript and boots up interactive mathematical animations (like 3D matrix projection, fluid simulations, or cellular automata) rendered directly to characters.',
+        'faq_3_q' => 'Is it free and without limits?',
+        'faq_3_a' => 'Yes, it is 100% free, free from intrusive ads, and has no limits on duration or file size since the processing power comes from your own device.',
+        'footer_desc' => 'Create, convert, and play retro digital ASCII art using your device. Zero servers, maximum speed, and complete privacy.'
+    ],
+    'fr' => [
+        'title' => 'Convertisseur Vidéo en ASCII Gratuit & Générateur de Prompts IA',
+        'meta_desc' => 'Convertissez vos vidéos locales en code ASCII animé en temps réel. Traitez les vidéos et générez de l\'art ASCII 3D/2D avec l\'IA localement, de manière privée et sécurisée.',
+        'meta_keys' => 'convertisseur video ascii, lecteur video ascii, video ascii gratuit, ia prompt ascii, texte ascii anime, traitement video local, rendu 3d ascii',
+        'hero_tag' => 'Technologie 100% Locale et Privée (Sans Serveur)',
+        'hero_h1' => 'Créez et Jouez de l\'<span>Art Vidéo ASCII</span> Sensationnel',
+        'hero_p' => 'Convertissez instantanément des vidéos locales en animations rétro ASCII, ou générez d\'incroyables graphismes 3D/2D à l\'aide d\'instructions textuelles simples. Le tout traité directement sur votre PC.',
+        'tab_video' => 'Convertisseur Vidéo',
+        'tab_prompt' => 'IA Prompt à ASCII',
+        'upload_title' => 'Glissez-déposez votre fichier vidéo ici',
+        'upload_sub' => 'ou cliquez pour parcourir votre appareil (Formats : MP4, WebM)',
+        'upload_notice' => 'Remarque : Votre vidéo ne quitte jamais votre ordinateur. Elle est traitée entièrement dans votre navigateur.',
+        'panel_adjustments' => 'Ajustements de Rendu',
+        'label_columns' => 'Largeur de Résolution (Colonnes) :',
+        'label_palette' => 'Palette de Caractères :',
+        'palette_std' => 'Standard (Basique)',
+        'palette_ext' => 'Étendu (Détaillé)',
+        'palette_blocks' => 'Blocs (Pixel Art)',
+        'palette_bin' => 'Binaire (Matrix)',
+        'label_color' => 'Mode Couleur :',
+        'color_mono' => 'Monochrome CRT (Blanc)',
+        'color_green' => 'Phosphore Vert CRT',
+        'color_amber' => 'Ambre Rétro CRT',
+        'color_real' => 'Couleur Réelle RGB',
+        'label_contrast' => 'Contraste d\'Image :',
+        'label_brightness' => 'Luminosité d\'Image :',
+        'label_invert' => 'Inverser les Couleurs',
+        'btn_export' => 'Exporter en Vidéo MP4',
+        'btn_exporting' => 'Compilation vidéo locale...',
+        'placeholder_prompt' => 'Entrez une invite comme "pluie matrix", "cube rotatif 3D", "feu cyberpunk", "vagues d\'eau"...',
+        'btn_generate' => 'Générer',
+        'sug_title' => 'Essayez ces idées :',
+        'sug_matrix' => 'Pluie Matrix',
+        'sug_cube' => 'Cube 3D Rotatif',
+        'sug_torus' => 'Tore Néon 3D',
+        'sug_fire' => 'Feu Cyberpunk',
+        'sug_ocean' => 'Vagues d\'Océan',
+        'sug_fractal' => 'Zoom Fractal',
+        'sec_features_title' => 'Fonctionnalités <span>Exclusives</span>',
+        'feat_1_title' => 'Calcul 100% Côté Client',
+        'feat_1_desc' => 'Notre technologie convertit vos fichiers en utilisant le processeur graphique local et le processeur de votre appareil. Aucun téléchargement de fichier requis.',
+        'feat_2_title' => 'Générateur Dynamique d\'Invites',
+        'feat_2_desc' => 'Écrivez une idée en langage naturel, le moteur interprète les algorithmes proceduraux de physique, lumière, et 3D pour dessiner du texte ASCII mobile.',
+        'feat_3_title' => 'Exportation Locale Directe',
+        'feat_3_desc' => 'Enregistrez le rendu via l\'API MediaRecorder du navigateur et téléchargez instantanément la vidéo WebM/MP4 encodée avec audio synchronisé.',
+        'sec_faq_title' => 'Questions <span>Fréquentes (FAQ)</span>',
+        'faq_1_q' => 'Ma vidéo est-elle téléchargée sur un serveur ?',
+        'faq_1_a' => 'Non. Tout le décodage, la conversion ASCII et l\'encodage final sont effectués localement dans le navigateur de votre ordinateur. Vos vidéos restent 100% privées.',
+        'faq_2_q' => 'Comment fonctionne la fonction IA-vers-ASCII ?',
+        'faq_2_a' => 'Le moteur de prompt analyse sémantiquement votre requête en Javascript et lance des animations mathématiques interactives (comme une projection 3D, des fluides ou des automates cellulaires) rendues en caractères.',
+        'faq_3_q' => 'Est-ce gratuit et sans limites ?',
+        'faq_3_a' => 'Oui, c\'est 100% gratuit, sans publicité invasive et sans limites de durée ni de taille, puisque la puissance de traitement provient de votre propre appareil.',
+        'footer_desc' => 'Créez, convertissez et lisez des œuvres ASCII numériques rétro en utilisant votre appareil. Zéro serveur, vitesse maximale et confidentialité totale.'
+    ],
+    'pt' => [
+        'title' => 'Conversor de Vídeo para ASCII Grátis & Gerador de Prompts IA',
+        'meta_desc' => 'Converta seus vídeos locais para código ASCII animado em tempo real. Processe vídeo e gere arte ASCII em 3D/2D com prompts de IA de forma 100% local, privada e segura.',
+        'meta_keys' => 'conversor video ascii, ascii video player, video em ascii gratis, ia prompt ascii, texto ascii animado, processamento local, renderizador 3d ascii',
+        'hero_tag' => 'Tecnologia 100% Local e Privada (Sem Servidores)',
+        'hero_h1' => 'Crie e Reproduza Incrível <span>Arte de Vídeo ASCII</span>',
+        'hero_p' => 'Converta vídeos locais em animações retrô ASCII instantaneamente ou gere gráficos e formas 3D procedimentais impressionantes usando prompts como Inteligência Artificial. Tudo processado no seu PC.',
+        'tab_video' => 'Conversor de Vídeo',
+        'tab_prompt' => 'Prompts IA para ASCII',
+        'upload_title' => 'Arraste seu arquivo de vídeo aqui',
+        'upload_sub' => 'ou clique para buscar no seu dispositivo (Formatos: MP4, WebM)',
+        'upload_notice' => 'Nota: O seu vídeo nunca sai do seu computador. É processado inteiramente no seu navegador.',
+        'panel_adjustments' => 'Ajustes de Renderização',
+        'label_columns' => 'Largura de Resolução (Colunas):',
+        'label_palette' => 'Paleta de Caracteres:',
+        'palette_std' => 'Padrão (Básico)',
+        'palette_ext' => 'Estendido (Detalhado)',
+        'palette_blocks' => 'Blocos (Pixel Art)',
+        'palette_bin' => 'Binário (Matrix)',
+        'label_color' => 'Modo de Cor:',
+        'color_mono' => 'Monocromático CRT (Branco)',
+        'color_green' => 'Fósforo Verde CRT',
+        'color_amber' => 'Âmbar Retrô CRT',
+        'color_real' => 'Cor Real RGB',
+        'label_contrast' => 'Contraste da Imagem:',
+        'label_brightness' => 'Brilho da Imagem:',
+        'label_invert' => 'Inverter Cores de Saída',
+        'btn_export' => 'Exportar para Vídeo MP4',
+        'btn_exporting' => 'Compilando vídeo localmente...',
+        'placeholder_prompt' => 'Escreva um prompt como "chuva matrix", "cubo 3D girando", "fogo cyberpunk", "ondas de água"...',
+        'btn_generate' => 'Gerar',
+        'sug_title' => 'Experimente estas ideias:',
+        'sug_matrix' => 'Chuva Matrix',
+        'sug_cube' => 'Cubo 3D Rotativo',
+        'sug_torus' => 'Toroide de Neon 3D',
+        'sug_fire' => 'Fogo Cyberpunk',
+        'sug_ocean' => 'Ondas do Oceano',
+        'sug_fractal' => 'Zoom de Fractal',
+        'sec_features_title' => 'Recursos <span>Exclusivos</span>',
+        'feat_1_title' => 'Computação 100% no Cliente',
+        'feat_1_desc' => 'Nossa tecnologia converte seus arquivos usando o processador gráfico e processador local do seu dispositivo. Não requer upload de arquivos.',
+        'feat_2_title' => 'Gerador Dinâmico de Prompts',
+        'feat_2_desc' => 'Escreva uma ideia em linguagem natural e o motor interpretará os algoritmos procedimentais de luz, física e projeção 3D para criar animações ASCII.',
+        'feat_3_title' => 'Exportação Local Direta',
+        'feat_3_desc' => 'Grave o resultado usando a API MediaRecorder do navegador e baixe o arquivo WebM/MP4 codificado com áudio e vídeo sincronizados imediatamente.',
+        'sec_faq_title' => 'Perguntas <span>Frequentes (FAQ)</span>',
+        'faq_1_q' => 'O meu vídeo é enviado para algum servidor?',
+        'faq_1_a' => 'Não. Toda a decodificação, conversão ASCII e codificação final são realizadas localmente no navegador do seu computador. Seus vídeos permanecem privados.',
+        'faq_2_q' => 'Como funciona a conversão de IA para ASCII?',
+        'faq_2_a' => 'O motor de prompts interpreta semanticamente sua solicitação em Javascript e inicia scripts matemáticos dinâmicos (como projeção de matrizes 3D ou simulações de fluidos) renderizados em texto.',
+        'faq_3_q' => 'É gratuito e sem limites?',
+        'faq_3_a' => 'Sim, é 100% gratuito, sem anúncios invasivos e sem limites de duração ou tamanho de arquivo, já que o processamento ocorre no seu próprio dispositivo.',
+        'footer_desc' => 'Crie, converta e reproduza arte digital em formato retro ASCII usando seu dispositivo. Zero servidores, máxima velocidade e privacidade total.'
+    ],
+    'de' => [
+        'title' => 'Kostenloser Online-Video-zu-ASCII-Konverter & KI-Prompt-Generator',
+        'meta_desc' => 'Konvertieren Sie Ihre lokalen Videos in Echtzeit in animierten ASCII-Code. Verarbeiten Sie Videos und erstellen Sie 3D/2D-ASCII-Kunst mit KI-Prompts 100 % lokal und sicher.',
+        'meta_keys' => 'video zu ascii konverter, ascii video player, kostenlos video in ascii, ki prompt ascii, animierter ascii text, lokaler videoprozessor, 3d ascii render',
+        'hero_tag' => '100% lokale und private Geräteberechnung (keine Server)',
+        'hero_h1' => 'Erstellen und Abspielen von <span>ASCII-Videokunst</span>',
+        'hero_p' => 'Konvertieren Sie lokale Videos sofort in Retro-ASCII-Animationen oder generieren Sie atemberaubende prozedurale 3D/2D-Grafiken mithilfe von Text-Prompts wie bei einer KI. Alles direkt auf Ihrem PC verarbeitet.',
+        'tab_video' => 'Video-Konverter',
+        'tab_prompt' => 'KI-Prompt zu ASCII',
+        'upload_title' => 'Ziehen Sie Ihre Videodatei hierher',
+        'upload_sub' => 'oder klicken Sie, um Ihr Gerät zu durchsuchen (Formate: MP4, WebM)',
+        'upload_notice' => 'Hinweis: Ihr Video verlässt Ihren Computer nie. Es wird vollständig in Ihrem Browser verarbeitet.',
+        'panel_adjustments' => 'Render-Einstellungen',
+        'label_columns' => 'Auflösungsbreite (Spalten):',
+        'label_palette' => 'Zeichenpalette:',
+        'palette_std' => 'Standard (Einfach)',
+        'palette_ext' => 'Erweitert (Detailliert)',
+        'palette_blocks' => 'Blöcke (Pixel-Art)',
+        'palette_bin' => 'Binär (Matrix)',
+        'label_color' => 'Farbmodus:',
+        'color_mono' => 'Monochrom CRT (Weiß)',
+        'color_green' => 'Grüner Phosphor CRT',
+        'color_amber' => 'Retro Amber CRT',
+        'color_real' => 'Echte RGB-Farbe',
+        'label_contrast' => 'Bildkontrast:',
+        'label_brightness' => 'Bildhelligkeit:',
+        'label_invert' => 'Ausgabefarben invertieren',
+        'btn_export' => 'In MP4-Video exportieren',
+        'btn_exporting' => 'Kompiliere Video lokal...',
+        'placeholder_prompt' => 'Geben Sie einen Prompt ein wie "Matrix-Regen", "rotierender 3D-Würfel", "Cyberpunk-Feuer", "Wasserwellen"...',
+        'btn_generate' => 'Generieren',
+        'sug_title' => 'Probieren Sie diese Ideen aus:',
+        'sug_matrix' => 'Matrix Regen',
+        'sug_cube' => 'Rotierender 3D-Würfel',
+        'sug_torus' => '3D Neon Torus',
+        'sug_fire' => 'Cyberpunk Feuer',
+        'sug_ocean' => 'Ozeanwellen',
+        'sug_fractal' => 'Fraktaler Zoom',
+        'sec_features_title' => 'Exklusive <span>Funktionen</span>',
+        'feat_1_title' => '100% clientseitige Verarbeitung',
+        'feat_1_desc' => 'Unsere Technologie konvertiert Ihre Dateien mit der lokalen GPU und CPU Ihres Geräts. Keine Datei-Uploads erforderlich, null Datenverbrauch.',
+        'feat_2_title' => 'Dynamischer Prompt-Generator',
+        'feat_2_desc' => 'Schreiben Sie eine Idee in natürlicher Sprache und die Engine interpretiert prozedurale Physik, Beleuchtung und 3D-Projektionen, um bewegten ASCII-Text zu zeichnen.',
+        'feat_3_title' => 'Direkter lokaler Export',
+        'feat_3_desc' => 'Nehmen Sie Render-Ausgaben mit der MediaRecorder-API des Browsers auf und laden Sie kompilierte WebM/MP4-Videos sofort mit synchronisiertem Audio herunter.',
+        'sec_faq_title' => 'Häufig <span>gestellte Fragen (FAQ)</span>',
+        'faq_1_q' => 'Wird mein Video irgendwohin oder auf einen Server hochgeladen?',
+        'faq_1_a' => 'Nein. Die gesamte Dekodierung, das ASCII-Mapping und die endgültige Kodierung erfolgen lokal im Browser Ihres Computers. Ihre Videos bleiben zu 100 % privat.',
+        'faq_2_q' => 'Wie funktioniert das KI-zu-ASCII-Feature?',
+        'faq_2_a' => 'Die Prompt-Engine analysiert Ihre Anfrage semantisch in Javascript und startet interaktive mathematische Animationen (wie 3D-Projektionen, Fluidsimulationen oder zelluläre Automaten), die in Zeichen gerendert werden.',
+        'faq_3_q' => 'Ist es kostenlos und unbegrenzt?',
+        'faq_3_a' => 'Ja, es ist 100 % kostenlos, frei von aufdringlicher Werbung und hat keine Beschränkungen für Dauer oder Dateigröße, da die Rechenleistung von Ihrem eigenen Gerät kommt.',
+        'footer_desc' => 'Erstellen, konvertieren und spielen Sie Retro-Digital-ASCII-Kunst mit Ihrem Gerät ab. Keine Server, maximale Geschwindigkeit und absolute Privatsphäre.'
+    ]
+];
+
+$t = $translations[$lang];
+?>
+<!DOCTYPE html>
+<html lang="<?php echo $lang; ?>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Robust SEO Meta Tags -->
+    <title><?php echo htmlspecialchars($t['title']); ?></title>
+    <meta name="description" content="<?php echo htmlspecialchars($t['meta_desc']); ?>">
+    <meta name="keywords" content="<?php echo htmlspecialchars($t['meta_keys']); ?>">
+    <meta name="author" content="CoralGamer">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/">
+    <meta property="og:title" content="<?php echo htmlspecialchars($t['title']); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($t['meta_desc']); ?>">
+    <meta property="og:image" content="https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/assets/og-image.png">
+    <meta property="og:site_name" content="ASCII Player Video Creator">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/">
+    <meta name="twitter:title" content="<?php echo htmlspecialchars($t['title']); ?>">
+    <meta name="twitter:description" content="<?php echo htmlspecialchars($t['meta_desc']); ?>">
+    <meta name="twitter:image" content="https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/assets/og-image.png">
+
+    <!-- Hreflang SEO configuration -->
+    <link rel="alternate" hreflang="es" href="?lang=es" />
+    <link rel="alternate" hreflang="en" href="?lang=en" />
+    <link rel="alternate" hreflang="fr" href="?lang=fr" />
+    <link rel="alternate" hreflang="pt" href="?lang=pt" />
+    <link rel="alternate" hreflang="de" href="?lang=de" />
+    <link rel="alternate" hreflang="x-default" href="?lang=es" />
+
+    <!-- Style sheet link -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- JSON-LD Structured Data Schema.org for WebApplication -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "ASCII Player Video Creator & AI Prompt Generator",
+        "alternateName": "ASCII Converter Web",
+        "description": "Convert local videos to ASCII and procedurally generate ASCII arts with AI text prompts. All running client-side with 100% security.",
+        "url": "https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/",
+        "image": "https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/assets/og-image.png",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Windows, macOS, Linux, Android, iOS",
+        "browserRequirements": "Requires HTML5 Canvas, MediaRecorder, WebGL",
+        "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Client-Side offline conversion",
+            "No upload file size limits",
+            "Dynamic AI Prompt-to-ASCII procedural drawing engine",
+            "Monochrome green, amber and RGB colorful ASCII video formats",
+            "Direct local MP4/WebM recording export with audio"
+        ]
+    }
+    </script>
+</head>
+<body>
+
+    <!-- --- Header --- -->
+    <header>
+        <div class="container header-wrapper">
+            <div class="logo" id="header-logo">
+                <div class="logo-icon">A</div>
+                <span>ASCII Player</span>
+            </div>
+            
+            <nav>
+                <a href="#converter-anchor"><?php echo $lang === 'es' ? 'Conversor' : 'Converter'; ?></a>
+                <a href="#ai-prompt-anchor"><?php echo $lang === 'es' ? 'Generador IA' : 'AI Prompt'; ?></a>
+                <a href="#features-anchor"><?php echo $lang === 'es' ? 'Características' : 'Features'; ?></a>
+                <a href="#faq-anchor">FAQ</a>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Language Selector UI component -->
+                <div class="lang-selector">
+                    <button class="lang-select-btn" id="lang-btn">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M2 12h20"/></svg>
+                        <?php echo strtoupper($lang); ?>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <button class="lang-option <?php echo $lang === 'es' ? 'active' : ''; ?>" onclick="window.location.href='?lang=es'">Español</button>
+                        <button class="lang-option <?php echo $lang === 'en' ? 'active' : ''; ?>" onclick="window.location.href='?lang=en'">English</button>
+                        <button class="lang-option <?php echo $lang === 'fr' ? 'active' : ''; ?>" onclick="window.location.href='?lang=fr'">Français</button>
+                        <button class="lang-option <?php echo $lang === 'pt' ? 'active' : ''; ?>" onclick="window.location.href='?lang=pt'">Português</button>
+                        <button class="lang-option <?php echo $lang === 'de' ? 'active' : ''; ?>" onclick="window.location.href='?lang=de'">Deutsch</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- --- Hero --- -->
+        <section class="hero">
+            <span class="hero-tag"><?php echo htmlspecialchars($t['hero_tag']); ?></span>
+            <h1><?php echo $t['hero_h1']; ?></h1>
+            <p><?php echo htmlspecialchars($t['hero_p']); ?></p>
+            
+            <div class="app-tabs">
+                <button class="tab-btn active" id="tab-btn-video">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 10l5-5v14l-5-5V10zM3 5h12v14H3z"/></svg>
+                    <?php echo htmlspecialchars($t['tab_video']); ?>
+                </button>
+                <button class="tab-btn" id="tab-btn-prompt">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                    <?php echo htmlspecialchars($t['tab_prompt']); ?>
+                </button>
+            </div>
+        </section>
+
+        <!-- --- Tab: Video to ASCII Converter --- -->
+        <section class="tab-content active" id="content-video">
+            <div class="app-grid" id="converter-anchor">
+                
+                <!-- Output Display Screen -->
+                <div class="display-panel">
+                    <!-- Drop Zone -->
+                    <div class="uploader-zone panel-card" id="drop-zone">
+                        <div class="uploader-icon">
+                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 16a4 4 0 0 1-.88-7.903A5 5 0 1 1 15.9 6L16 6a5 5 0 0 1 1 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                        </div>
+                        <p><?php echo htmlspecialchars($t['upload_title']); ?></p>
+                        <span><?php echo htmlspecialchars($t['upload_sub']); ?></span>
+                        <span style="font-size:0.75rem; max-width: 400px; margin-top: 1rem; opacity:0.65;"><?php echo htmlspecialchars($t['upload_notice']); ?></span>
+                        <input type="file" class="uploader-file-input" id="video-input" accept="video/mp4,video/webm">
+                    </div>
+
+                    <!-- Terminal Output Mockup -->
+                    <div class="terminal-wrapper" id="terminal-wrapper">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <span class="dot dot-red"></span>
+                                <span class="dot dot-yellow"></span>
+                                <span class="dot dot-green"></span>
+                            </div>
+                            <div class="terminal-title">ASCII-DISPLAY_MONITOR.sh</div>
+                            <div style="width: 40px;"></div>
+                        </div>
+                        <div class="terminal-body">
+                            <div class="crt-effect"></div>
+                            
+                            <!-- Recording overlay loader -->
+                            <div class="export-overlay" id="export-overlay">
+                                <div class="export-spinner">
+                                    <span class="export-ring"></span>
+                                </div>
+                                <div class="export-progress" id="export-progress">0%</div>
+                                <div class="export-status" id="export-status"><?php echo htmlspecialchars($t['btn_exporting']); ?></div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" id="export-bar"></div>
+                                </div>
+                                <button class="btn btn-secondary" style="margin-top: 2rem; width: auto;" id="btn-cancel-export">Cancelar</button>
+                            </div>
+
+                            <pre class="ascii-output" id="ascii-output-text"></pre>
+                        </div>
+                        
+                        <!-- Player Controls -->
+                        <div class="preview-controls">
+                            <button class="ctrl-icon-btn" id="btn-play-pause">
+                                <svg id="play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                <svg id="pause-icon" style="display:none;" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                            </button>
+                            <button class="ctrl-icon-btn" id="btn-loop">
+                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 1 1 21.306 7M20 9h-5.582"/></svg>
+                            </button>
+                            <button class="ctrl-icon-btn" id="btn-mute">
+                                <svg id="unmute-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                                <svg id="mute-icon" style="display:none;" fill="currentColor" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parameters Controls Panel -->
+                <div class="panel-card">
+                    <h3 class="panel-title">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <?php echo htmlspecialchars($t['panel_adjustments']); ?>
+                    </h3>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="slider-columns">
+                            <span><?php echo htmlspecialchars($t['label_columns']); ?></span>
+                            <span id="val-columns">100</span>
+                        </label>
+                        <input type="range" class="slider-input" id="slider-columns" min="40" max="180" step="5" value="100">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="select-palette"><?php echo htmlspecialchars($t['label_palette']); ?></label>
+                        <select class="select-input" id="select-palette">
+                            <option value="standard" selected><?php echo htmlspecialchars($t['palette_std']); ?></option>
+                            <option value="extended"><?php echo htmlspecialchars($t['palette_ext']); ?></option>
+                            <option value="blocks"><?php echo htmlspecialchars($t['palette_blocks']); ?></option>
+                            <option value="binary"><?php echo htmlspecialchars($t['palette_bin']); ?></option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="select-color"><?php echo htmlspecialchars($t['label_color']); ?></label>
+                        <select class="select-input" id="select-color">
+                            <option value="monochrome" selected><?php echo htmlspecialchars($t['color_mono']); ?></option>
+                            <option value="green"><?php echo htmlspecialchars($t['color_green']); ?></option>
+                            <option value="amber"><?php echo htmlspecialchars($t['color_amber']); ?></option>
+                            <option value="colorized"><?php echo htmlspecialchars($t['color_real']); ?></option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="slider-contrast">
+                            <span><?php echo htmlspecialchars($t['label_contrast']); ?></span>
+                            <span id="val-contrast">0</span>
+                        </label>
+                        <input type="range" class="slider-input" id="slider-contrast" min="-100" max="100" step="5" value="0">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="slider-brightness">
+                            <span><?php echo htmlspecialchars($t['label_brightness']); ?></span>
+                            <span id="val-brightness">0</span>
+                        </label>
+                        <input type="range" class="slider-input" id="slider-brightness" min="-100" max="100" step="5" value="0">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="check-invert">
+                            <span><?php echo htmlspecialchars($t['label_invert']); ?></span>
+                        </label>
+                    </div>
+
+                    <button class="btn" id="btn-export-video" disabled>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        <?php echo htmlspecialchars($t['btn_export']); ?>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- Tab: AI Prompt to ASCII Generator --- -->
+        <section class="tab-content" id="content-prompt">
+            <div class="app-grid" id="ai-prompt-anchor">
+                
+                <div class="display-panel">
+                    <div class="prompt-container">
+                        <!-- Search Box for AI prompt -->
+                        <div class="prompt-bar">
+                            <input type="text" class="prompt-input" id="prompt-input" placeholder="<?php echo htmlspecialchars($t['placeholder_prompt']); ?>">
+                            <button class="btn prompt-btn" id="btn-run-prompt">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                <?php echo htmlspecialchars($t['btn_generate']); ?>
+                            </button>
+                        </div>
+                        
+                        <!-- Suggestions list -->
+                        <div class="prompt-suggestions">
+                            <span style="font-size:0.875rem; color:var(--color-text-muted); display:flex; align-items:center;"><?php echo htmlspecialchars($t['sug_title']); ?></span>
+                            <div class="suggestion-chip" data-prompt="matrix digital rain"><?php echo htmlspecialchars($t['sug_matrix']); ?></div>
+                            <div class="suggestion-chip" data-prompt="3d rotating wireframe cube"><?php echo htmlspecialchars($t['sug_cube']); ?></div>
+                            <div class="suggestion-chip" data-prompt="3d shiny glowing torus ring"><?php echo htmlspecialchars($t['sug_torus']); ?></div>
+                            <div class="suggestion-chip" data-prompt="cyberpunk retro cellular fire flames"><?php echo htmlspecialchars($t['sug_fire']); ?></div>
+                            <div class="suggestion-chip" data-prompt="dynamic marine ocean sine waves"><?php echo htmlspecialchars($t['sug_ocean']); ?></div>
+                            <div class="suggestion-chip" data-prompt="mandelbrot infinite fractal zoom math"><?php echo htmlspecialchars($t['sug_fractal']); ?></div>
+                        </div>
+                    </div>
+
+                    <!-- AI display screen -->
+                    <div class="terminal-wrapper active">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <span class="dot dot-red"></span>
+                                <span class="dot dot-yellow"></span>
+                                <span class="dot dot-green"></span>
+                            </div>
+                            <div class="terminal-title">PROMPTING-AI-NEURAL-RENDER.sh</div>
+                            <div style="width: 40px;"></div>
+                        </div>
+                        <div class="terminal-body" style="background:#000;">
+                            <div class="crt-effect"></div>
+                            <pre class="ascii-output green" id="prompt-output-text"></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parameters Controls Panel for prompt generator -->
+                <div class="panel-card">
+                    <h3 class="panel-title">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 1 0 0 4m0-4a2 2 0 1 1 0 4m-6 8a2 2 0 1 0 0-4m0 4a2 2 0 1 1 0-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 1 0 0-4m0 4a2 2 0 1 1 0-4m0 4v2m0-6V4"/></svg>
+                        <?php echo $lang === 'es' ? 'Ajustes del Prompt' : 'Prompt Adjustments'; ?>
+                    </h3>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="slider-prompt-columns">
+                            <span><?php echo htmlspecialchars($t['label_columns']); ?></span>
+                            <span id="val-prompt-columns">100</span>
+                        </label>
+                        <input type="range" class="slider-input" id="slider-prompt-columns" min="40" max="150" step="5" value="100">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="slider-prompt-speed">
+                            <span><?php echo $lang === 'es' ? 'Velocidad de Animación:' : 'Animation Speed:'; ?></span>
+                            <span id="val-prompt-speed">1.0x</span>
+                        </label>
+                        <input type="range" class="slider-input" id="slider-prompt-speed" min="0.2" max="3.0" step="0.1" value="1.0">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="select-prompt-palette"><?php echo htmlspecialchars($t['label_palette']); ?></label>
+                        <select class="select-input" id="select-prompt-palette">
+                            <option value="standard" selected><?php echo htmlspecialchars($t['palette_std']); ?></option>
+                            <option value="extended"><?php echo htmlspecialchars($t['palette_ext']); ?></option>
+                            <option value="blocks"><?php echo htmlspecialchars($t['palette_blocks']); ?></option>
+                            <option value="binary"><?php echo htmlspecialchars($t['palette_bin']); ?></option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="select-prompt-theme"><?php echo $lang === 'es' ? 'Tema de Colores:' : 'Color Theme:'; ?></label>
+                        <select class="select-input" id="select-prompt-theme">
+                            <option value="matrix" selected>Matrix Digital (Verde)</option>
+                            <option value="fire">Cyberpunk Fire (Fuego)</option>
+                            <option value="cyberpunk">Digital Synthwave (Cian/Rosa)</option>
+                            <option value="neon">Neon RGB (Color Original)</option>
+                            <option value="monochrome">Classic CRT (Monocromo)</option>
+                        </select>
+                    </div>
+
+                    <button class="btn" id="btn-export-prompt-video">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        <?php echo $lang === 'es' ? 'Exportar Animación' : 'Export Animation'; ?>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- Features list section --- -->
+        <section class="section" id="features-anchor">
+            <h2 class="section-title"><?php echo $t['sec_features_title']; ?></h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <h3><?php echo htmlspecialchars($t['feat_1_title']); ?></h3>
+                    <p><?php echo htmlspecialchars($t['feat_1_desc']); ?></p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 0 0-1.022-.547l-2.387-.477a6 6 0 0 0-3.86.517l-.318.158a6 6 0 0 1-3.86.517L6.05 15.21a2 2 0 0 0-1.806.547M8 4h8l-1 1v5.172a2 2 0 0 0 .586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 0 0 9 10.172V5L8 4z"/></svg>
+                    </div>
+                    <h3><?php echo htmlspecialchars($t['feat_2_title']); ?></h3>
+                    <p><?php echo htmlspecialchars($t['feat_2_desc']); ?></p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    </div>
+                    <h3><?php echo htmlspecialchars($t['feat_3_title']); ?></h3>
+                    <p><?php echo htmlspecialchars($t['feat_3_desc']); ?></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- FAQs section --- -->
+        <section class="section" id="faq-anchor">
+            <h2 class="section-title"><?php echo $t['sec_faq_title']; ?></h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span><?php echo htmlspecialchars($t['faq_1_q']); ?></span>
+                        <svg class="faq-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p><?php echo htmlspecialchars($t['faq_1_a']); ?></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span><?php echo htmlspecialchars($t['faq_2_q']); ?></span>
+                        <svg class="faq-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p><?php echo htmlspecialchars($t['faq_2_a']); ?></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span><?php echo htmlspecialchars($t['faq_3_q']); ?></span>
+                        <svg class="faq-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p><?php echo htmlspecialchars($t['faq_3_a']); ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Canvas components for real-time capture and recording -->
+    <canvas id="canvas-video-render" class="hidden-canvas"></canvas>
+    <canvas id="canvas-prompt-render" class="hidden-canvas"></canvas>
+    <video id="hidden-video-player" class="hidden-canvas"></video>
+
+    <!-- --- Footer --- -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <h3>ASCII Player</h3>
+                <p><?php echo htmlspecialchars($t['footer_desc']); ?></p>
+            </div>
+            
+            <div class="footer-col">
+                <h4><?php echo $lang === 'es' ? 'Idiomas' : 'Languages'; ?></h4>
+                <ul class="footer-links">
+                    <li><a href="?lang=es">Español</a></li>
+                    <li><a href="?lang=en">English</a></li>
+                    <li><a href="?lang=fr">Français</a></li>
+                    <li><a href="?lang=pt">Português</a></li>
+                    <li><a href="?lang=de">Deutsch</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4><?php echo $lang === 'es' ? 'Navegación' : 'Navigation'; ?></h4>
+                <ul class="footer-links">
+                    <li><a href="#converter-anchor"><?php echo $lang === 'es' ? 'Conversor de Video' : 'Video Converter'; ?></a></li>
+                    <li><a href="#ai-prompt-anchor"><?php echo $lang === 'es' ? 'Generador Prompts' : 'AI Prompt'; ?></a></li>
+                    <li><a href="#features-anchor"><?php echo $lang === 'es' ? 'Características' : 'Features'; ?></a></li>
+                    <li><a href="#faq-anchor">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container footer-bottom">
+            <p>&copy; <?php echo date("Y"); ?> ASCII Player - CoralGamer. Realizado localmente bajo Licencia MIT.</p>
+            <div class="footer-socials">
+                <a href="https://github.com/CoralGamer" target="_blank" class="social-link">
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.193 22 16.44 22 12.017 22 6.484 17.522 2 12 2z"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App initializers scripts links -->
+    <script src="js/converter.js"></script>
+    <script src="js/ai-engine.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

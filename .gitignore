@@ -1,0 +1,26 @@
+# Dependency directories
+node_modules/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Log files
+*.log
+
+# Local/temporary files or exports
+temp/
+dist/
+*.mp4
+*.webm
+
+# Ignore standard temp images but keep assets
+*.png
+*.jpg
+*.gif
+!assets/
+!assets/*.png
+!assets/*.jpg
+!assets/*.gif
+
