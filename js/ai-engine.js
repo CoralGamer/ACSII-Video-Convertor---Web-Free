@@ -1,7 +1,8 @@
 /*
- * AI Prompt-to-ASCII Procedural Generator
- * Uses keyword matching and mathematically animated HTML5 Canvas canvases 
- * to procedurally generate 2D/3D visual styles in high-fidelity ASCII.
+ * Generative AI Prompt-to-ASCII Drawing Engine
+ * Interprets natural language prompts and generates custom interactive 
+ * procedural visuals (3D Cube, Pulsing Heart, DVD Bounce, Matrix Rain,
+ * Equalizer, Fire, or seed-based Neural Synapse networks) in beautiful ASCII.
  */
 
 class AIPromptEngine {
@@ -10,25 +11,35 @@ class AIPromptEngine {
         this.canvas = outputCanvas;
         this.ctx = this.canvas.getContext('2d');
 
-        // Processing canvas for ASCII conversion
+        // Downsampling canvas for ASCII conversions
         this.procCanvas = document.createElement('canvas');
         this.procCtx = this.procCanvas.getContext('2d', { willReadFrequently: true });
 
-        // Configuration
+        // Default configurations
         this.cols = 100;
         this.rows = 40;
         this.speed = 1.0;
-        this.colorTheme = 'matrix'; // 'matrix', 'cyberpunk', 'fire', 'neon', 'monochrome'
+        this.colorTheme = 'cyberpunk';
         this.charPalette = 'standard';
         
-        // Loop controls
-        this.animationId = null;
+        // Loop states
         this.isPlaying = false;
+        this.animationId = null;
         this.frameCount = 0;
         this.promptText = '';
-        this.currentMode = 'cosmic'; // Default fallback mode
+        this.currentMode = 'neural'; // Default seed-based mode
 
-        // Palettes
+        // String seed parameters for custom neural network generation
+        this.seedHash = 0;
+        
+        // DVD Bouncer State
+        this.dvd = { x: 50, y: 50, dx: 2, dy: 1.5, sizeX: 24, sizeY: 12, colorIdx: 0 };
+        this.dvdColors = ['#00f2fe', '#d946ef', '#10b981', '#f59e0b', '#ef4444', '#3b82f6'];
+
+        // Equalizer State
+        this.eqBars = [];
+        
+        // Palettes mapping
         this.palettes = {
             standard: '@#W$9876543210?!abc;:+=-,. ',
             extended: '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. ',
@@ -36,90 +47,93 @@ class AIPromptEngine {
             binary: '01 '
         };
 
-        // State variables for different generator modes
-        this.initEngineStates();
+        this.initStates();
     }
 
-    initEngineStates() {
-        // Matrix Rain State
-        this.matrixDrops = [];
+    initStates() {
+        // Star/Drop coordinates for Matrix
+        this.drops = [];
         
-        // Starfield State
-        this.stars = [];
-        for (let i = 0; i < 150; i++) {
-            this.stars.push({
-                x: (Math.random() - 0.5) * 1000,
-                y: (Math.random() - 0.5) * 1000,
-                z: Math.random() * 1000
-            });
+        // Neural network particle nodes
+        this.nodes = [];
+    }
+
+    // Hash string to create a repeatable random seed for custom prompt generation
+    hashPrompt(str) {
+        let hash = 0;
+        if (str.length === 0) return hash;
+        for (let i = 0; i < str.length; i++) {
+            const chr = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
         }
+        return Math.abs(hash);
+    }
 
-        // 3D Geometry vertices (Cube)
-        this.cubeVertices = [
-            {x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1},
-            {x: 1, y: 1, z: -1},  {x: -1, y: 1, z: -1},
-            {x: -1, y: -1, z: 1},  {x: 1, y: -1, z: 1},
-            {x: 1, y: 1, z: 1},   {x: -1, y: 1, z: 1}
-        ];
-        
-        this.cubeEdges = [
-            [0, 1], [1, 2], [2, 3], [3, 0], // Back face
-            [4, 5], [5, 6], [6, 7], [7, 4], // Front face
-            [0, 4], [1, 5], [2, 6], [3, 7]  // Connectors
-        ];
+    parsePrompt(prompt) {
+        this.promptText = prompt.trim();
+        const cleanPrompt = this.promptText.toLowerCase();
+        this.frameCount = 0;
+        this.initStates();
 
-        // 3D angles
-        this.angleX = 0;
-        this.angleY = 0;
-        this.angleZ = 0;
+        // Calculate seed hash based on prompt text
+        this.seedHash = this.hashPrompt(cleanPrompt);
+
+        // Reset DVD state with slight random variation from seed
+        this.dvd = {
+            x: 20 + (this.seedHash % 40),
+            y: 10 + (this.seedHash % 15),
+            dx: (this.seedHash % 2 === 0 ? 1.5 : -1.5) * this.speed,
+            dy: (this.seedHash % 3 === 0 ? 1.2 : -1.2) * this.speed,
+            sizeX: 28,
+            sizeY: 10,
+            colorIdx: 0
+        };
+
+        // Keyword router
+        if (cleanPrompt.includes('matrix') || cleanPrompt.includes('rain') || cleanPrompt.includes('digital') || cleanPrompt.includes('code')) {
+            this.currentMode = 'matrix';
+            this.colorTheme = 'matrix';
+            this.charPalette = 'binary';
+        } else if (cleanPrompt.includes('cube') || cleanPrompt.includes('3d') || cleanPrompt.includes('cubo') || cleanPrompt.includes('box')) {
+            this.currentMode = 'cube';
+            this.colorTheme = 'cyberpunk';
+            this.charPalette = 'extended';
+        } else if (cleanPrompt.includes('heart') || cleanPrompt.includes('love') || cleanPrompt.includes('corazon') || cleanPrompt.includes('amor')) {
+            this.currentMode = 'heart';
+            this.colorTheme = 'fire';
+            this.charPalette = 'standard';
+        } else if (cleanPrompt.includes('dvd') || cleanPrompt.includes('bounce') || cleanPrompt.includes('bouncing') || cleanPrompt.includes('rebote')) {
+            this.currentMode = 'dvd';
+            this.colorTheme = 'neon';
+            this.charPalette = 'blocks';
+        } else if (cleanPrompt.includes('music') || cleanPrompt.includes('audio') || cleanPrompt.includes('spectrum') || cleanPrompt.includes('equalizer') || cleanPrompt.includes('sonido')) {
+            this.currentMode = 'equalizer';
+            this.colorTheme = 'cyberpunk';
+            this.charPalette = 'blocks';
+        } else if (cleanPrompt.includes('fire') || cleanPrompt.includes('fuego') || cleanPrompt.includes('flame') || cleanPrompt.includes('lava')) {
+            this.currentMode = 'fire';
+            this.colorTheme = 'fire';
+            this.charPalette = 'standard';
+        } else {
+            // Seed-based NEURAL SYNAPSE galaxy fallback
+            // This generates a completely unique generative structure for custom words!
+            this.currentMode = 'neural';
+            
+            // Map seed to themes
+            const themes = ['cyberpunk', 'neon', 'matrix', 'fire', 'monochrome'];
+            this.colorTheme = themes[this.seedHash % themes.length];
+            
+            const palettes = ['standard', 'extended', 'blocks', 'binary'];
+            this.charPalette = palettes[(this.seedHash >> 2) % palettes.length];
+        }
     }
 
     setOptions(options) {
         if (options.cols !== undefined) this.cols = parseInt(options.cols);
-        if (options.rows !== undefined) this.rows = parseInt(options.rows);
         if (options.speed !== undefined) this.speed = parseFloat(options.speed);
-        if (options.colorTheme !== undefined) this.colorTheme = options.colorTheme;
         if (options.charPalette !== undefined) this.charPalette = options.charPalette;
-    }
-
-    parsePrompt(prompt) {
-        this.promptText = prompt.toLowerCase().trim();
-        this.initEngineStates(); // Reset animation states
-        this.frameCount = 0;
-
-        // Semantic keyword routing
-        if (this.promptText.includes('matrix') || this.promptText.includes('rain') || this.promptText.includes('digital') || this.promptText.includes('hacker')) {
-            this.currentMode = 'matrix';
-            this.colorTheme = 'matrix';
-        } else if (this.promptText.includes('fire') || this.promptText.includes('flame') || this.promptText.includes('burning') || this.promptText.includes('lava') || this.promptText.includes('hell')) {
-            this.currentMode = 'fire';
-            this.colorTheme = 'fire';
-        } else if (this.promptText.includes('cube') || this.promptText.includes('3d') || this.promptText.includes('box') || this.promptText.includes('geometry')) {
-            this.currentMode = 'cube3d';
-            this.colorTheme = 'cyberpunk';
-        } else if (this.promptText.includes('torus') || this.promptText.includes('donut') || this.promptText.includes('ring')) {
-            this.currentMode = 'torus3d';
-            this.colorTheme = 'neon';
-        } else if (this.promptText.includes('star') || this.promptText.includes('space') || this.promptText.includes('galaxy') || this.promptText.includes('tunnel')) {
-            this.currentMode = 'starfield';
-            this.colorTheme = 'neon';
-        } else if (this.promptText.includes('ocean') || this.promptText.includes('wave') || this.promptText.includes('water') || this.promptText.includes('sea')) {
-            this.currentMode = 'ocean';
-            this.colorTheme = 'cyberpunk';
-        } else if (this.promptText.includes('fractal') || this.promptText.includes('mandelbrot') || this.promptText.includes('math') || this.promptText.includes('infinity')) {
-            this.currentMode = 'fractal';
-            this.colorTheme = 'cyberpunk';
-        } else {
-            // Cosmic vortex fallback
-            this.currentMode = 'cosmic';
-            if (this.promptText.includes('cyberpunk') || this.promptText.includes('synthwave')) {
-                this.colorTheme = 'cyberpunk';
-            } else if (this.promptText.includes('retro') || this.promptText.includes('vintage') || this.promptText.includes('old')) {
-                this.colorTheme = 'monochrome';
-            } else {
-                this.colorTheme = 'neon';
-            }
-        }
+        if (options.colorTheme !== undefined) this.colorTheme = options.colorTheme;
     }
 
     start() {
@@ -139,26 +153,26 @@ class AIPromptEngine {
     loop() {
         if (!this.isPlaying) return;
 
-        this.generateProceduralFrame();
+        this.drawProceduralFrame();
         this.convertFrameToASCII();
 
         this.frameCount++;
         this.animationId = requestAnimationFrame(() => this.loop());
     }
 
-    // Procedural Renderers (Draws onto procCanvas)
-    generateProceduralFrame() {
-        // Adjust grid dimensions dynamically
-        const charAspectRatio = 0.55; 
-        const adjustedRows = Math.round(this.cols * charAspectRatio);
-        this.rows = adjustedRows;
+    drawProceduralFrame() {
+        // Keep dimensions locked to correct monospace proportions
+        const charAspectRatio = 0.55;
+        this.rows = Math.round(this.cols * charAspectRatio);
 
-        this.procCanvas.width = this.cols * 2; // Extra super-sample resolution
+        // Super-sampled render sizes to keep contours high-definition before ASCII mapping
+        this.procCanvas.width = this.cols * 2;
         this.procCanvas.height = this.rows * 2;
+        
         const w = this.procCanvas.width;
         const h = this.procCanvas.height;
-
         const ctx = this.procCtx;
+
         ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, w, h);
 
@@ -168,366 +182,319 @@ class AIPromptEngine {
             case 'matrix':
                 this.drawMatrixRain(ctx, w, h);
                 break;
+            case 'cube':
+                this.draw3DCube(ctx, w, h, time);
+                break;
+            case 'heart':
+                this.drawPulsingHeart(ctx, w, h, time);
+                break;
+            case 'dvd':
+                this.drawDVDBouncer(ctx, w, h);
+                break;
+            case 'equalizer':
+                this.drawEqualizer(ctx, w, h, time);
+                break;
             case 'fire':
                 this.drawFire(ctx, w, h, time);
                 break;
-            case 'cube3d':
-                this.drawCube3D(ctx, w, h, time);
-                break;
-            case 'torus3d':
-                this.drawTorus3D(ctx, w, h, time);
-                break;
-            case 'starfield':
-                this.drawStarfield(ctx, w, h);
-                break;
-            case 'ocean':
-                this.drawOcean(ctx, w, h, time);
-                break;
-            case 'fractal':
-                this.drawFractal(ctx, w, h, time);
-                break;
-            case 'cosmic':
+            case 'neural':
             default:
-                this.drawCosmicVortex(ctx, w, h, time);
+                this.drawNeuralSynapse(ctx, w, h, time);
                 break;
         }
     }
 
-    /* --- Procedural Draw Algorithms --- */
+    /* --- Sub-algorithms for Drawing --- */
 
     drawMatrixRain(ctx, w, h) {
-        const columns = Math.floor(w / 12);
-        if (this.matrixDrops.length !== columns) {
-            this.matrixDrops = Array(columns).fill(1);
+        const charSize = 14;
+        const columns = Math.floor(w / charSize);
+        
+        if (this.drops.length !== columns) {
+            this.drops = Array(columns).fill(1).map(() => Math.floor(Math.random() * -30));
         }
 
-        ctx.font = '10px monospace';
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        ctx.font = 'bold 12px monospace';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'; // Add trace fading
         ctx.fillRect(0, 0, w, h);
 
-        for (let i = 0; i < this.matrixDrops.length; i++) {
-            const char = String.fromCharCode(33 + Math.floor(Math.random() * 93));
-            const x = i * 12;
-            const y = this.matrixDrops[i] * 12;
+        for (let i = 0; i < columns; i++) {
+            const char = String.fromCharCode(48 + Math.floor(Math.random() * 2)); // Binary 0/1 rain
+            const x = i * charSize;
+            const y = this.drops[i] * charSize;
 
-            // Gradient matrix glow
-            ctx.fillStyle = Math.random() > 0.98 ? '#ffffff' : '#00ff00';
-            ctx.fillText(char, x, y);
-
-            if (y > h && Math.random() > 0.975) {
-                this.matrixDrops[i] = 0;
+            if (y >= 0 && y < h) {
+                // Draw head character white, others matrix green
+                ctx.fillStyle = Math.random() > 0.96 ? '#ffffff' : '#00ff41';
+                ctx.fillText(char, x, y);
             }
-            this.matrixDrops[i] += this.speed * 0.5;
+
+            if (y > h && Math.random() > 0.97) {
+                this.drops[i] = 0;
+            }
+            this.drops[i] += this.speed * 0.7;
+        }
+    }
+
+    draw3DCube(ctx, w, h, time) {
+        ctx.strokeStyle = '#00f2fe';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = '#00f2fe';
+        ctx.shadowBlur = 10;
+
+        const vertices = [
+            {x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1},
+            {x: 1, y: 1, z: -1},  {x: -1, y: 1, z: -1},
+            {x: -1, y: -1, z: 1},  {x: 1, y: -1, z: 1},
+            {x: 1, y: 1, z: 1},   {x: -1, y: 1, z: 1}
+        ];
+        
+        const edges = [
+            [0, 1], [1, 2], [2, 3], [3, 0], // back
+            [4, 5], [5, 6], [6, 7], [7, 4], // front
+            [0, 4], [1, 5], [2, 6], [3, 7]  // links
+        ];
+
+        const cx = w / 2;
+        const cy = h / 2;
+        const scale = Math.min(w, h) * 0.38;
+
+        const rotX = time * 0.6;
+        const rotY = time * 0.4;
+
+        const projected = [];
+
+        vertices.forEach(v => {
+            // Rotate X
+            let y1 = v.y * Math.cos(rotX) - v.z * Math.sin(rotX);
+            let z1 = v.y * Math.sin(rotX) + v.z * Math.cos(rotX);
+            
+            // Rotate Y
+            let x2 = v.x * Math.cos(rotY) + z1 * Math.sin(rotY);
+            let z2 = -v.x * Math.sin(rotY) + z1 * Math.cos(rotY);
+
+            // Project perspective
+            const d = 3.0;
+            const factor = scale / (d + z2);
+            projected.push({
+                x: cx + x2 * factor * 2,
+                y: cy + y1 * factor * 2
+            });
+        });
+
+        // Draw edges
+        ctx.beginPath();
+        edges.forEach(e => {
+            const p1 = projected[e[0]];
+            const p2 = projected[e[1]];
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+        });
+        ctx.stroke();
+
+        ctx.shadowBlur = 0;
+    }
+
+    drawPulsingHeart(ctx, w, h, time) {
+        ctx.fillStyle = '#ff2a5f';
+        const cx = w / 2;
+        const cy = h / 2 - 10;
+        
+        // Calculate pulse scaling based on sine wave
+        const pulse = 1.0 + Math.sin(time * 2.5) * 0.12;
+        const scale = Math.min(w, h) * 0.08 * pulse;
+
+        ctx.beginPath();
+        // Trace heart equation
+        for (let t = 0; t < Math.PI * 2; t += 0.02) {
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+            
+            const px = cx + x * scale;
+            const py = cy - y * scale; // Invert Y axis for screen
+
+            if (t === 0) {
+                ctx.moveTo(px, py);
+            } else {
+                ctx.lineTo(px, py);
+            }
+        }
+        ctx.closePath();
+        ctx.fill();
+
+        // Subtitle prompt typewriter-like aesthetic overlay
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.font = 'bold 10px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('<3 GENERATED WITH LOVE <3', cx, h - 20);
+    }
+
+    drawDVDBouncer(ctx, w, h) {
+        // Move DVD box
+        this.dvd.x += this.dvd.dx * this.speed;
+        this.dvd.y += this.dvd.dy * this.speed;
+
+        // Collision logic
+        if (this.dvd.x <= 0 || this.dvd.x + this.dvd.sizeX >= w) {
+            this.dvd.dx = -this.dvd.dx;
+            this.dvd.colorIdx = (this.dvd.colorIdx + 1) % this.dvdColors.length;
+            this.dvd.x = Math.max(0, Math.min(this.dvd.x, w - this.dvd.sizeX));
+        }
+
+        if (this.dvd.y <= 0 || this.dvd.y + this.dvd.sizeY >= h) {
+            this.dvd.dy = -this.dvd.dy;
+            this.dvd.colorIdx = (this.dvd.colorIdx + 1) % this.dvdColors.length;
+            this.dvd.y = Math.max(0, Math.min(this.dvd.y, h - this.dvd.sizeY));
+        }
+
+        // Draw glowing DVD container box
+        const color = this.dvdColors[this.dvd.colorIdx];
+        ctx.fillStyle = color;
+        ctx.fillRect(this.dvd.x, this.dvd.y, this.dvd.sizeX, this.dvd.sizeY);
+
+        // Print inner white DVD letters
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 8px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('DVD', this.dvd.x + this.dvd.sizeX / 2, this.dvd.y + this.dvd.sizeY / 2 + 3);
+    }
+
+    drawEqualizer(ctx, w, h, time) {
+        const barCount = 14;
+        const barSpacing = Math.floor(w / barCount);
+        
+        if (this.eqBars.length !== barCount) {
+            this.eqBars = Array(barCount).fill(0).map(() => Math.random() * 0.8 + 0.1);
+        }
+
+        ctx.fillStyle = '#10b981';
+
+        for (let i = 0; i < barCount; i++) {
+            // Oscillate heights with sine noise
+            const noise = Math.sin(time * 3 + i * 0.7) * 0.3;
+            const val = Math.max(0.1, Math.min(0.95, this.eqBars[i] + noise));
+            
+            const barW = barSpacing - 6;
+            const barH = h * 0.7 * val;
+            const x = i * barSpacing + 3;
+            const y = h - barH - 10;
+
+            // Draw segmented equalizer blocks
+            const grad = ctx.createLinearGradient(0, h - 10, 0, 10);
+            grad.addColorStop(0, '#10b981');
+            grad.addColorStop(0.6, '#f59e0b');
+            grad.addColorStop(0.95, '#ef4444');
+
+            ctx.fillStyle = grad;
+            ctx.fillRect(x, y, barW, barH);
         }
     }
 
     drawFire(ctx, w, h, time) {
-        // Draw fire particles floating upwards
-        const particleCount = 60;
-        ctx.filter = 'blur(4px)';
-        for (let i = 0; i < particleCount; i++) {
-            const seed = i * 13.7;
-            const size = 15 + Math.sin(time + seed) * 10;
-            const x = (w / 2) + Math.sin(time * 0.5 + seed) * (w * 0.4) + Math.cos(time + seed) * 10;
-            const y = h - ((time * 80 + seed * 10) % (h * 1.1));
-            
-            const grad = ctx.createRadialGradient(x, y, 0, x, y, size);
-            grad.addColorStop(0, 'rgba(255, 200, 50, 0.9)');
-            grad.addColorStop(0.3, 'rgba(239, 68, 68, 0.7)');
-            grad.addColorStop(0.6, 'rgba(120, 20, 120, 0.3)');
-            grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            
-            ctx.fillStyle = grad;
+        // Procedural warm floating flame circles
+        const pCount = 35;
+        for (let i = 0; i < pCount; i++) {
+            const seed = i * 29.3;
+            const x = (w / 2) + Math.sin(time * 0.4 + seed) * (w * 0.35);
+            const y = h - ((time * 65 + seed * 8) % (h * 1.15));
+            const size = 18 + Math.sin(time * 0.8 + seed) * 12;
+
+            const radialGrad = ctx.createRadialGradient(x, y, 0, x, y, size);
+            radialGrad.addColorStop(0, 'rgba(255, 230, 80, 0.95)');
+            radialGrad.addColorStop(0.2, 'rgba(249, 115, 22, 0.85)');
+            radialGrad.addColorStop(0.55, 'rgba(239, 68, 68, 0.55)');
+            radialGrad.addColorStop(0.9, 'rgba(120, 20, 120, 0.15)');
+            radialGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+            ctx.fillStyle = radialGrad;
             ctx.beginPath();
             ctx.arc(x, y, size, 0, Math.PI * 2);
             ctx.fill();
         }
-        ctx.filter = 'none';
-        
-        // Base heat source
-        const bottomGrad = ctx.createLinearGradient(0, h - 15, 0, h);
-        bottomGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
-        bottomGrad.addColorStop(0.5, 'rgba(239, 68, 68, 0.6)');
-        bottomGrad.addColorStop(1, 'rgba(255, 240, 100, 1)');
-        ctx.fillStyle = bottomGrad;
-        ctx.fillRect(0, h - 20, w, 20);
     }
 
-    drawCube3D(ctx, w, h, time) {
-        ctx.strokeStyle = '#00f2fe';
-        ctx.lineWidth = 2;
-        ctx.shadowColor = '#00f2fe';
-        ctx.shadowBlur = 10;
+    // Seed-based custom brain node map
+    drawNeuralSynapse(ctx, w, h, time) {
+        // Deterministic particle creation based on the prompt seed
+        const particleCount = 20 + (this.seedHash % 15);
+        if (this.nodes.length !== particleCount) {
+            this.nodes = [];
+            for (let i = 0; i < particleCount; i++) {
+                // Deterministic coordinates utilizing sin/cos of seed multiplication
+                const sx = Math.sin(this.seedHash + i * 4.7) * (w * 0.38) + (w / 2);
+                const sy = Math.cos(this.seedHash + i * 2.3) * (h * 0.32) + (h / 2);
+                const speedScale = 0.5 + ((this.seedHash + i) % 4) * 0.3;
 
-        // Set rotation angles
-        this.angleX = time * 0.5;
-        this.angleY = time * 0.3;
-        
-        const scale = Math.min(w, h) * 0.35;
-        const cx = w / 2;
-        const cy = h / 2;
-
-        const projected = [];
-
-        // Rotate and project vertices
-        for (let i = 0; i < this.cubeVertices.length; i++) {
-            const v = this.cubeVertices[i];
-            
-            // Rotate X
-            let y1 = v.y * Math.cos(this.angleX) - v.z * Math.sin(this.angleX);
-            let z1 = v.y * Math.sin(this.angleX) + v.z * Math.cos(this.angleX);
-            
-            // Rotate Y
-            let x2 = v.x * Math.cos(this.angleY) + z1 * Math.sin(this.angleY);
-            let z2 = -v.x * Math.sin(this.angleY) + z1 * Math.cos(this.angleY);
-
-            // Simple perspective projection
-            const fov = 3.5;
-            const distance = 4;
-            const f = scale / (distance + z2);
-            
-            projected.push({
-                x: cx + x2 * f * fov,
-                y: cy + y1 * f * fov
-            });
+                this.nodes.push({
+                    x: sx,
+                    y: sy,
+                    vx: Math.cos(i * 1.1) * speedScale * 0.8,
+                    vy: Math.sin(i * 1.5) * speedScale * 0.8,
+                    radius: 3 + ((this.seedHash + i) % 5)
+                });
+            }
         }
 
-        // Draw edges
-        for (let i = 0; i < this.cubeEdges.length; i++) {
-            const e = this.cubeEdges[i];
-            const p1 = projected[e[0]];
-            const p2 = projected[e[1]];
-
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-        }
-
-        // Add visual flair to show "AI computing"
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-        projected.forEach(p => {
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-            ctx.fill();
-        });
+        // Connect nodes based on distance threshold
+        const maxDist = 70 + (this.seedHash % 30);
+        ctx.lineWidth = 1;
         
-        ctx.shadowBlur = 0; // Reset shadow
-    }
+        ctx.strokeStyle = this.colorTheme === 'matrix' ? 'rgba(0, 255, 65, 0.25)' : 
+                          this.colorTheme === 'fire' ? 'rgba(239, 68, 68, 0.25)' : 
+                          this.colorTheme === 'cyberpunk' ? 'rgba(217, 70, 239, 0.25)' : 
+                          'rgba(0, 242, 254, 0.25)';
 
-    drawTorus3D(ctx, w, h, time) {
-        ctx.fillStyle = '#d946ef';
-        const R = 1.8; // Major radius
-        const r = 0.75; // Minor radius
-        const scale = Math.min(w, h) * 0.16;
-        const cx = w / 2;
-        const cy = h / 2;
+        for (let i = 0; i < this.nodes.length; i++) {
+            const n1 = this.nodes[i];
+            
+            // Move node
+            n1.x += n1.vx * this.speed;
+            n1.y += n1.vy * this.speed;
 
-        const angleX = time * 0.4;
-        const angleY = time * 0.25;
+            // Bounce bounds
+            if (n1.x < 10 || n1.x > w - 10) n1.vx *= -1;
+            if (n1.y < 10 || n1.y > h - 10) n1.vy *= -1;
 
-        // Render point cloud torus
-        for (let theta = 0; theta < Math.PI * 2; theta += 0.2) {
-            for (let phi = 0; phi < Math.PI * 2; phi += 0.12) {
-                // Torus geometry equation
-                const x0 = (R + r * Math.cos(phi)) * Math.cos(theta);
-                const y0 = (R + r * Math.cos(phi)) * Math.sin(theta);
-                const z0 = r * Math.sin(phi);
-
-                // Rotate X
-                let y1 = y0 * Math.cos(angleX) - z0 * Math.sin(angleX);
-                let z1 = y0 * Math.sin(angleX) + z0 * Math.cos(angleX);
-
-                // Rotate Y
-                let x2 = x0 * Math.cos(angleY) + z1 * Math.sin(angleY);
-                let z2 = -x0 * Math.sin(angleY) + z1 * Math.cos(angleY);
-
-                // Projection
-                const distance = 4;
-                const ooz = 1 / (distance + z2); // One over Z
-                const xp = Math.round(cx + x2 * scale * 2.5 * ooz);
-                const yp = Math.round(cy + y1 * scale * 4 * ooz); // Adjust for taller characters
-
-                // Calculate basic shading value based on surface normal
-                const luminance = Math.cos(phi) * Math.cos(theta) * Math.sin(angleY) - Math.cos(angleX) * Math.cos(phi) * Math.sin(theta) - Math.sin(angleX) * Math.sin(phi) + Math.cos(angleY) * (Math.cos(angleX) * Math.sin(phi) - Math.sin(angleX) * Math.cos(phi) * Math.sin(theta));
+            // Check distance and draw synapse lines
+            for (let j = i + 1; j < this.nodes.length; j++) {
+                const n2 = this.nodes[j];
+                const dist = Math.hypot(n1.x - n2.x, n1.y - n2.y);
                 
-                if (luminance > 0) {
-                    const alpha = Math.min(1.0, 0.2 + luminance * 0.8);
-                    ctx.fillStyle = `rgba(217, 70, 239, ${alpha})`;
+                if (dist < maxDist) {
                     ctx.beginPath();
-                    ctx.arc(xp, yp, Math.round(ooz * 12), 0, Math.PI * 2);
-                    ctx.fill();
+                    ctx.moveTo(n1.x, n1.y);
+                    ctx.lineTo(n2.x, n2.y);
+                    ctx.stroke();
                 }
             }
         }
-    }
 
-    drawStarfield(ctx, w, h) {
-        ctx.fillStyle = '#ffffff';
-        const cx = w / 2;
-        const cy = h / 2;
-        
-        for (let i = 0; i < this.stars.length; i++) {
-            const s = this.stars[i];
-            s.z -= this.speed * 8; // Move star forward
+        // Draw glowing neural nodes
+        ctx.fillStyle = this.colorTheme === 'matrix' ? '#00ff41' : 
+                        this.colorTheme === 'fire' ? '#ef4444' : 
+                        this.colorTheme === 'cyberpunk' ? '#d946ef' : 
+                        '#00f2fe';
 
-            if (s.z <= 0) {
-                s.z = 1000;
-                s.x = (Math.random() - 0.5) * 1000;
-                s.y = (Math.random() - 0.5) * 1000;
-            }
-
-            // Project to 2D
-            const k = 200 / s.z;
-            const px = s.x * k + cx;
-            const py = s.y * k + cy;
-
-            if (px >= 0 && px < w && py >= 0 && py < h) {
-                const size = (1 - s.z / 1000) * 5;
-                const alpha = 1 - s.z / 1000;
-                
-                // Neon blue glow trail
-                ctx.strokeStyle = `rgba(0, 242, 254, ${alpha * 0.3})`;
-                ctx.lineWidth = size * 0.5;
-                ctx.beginPath();
-                ctx.moveTo(px, py);
-                ctx.lineTo(px - (s.x * k * 0.15), py - (s.y * k * 0.15));
-                ctx.stroke();
-
-                ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-                ctx.beginPath();
-                ctx.arc(px, py, size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-    }
-
-    drawOcean(ctx, w, h, time) {
-        // Multi-layered scrolling sine wave grids
-        const waveCount = 5;
-        for (let i = 0; i < waveCount; i++) {
-            const offset = i * 25;
-            const scale = 20 + i * 10;
-            const frequency = 0.015 - i * 0.002;
-            const speedWave = time * (0.8 + i * 0.2);
-
-            const baseHeight = (h * 0.45) + (i * 20);
-
+        for (let i = 0; i < this.nodes.length; i++) {
+            const n = this.nodes[i];
             ctx.beginPath();
-            ctx.moveTo(0, h);
-            for (let x = 0; x <= w; x += 5) {
-                const y = baseHeight + Math.sin(x * frequency + speedWave) * scale + Math.cos(x * 0.005 - speedWave) * 10;
-                ctx.lineTo(x, y);
-            }
-            ctx.lineTo(w, h);
-            ctx.closePath();
-
-            // Colorful ocean gradient layers
-            const grad = ctx.createLinearGradient(0, baseHeight - scale, 0, h);
-            if (i % 2 === 0) {
-                grad.addColorStop(0, `rgba(0, 242, 254, ${0.4 - i * 0.05})`);
-                grad.addColorStop(1, 'rgba(13, 16, 23, 0.8)');
-            } else {
-                grad.addColorStop(0, `rgba(217, 70, 239, ${0.35 - i * 0.05})`);
-                grad.addColorStop(1, 'rgba(13, 16, 23, 0.8)');
-            }
-            ctx.fillStyle = grad;
+            ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
             ctx.fill();
         }
-    }
 
-    drawFractal(ctx, w, h, time) {
-        // Dynamic zooming Mandelbrot fractal on a small scale canvas
-        const maxIter = 24;
-        const zoom = 1.0 + (time * 0.2) % 15.0; // Dynamic zoom sequence
-        const cx = -0.743643887037158704752191506114774; // Zoom coordinates
-        const cy = 0.131825904205311970493132056385139;
-
-        const imgData = ctx.createImageData(w, h);
-        const data = imgData.data;
-
-        const wRatio = 3.0 / (w * zoom);
-        const hRatio = 2.0 / (h * zoom);
-
-        for (let py = 0; py < h; py++) {
-            const y0 = cy + (py - h / 2) * hRatio;
-            for (let px = 0; px < w; px++) {
-                const x0 = cx + (px - w / 2) * wRatio;
-                let x = 0.0;
-                let y = 0.0;
-                let iteration = 0;
-                
-                while (x*x + y*y <= 4.0 && iteration < maxIter) {
-                    const xtemp = x*x - y*y + x0;
-                    y = 2.0*x*y + y0;
-                    x = xtemp;
-                    iteration++;
-                }
-
-                const pixelIdx = (py * w + px) * 4;
-                if (iteration === maxIter) {
-                    data[pixelIdx] = 0;
-                    data[pixelIdx+1] = 0;
-                    data[pixelIdx+2] = 0;
-                    data[pixelIdx+3] = 255;
-                } else {
-                    // Gradient map based on iterations
-                    const mu = iteration / maxIter;
-                    data[pixelIdx] = Math.round(Math.sin(mu * Math.PI) * 200 + 55 * mu);
-                    data[pixelIdx+1] = Math.round(Math.sin(mu * Math.PI + Math.PI / 3) * 255);
-                    data[pixelIdx+2] = Math.round(Math.cos(mu * Math.PI) * 150 + 105 * mu);
-                    data[pixelIdx+3] = 255;
-                }
-            }
-        }
-        ctx.putImageData(imgData, 0, 0);
-    }
-
-    drawCosmicVortex(ctx, w, h, time) {
-        // Glowing spirals representing a deep cosmic mathematical portal
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-        ctx.fillRect(0, 0, w, h);
-
-        const spirals = 3;
-        const dots = 80;
-        const centerX = w / 2;
-        const centerY = h / 2;
-
-        ctx.filter = 'blur(2px)';
-        for (let s = 0; s < spirals; s++) {
-            const spiralOffset = s * (Math.PI * 2 / spirals);
-            for (let i = 0; i < dots; i++) {
-                const t = i / dots;
-                const r = t * Math.min(w, h) * 0.48;
-                const theta = t * 12 + time * 1.5 + spiralOffset;
-
-                const x = centerX + Math.cos(theta) * r;
-                const y = centerY + Math.sin(theta) * r * 0.7; // Tilted aspect
-
-                // Alternate neon color nodes
-                if (s % 3 === 0) {
-                    ctx.fillStyle = `rgba(0, 242, 254, ${t})`;
-                } else if (s % 3 === 1) {
-                    ctx.fillStyle = `rgba(217, 70, 239, ${t})`;
-                } else {
-                    ctx.fillStyle = `rgba(16, 185, 129, ${t})`;
-                }
-
-                ctx.beginPath();
-                ctx.arc(x, y, 2 + t * 6, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-        ctx.filter = 'none';
+        // Dynamic textual console seed status
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.font = 'bold 8px monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText(`[NEURAL AI MAP PROCESSING PROMPT: "${this.promptText.toUpperCase()}"]`, 20, 25);
+        ctx.fillText(`[SEED SECTOR CODE: #${this.seedHash.toString(16).toUpperCase()}]`, 20, 37);
+        ctx.fillText(`[SYNAPSES ENTRANCES: ${this.nodes.length} ACTIVE NODES]`, 20, 49);
     }
 
     /* --- ASCII Mapping Algorithm --- */
 
     convertFrameToASCII() {
-        const w = this.procCanvas.width;
-        const h = this.procCanvas.height;
-
-        // Downsample super-sampled draw canvas to the exact target column/row layout
+        // Downsample procedural super-sampled canvas to exactly target column/row layout
         const downCanvas = document.createElement('canvas');
         downCanvas.width = this.cols;
         downCanvas.height = this.rows;
@@ -537,7 +504,7 @@ class AIPromptEngine {
         const imgData = downCtx.getImageData(0, 0, this.cols, this.rows);
         const pixels = imgData.data;
 
-        // Prep high-res canvas rendering
+        // Prep visible display canvas dimensions
         const fontSize = 10;
         this.canvas.width = this.cols * 6;
         this.canvas.height = this.rows * 10;
@@ -561,33 +528,36 @@ class AIPromptEngine {
                 const b = pixels[idx + 2];
 
                 const gray = 0.299 * r + 0.587 * g + 0.114 * b;
-                const charIdx = Math.floor((gray / 255.0) * (paletteLen - 1));
-                const char = palette[charIdx];
+                const charIdx = Math.min(paletteLen - 1, Math.floor((gray / 255.0) * paletteLen));
+                const char = palette[charIdx] || ' ';
 
                 rowText += char;
 
                 const charX = x * 6;
                 const charY = y * 10;
 
-                // Colorize based on selected visual theme
+                // Handle themed color profiles
                 if (this.colorTheme === 'matrix') {
                     const intensity = Math.round(50 + (gray / 255.0) * 205);
                     this.ctx.fillStyle = `rgb(0, ${intensity}, 0)`;
                 } else if (this.colorTheme === 'fire') {
-                    // Shift RGB colors dynamically from yellow to red depending on intensity
                     const warmR = Math.min(255, Math.round(gray * 2.2));
                     const warmG = Math.min(255, Math.round(gray * 0.8));
                     const warmB = Math.min(255, Math.round(gray * 0.1));
                     this.ctx.fillStyle = `rgb(${warmR}, ${warmG}, ${warmB})`;
                 } else if (this.colorTheme === 'cyberpunk') {
-                    // Electric blue and neon pink blend based on grid placement and gray value
                     const mix = (x / this.cols) * 0.5 + (gray / 255.0) * 0.5;
-                    const rVal = Math.round(217 * mix + (1 - mix) * 0);
+                    const rVal = Math.round(217 * mix);
                     const gVal = Math.round(70 * mix + (1 - mix) * 242);
                     const bVal = Math.round(239 * mix + (1 - mix) * 254);
                     this.ctx.fillStyle = `rgb(${rVal}, ${gVal}, ${bVal})`;
                 } else if (this.colorTheme === 'neon') {
-                    this.ctx.fillStyle = `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+                    // Check if node is colorful drawing, else fallback white/neon
+                    if (r === 0 && g === 0 && b === 0) {
+                        this.ctx.fillStyle = '#ffffff';
+                    } else {
+                        this.ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                    }
                 } else {
                     // Monochrome (White)
                     this.ctx.fillStyle = '#ffffff';
@@ -598,7 +568,7 @@ class AIPromptEngine {
             textBuffer += rowText + '\n';
         }
 
-        // Render DOM text
+        // Apply visual classes to terminal pre element
         if (this.colorTheme === 'matrix') {
             this.container.className = 'ascii-output green';
         } else if (this.colorTheme === 'fire') {
