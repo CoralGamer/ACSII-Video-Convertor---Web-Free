@@ -48,8 +48,13 @@ $translations = [
         'color_green' => ' CRT Fósforo Verde',
         'color_amber' => ' CRT Ámbar Retro',
         'color_real' => 'Color Real RGB',
+        'color_cyberpunk' => 'Neon Cyberpunk (Cian/Rosa)',
+        'color_vaporwave' => 'Retro Vaporwave (Violeta/Teal)',
+        'color_matrix_glow' => 'Lluvia Matrix (Verde/Blanco)',
         'label_contrast' => 'Contraste de Imagen:',
         'label_brightness' => 'Brillo de Imagen:',
+        'label_gamma' => 'Corrección de Gamma (Midtonos):',
+        'label_dither' => 'Dithering Floyd-Steinberg',
         'label_invert' => 'Invertir Colores de Salida',
         'btn_export' => 'Exportar a Video MP4',
         'btn_exporting' => 'Compilando vídeo localmente...',
@@ -76,7 +81,15 @@ $translations = [
         'faq_2_a' => 'El generador procesa semánticamente tu solicitud en Javascript e inicia scripts matemáticos en vivo (como proyección de matrices 3D, autómatas celulares o simulaciones de física de fluidos) traduciéndolos al instante en arte ASCII.',
         'faq_3_q' => '¿Es gratuito y sin límites?',
         'faq_3_a' => 'Sí, es 100% gratuito, libre de anuncios invasivos y sin límites de duración o tamaño de archivo, ya que el poder de procesamiento proviene de tu propio dispositivo.',
-        'footer_desc' => 'Crea, convierte y reproduce arte digital en formato retro ASCII usando tu dispositivo. Cero servidores, máxima velocidad y total privacidad.'
+        'footer_desc' => 'Crea, convierte y reproduce arte digital en formato retro ASCII usando tu dispositivo. Cero servidores, máxima velocidad y total privacidad.',
+        'cli_badge' => '¿Prefieres la Terminal?',
+        'cli_title' => '¿Lo prefieres en CLI? Módulo de Consola ASCII',
+        'cli_desc' => 'Si eres un entusiasta de la terminal de comandos de Unix/Windows y deseas procesar tus videos a máxima potencia de forma local desde tu consola, puedes descargar la suite interactiva CLI. La última versión funcional de esta suite fue desarrollada completamente por <strong class="glow-text">CoralGamer</strong>.',
+        'cli_step1_t' => 'Clona el Repositorio Oficial',
+        'cli_step2_t' => 'Instala las Dependencias',
+        'cli_step3_t' => 'Ejecuta la Suite Guiada',
+        'cli_btn_text' => 'Ver Repositorio CLI',
+        'cli_author_note' => 'Desarrollado al 100% por CoralGamer'
     ],
     'en' => [
         'title' => 'Free Online Video to ASCII Converter & AI Prompt Generator',
@@ -102,8 +115,13 @@ $translations = [
         'color_green' => 'Green Phosphor CRT',
         'color_amber' => 'Retro Amber CRT',
         'color_real' => 'RGB Real Color',
+        'color_cyberpunk' => 'Neon Cyberpunk (Cyan/Pink)',
+        'color_vaporwave' => 'Retro Vaporwave (Violet/Teal)',
+        'color_matrix_glow' => 'Matrix Rain (Green/White)',
         'label_contrast' => 'Image Contrast:',
         'label_brightness' => 'Image Brightness:',
+        'label_gamma' => 'Gamma Correction (Midtones):',
+        'label_dither' => 'Floyd-Steinberg Dithering',
         'label_invert' => 'Invert Output Colors',
         'btn_export' => 'Export to MP4 Video',
         'btn_exporting' => 'Compiling video locally...',
@@ -130,7 +148,15 @@ $translations = [
         'faq_2_a' => 'The prompt engine parses your request semantically in Javascript and boots up interactive mathematical animations (like 3D matrix projection, fluid simulations, or cellular automata) rendered directly to characters.',
         'faq_3_q' => 'Is it free and without limits?',
         'faq_3_a' => 'Yes, it is 100% free, free from intrusive ads, and has no limits on duration or file size since the processing power comes from your own device.',
-        'footer_desc' => 'Create, convert, and play retro digital ASCII art using your device. Zero servers, maximum speed, and complete privacy.'
+        'footer_desc' => 'Create, convert, and play retro digital ASCII art using your device. Zero servers, maximum speed, and complete privacy.',
+        'cli_badge' => 'Prefer Command Line?',
+        'cli_title' => 'Prefer CLI? ASCII Console Module',
+        'cli_desc' => 'If you are an enthusiast of the Unix/Windows command line terminal and want to process your videos at maximum performance locally from your console, you can download the interactive CLI suite. The latest functional version of this suite was fully developed by <strong class="glow-text">CoralGamer</strong>.',
+        'cli_step1_t' => 'Clone the Official Repository',
+        'cli_step2_t' => 'Install Dependencies',
+        'cli_step3_t' => 'Run the Guided Suite',
+        'cli_btn_text' => 'View CLI Repository',
+        'cli_author_note' => '100% Developed by CoralGamer'
     ],
     'fr' => [
         'title' => 'Convertisseur Vidéo en ASCII Gratuit & Générateur de Prompts IA',
@@ -156,8 +182,13 @@ $translations = [
         'color_green' => 'Phosphore Vert CRT',
         'color_amber' => 'Ambre Rétro CRT',
         'color_real' => 'Couleur Réelle RGB',
+        'color_cyberpunk' => 'Néon Cyberpunk (Cyan/Rose)',
+        'color_vaporwave' => 'Rétro Vaporwave (Violet/Teal)',
+        'color_matrix_glow' => 'Pluie Matrix (Vert/Blanc)',
         'label_contrast' => 'Contraste d\'Image :',
         'label_brightness' => 'Luminosité d\'Image :',
+        'label_gamma' => 'Correction Gamma (Tons Moyens) :',
+        'label_dither' => 'Dithering Floyd-Steinberg',
         'label_invert' => 'Inverser les Couleurs',
         'btn_export' => 'Exporter en Vidéo MP4',
         'btn_exporting' => 'Compilation vidéo locale...',
@@ -184,7 +215,15 @@ $translations = [
         'faq_2_a' => 'Le moteur de prompt analyse sémantiquement votre requête en Javascript et lance des animations mathématiques interactives (comme une projection 3D, des fluides ou des automates cellulaires) rendues en caractères.',
         'faq_3_q' => 'Est-ce gratuit et sans limites ?',
         'faq_3_a' => 'Oui, c\'est 100% gratuit, sans publicité invasive et sans limites de durée ni de taille, puisque la puissance de traitement provient de votre propre appareil.',
-        'footer_desc' => 'Créez, convertissez et lisez des œuvres ASCII numériques rétro en utilisant votre appareil. Zéro serveur, vitesse maximale et confidentialité totale.'
+        'footer_desc' => 'Créez, convertissez et lisez des œuvres ASCII numériques rétro en utilisant votre appareil. Zéro serveur, vitesse maximale et confidentialité totale.',
+        'cli_badge' => 'Préférez-vous le CLI ?',
+        'cli_title' => 'Vous préférez le CLI ? Module Console ASCII',
+        'cli_desc' => 'Si vous êtes un passionné du terminal Unix/Windows et souhaitez traiter vos vidéos localement avec une puissance maximale, téléchargez la suite CLI interactive. La dernière version fonctionnelle de cette suite a été entièrement développée par <strong class="glow-text">CoralGamer</strong>.',
+        'cli_step1_t' => 'Clonez le dépôt officiel',
+        'cli_step2_t' => 'Installez les dépendances',
+        'cli_step3_t' => 'Lancez la suite guidée',
+        'cli_btn_text' => 'Voir le dépôt CLI',
+        'cli_author_note' => 'Développé à 100% par CoralGamer'
     ],
     'pt' => [
         'title' => 'Conversor de Vídeo para ASCII Grátis & Gerador de Prompts IA',
@@ -210,8 +249,13 @@ $translations = [
         'color_green' => 'Fósforo Verde CRT',
         'color_amber' => 'Âmbar Retrô CRT',
         'color_real' => 'Cor Real RGB',
+        'color_cyberpunk' => 'Neon Cyberpunk (Ciano/Rosa)',
+        'color_vaporwave' => 'Retro Vaporwave (Violeta/Teal)',
+        'color_matrix_glow' => 'Chuva Matrix (Verde/Branco)',
         'label_contrast' => 'Contraste da Imagem:',
         'label_brightness' => 'Brilho da Imagem:',
+        'label_gamma' => 'Correção de Gamma (Tons Médios):',
+        'label_dither' => 'Dithering Floyd-Steinberg',
         'label_invert' => 'Inverter Cores de Saída',
         'btn_export' => 'Exportar para Vídeo MP4',
         'btn_exporting' => 'Compilando vídeo localmente...',
@@ -238,7 +282,15 @@ $translations = [
         'faq_2_a' => 'O motor de prompts interpreta semanticamente sua solicitação em Javascript e inicia scripts matemáticos dinâmicos (como projeção de matrizes 3D ou simulações de fluidos) renderizados em texto.',
         'faq_3_q' => 'É gratuito e sem limites?',
         'faq_3_a' => 'Sim, é 100% gratuito, sem anúncios invasivos e sem limites de duração ou tamanho de arquivo, já que o processamento ocorre no seu próprio dispositivo.',
-        'footer_desc' => 'Crie, converta e reproduza arte digital em formato retro ASCII usando seu dispositivo. Zero servidores, máxima velocidade e privacidade total.'
+        'footer_desc' => 'Crie, converta e reproduza arte digital em formato retro ASCII usando seu dispositivo. Zero servidores, máxima velocidade e privacidade total.',
+        'cli_badge' => 'Prefere a Consola?',
+        'cli_title' => 'Prefere o CLI? Módulo de Console ASCII',
+        'cli_desc' => 'Se você é entusiasta do terminal de comandos Unix/Windows e deseja processar seus vídeos localmente com máxima performance, pode baixar a suite CLI interativa. A última versão funcional desta suite foi desenvolvida inteiramente por <strong class="glow-text">CoralGamer</strong>.',
+        'cli_step1_t' => 'Clone o Repositório Oficial',
+        'cli_step2_t' => 'Instale as Dependências',
+        'cli_step3_t' => 'Execute a Suite Guiada',
+        'cli_btn_text' => 'Ver Repositório CLI',
+        'cli_author_note' => 'Desenvolvido a 100% por CoralGamer'
     ],
     'de' => [
         'title' => 'Kostenloser Online-Video-zu-ASCII-Konverter & KI-Prompt-Generator',
@@ -264,8 +316,13 @@ $translations = [
         'color_green' => 'Grüner Phosphor CRT',
         'color_amber' => 'Retro Amber CRT',
         'color_real' => 'Echte RGB-Farbe',
+        'color_cyberpunk' => 'Neon Cyberpunk (Cyan/Pink)',
+        'color_vaporwave' => 'Retro-Vaporwave (Violett/Teal)',
+        'color_matrix_glow' => 'Matrix-Regen (Grün/Weiß)',
         'label_contrast' => 'Bildkontrast:',
         'label_brightness' => 'Bildhelligkeit:',
+        'label_gamma' => 'Gamma-Korrektur (Mitteltöne):',
+        'label_dither' => 'Floyd-Steinberg-Dithering',
         'label_invert' => 'Ausgabefarben invertieren',
         'btn_export' => 'In MP4-Video exportieren',
         'btn_exporting' => 'Kompiliere Video lokal...',
@@ -292,7 +349,15 @@ $translations = [
         'faq_2_a' => 'Die Prompt-Engine analysiert Ihre Anfrage semantisch in Javascript und startet interaktive mathematische Animationen (wie 3D-Projektionen, Fluidsimulationen oder zelluläre Automaten), die in Zeichen gerendert werden.',
         'faq_3_q' => 'Ist es kostenlos und unbegrenzt?',
         'faq_3_a' => 'Ja, es ist 100 % kostenlos, frei von aufdringlicher Werbung und hat keine Beschränkungen für Dauer oder Dateigröße, da die Rechenleistung von Ihrem eigenen Gerät kommt.',
-        'footer_desc' => 'Erstellen, konvertieren und spielen Sie Retro-Digital-ASCII-Kunst mit Ihrem Gerät ab. Keine Server, maximale Geschwindigkeit und absolute Privatsphäre.'
+        'footer_desc' => 'Erstellen, konvertieren und spielen Sie Retro-Digital-ASCII-Kunst mit Ihrem Gerät ab. Keine Server, maximale Geschwindigkeit und absolute Privatsphäre.',
+        'cli_badge' => 'Lieber die Konsole?',
+        'cli_title' => 'Lieber als CLI? ASCII-Konsolenmodul',
+        'cli_desc' => 'Wenn Sie ein Fan des Unix/Windows-Befehlszeilenterminals sind und Ihre Videos mit maximaler Leistung lokal verarbeiten möchten, können Sie die interaktive CLI-Suite herunterladen. Die neueste funktionierende Version dieser Suite wurde vollständig von <strong class="glow-text">CoralGamer</strong> entwickelt.',
+        'cli_step1_t' => 'Klonen Sie das offizielle Repository',
+        'cli_step2_t' => 'Abhängigkeiten installieren',
+        'cli_step3_t' => 'Führen Sie die geführte Suite aus',
+        'cli_btn_text' => 'CLI-Repository anzeigen',
+        'cli_author_note' => 'Zu 100 % von CoralGamer entwickelt'
     ]
 ];
 
@@ -337,6 +402,9 @@ $t = $translations[$lang];
 
     <!-- Style sheet link -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Favicon link -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 
     <!-- JSON-LD Structured Data Schema.org with Internationalization -->
     <script type="application/ld+json">
@@ -580,18 +648,21 @@ $t = $translations[$lang];
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label" for="select-color"><?php echo htmlspecialchars($t['label_color']); ?></label>
+                            <label class="control-label" for="select-color" data-key="label_color"><?php echo htmlspecialchars($t['label_color']); ?></label>
                             <select class="select-input" id="select-color">
-                                <option value="monochrome" selected><?php echo htmlspecialchars($t['color_mono']); ?></option>
-                                <option value="green"><?php echo htmlspecialchars($t['color_green']); ?></option>
-                                <option value="amber"><?php echo htmlspecialchars($t['color_amber']); ?></option>
-                                <option value="colorized"><?php echo htmlspecialchars($t['color_real']); ?></option>
+                                <option value="monochrome" selected data-key="color_mono"><?php echo htmlspecialchars($t['color_mono']); ?></option>
+                                <option value="green" data-key="color_green"><?php echo htmlspecialchars($t['color_green']); ?></option>
+                                <option value="amber" data-key="color_amber"><?php echo htmlspecialchars($t['color_amber']); ?></option>
+                                <option value="colorized" data-key="color_real"><?php echo htmlspecialchars($t['color_real']); ?></option>
+                                <option value="cyberpunk" data-key="color_cyberpunk"><?php echo htmlspecialchars($t['color_cyberpunk']); ?></option>
+                                <option value="vaporwave" data-key="color_vaporwave"><?php echo htmlspecialchars($t['color_vaporwave']); ?></option>
+                                <option value="matrix-glow" data-key="color_matrix_glow"><?php echo htmlspecialchars($t['color_matrix_glow']); ?></option>
                             </select>
                         </div>
 
                         <div class="control-group">
                             <label class="control-label" for="slider-contrast">
-                                <span><?php echo htmlspecialchars($t['label_contrast']); ?></span>
+                                <span data-key="label_contrast"><?php echo htmlspecialchars($t['label_contrast']); ?></span>
                                 <span id="val-contrast">0</span>
                             </label>
                             <input type="range" class="slider-input" id="slider-contrast" min="-100" max="100" step="5" value="0">
@@ -599,21 +670,35 @@ $t = $translations[$lang];
 
                         <div class="control-group">
                             <label class="control-label" for="slider-brightness">
-                                <span><?php echo htmlspecialchars($t['label_brightness']); ?></span>
+                                <span data-key="label_brightness"><?php echo htmlspecialchars($t['label_brightness']); ?></span>
                                 <span id="val-brightness">0</span>
                             </label>
                             <input type="range" class="slider-input" id="slider-brightness" min="-100" max="100" step="5" value="0">
                         </div>
 
-                        <div class="control-group" style="display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
+                        <div class="control-group">
+                            <label class="control-label" for="slider-gamma">
+                                <span data-key="label_gamma"><?php echo htmlspecialchars($t['label_gamma']); ?></span>
+                                <span id="val-gamma">1.0</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-gamma" min="0.4" max="2.4" stop="0.1" step="0.1" value="1.0">
+                        </div>
+
+                        <div class="control-group" style="display: flex; flex-direction: column; justify-content: center; gap: 0.75rem;">
+                            <label class="checkbox-option">
+                                <input type="checkbox" id="check-dither">
+                                <span data-key="label_dither"><?php echo htmlspecialchars($t['label_dither']); ?></span>
+                            </label>
                             <label class="checkbox-option">
                                 <input type="checkbox" id="check-invert">
-                                <span><?php echo htmlspecialchars($t['label_invert']); ?></span>
+                                <span data-key="label_invert"><?php echo htmlspecialchars($t['label_invert']); ?></span>
                             </label>
-                            
+                        </div>
+
+                        <div class="control-group" style="display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
                             <button class="btn" id="btn-export-video" disabled>
                                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                <?php echo htmlspecialchars($t['btn_export']); ?>
+                                <span data-key="btn_export"><?php echo htmlspecialchars($t['btn_export']); ?></span>
                             </button>
                         </div>
                     </div>
@@ -717,6 +802,51 @@ $t = $translations[$lang];
                                 <?php echo $lang === 'es' ? 'Exportar Animación' : 'Export Animation'; ?>
                             </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- CLI Promotion Section --- -->
+        <section class="section cli-promo-section" id="cli-promo-anchor">
+            <div class="cli-promo-card panel-card">
+                <div class="cli-promo-badge"><?php echo htmlspecialchars($t['cli_badge']); ?></div>
+                <div class="cli-promo-content">
+                    <div class="cli-promo-text">
+                        <h2 class="cli-promo-title"><?php echo htmlspecialchars($t['cli_title']); ?></h2>
+                        <p class="cli-promo-p"><?php echo $t['cli_desc']; ?></p>
+                        
+                        <div class="cli-steps">
+                            <div class="cli-step">
+                                <span class="cli-step-number">1</span>
+                                <div class="cli-step-desc">
+                                    <strong><?php echo htmlspecialchars($t['cli_step1_t']); ?></strong>
+                                    <code class="cli-code">git clone https://github.com/stepanussaruran/ASCII-Video-Player.git</code>
+                                </div>
+                            </div>
+                            <div class="cli-step">
+                                <span class="cli-step-number">2</span>
+                                <div class="cli-step-desc">
+                                    <strong><?php echo htmlspecialchars($t['cli_step2_t']); ?></strong>
+                                    <code class="cli-code">pip install opencv-python numpy Pillow</code>
+                                </div>
+                            </div>
+                            <div class="cli-step">
+                                <span class="cli-step-number">3</span>
+                                <div class="cli-step-desc">
+                                    <strong><?php echo htmlspecialchars($t['cli_step3_t']); ?></strong>
+                                    <code class="cli-code">python ASCII_v5_official.py</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="cli-action-box">
+                        <a href="https://github.com/stepanussaruran/ASCII-Video-Player" target="_blank" class="btn cli-promo-btn">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.193 22 16.44 22 12.017 22 6.484 17.522 2 12 2z"/></svg>
+                            <span><?php echo htmlspecialchars($t['cli_btn_text']); ?></span>
+                        </a>
+                        <div class="cli-note"><?php echo htmlspecialchars($t['cli_author_note']); ?></div>
                     </div>
                 </div>
             </div>

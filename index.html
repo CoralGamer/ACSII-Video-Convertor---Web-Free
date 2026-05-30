@@ -38,6 +38,9 @@
     <!-- Style sheet link -->
     <link rel="stylesheet" href="css/style.css">
 
+    <!-- Favicon link -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
     <!-- JSON-LD Structured Data Schema.org unificando WebApplication, FAQPage y HowTo en formato Grafo -->
     <script type="application/ld+json">
     {
@@ -286,6 +289,9 @@
                                 <option value="green" data-key="color_green"> CRT Fósforo Verde</option>
                                 <option value="amber" data-key="color_amber"> CRT Ámbar Retro</option>
                                 <option value="colorized" data-key="color_real">Color Real RGB</option>
+                                <option value="cyberpunk" data-key="color_cyberpunk">Neon Cyberpunk (Cian/Rosa)</option>
+                                <option value="vaporwave" data-key="color_vaporwave">Retro Vaporwave (Violeta/Teal)</option>
+                                <option value="matrix-glow" data-key="color_matrix_glow">Lluvia Matrix (Verde/Blanco)</option>
                             </select>
                         </div>
 
@@ -305,12 +311,26 @@
                             <input type="range" class="slider-input" id="slider-brightness" min="-100" max="100" step="5" value="0">
                         </div>
 
-                        <div class="control-group" style="display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
+                        <div class="control-group">
+                            <label class="control-label" for="slider-gamma">
+                                <span data-key="label_gamma">Corrección de Gamma (Midtonos):</span>
+                                <span id="val-gamma">1.0</span>
+                            </label>
+                            <input type="range" class="slider-input" id="slider-gamma" min="0.4" max="2.4" stop="0.1" step="0.1" value="1.0">
+                        </div>
+
+                        <div class="control-group" style="display: flex; flex-direction: column; justify-content: center; gap: 0.75rem;">
+                            <label class="checkbox-option">
+                                <input type="checkbox" id="check-dither">
+                                <span data-key="label_dither">Dithering Floyd-Steinberg</span>
+                            </label>
                             <label class="checkbox-option">
                                 <input type="checkbox" id="check-invert">
                                 <span data-key="label_invert">Invertir Colores de Salida</span>
                             </label>
-                            
+                        </div>
+
+                        <div class="control-group" style="display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
                             <button class="btn" id="btn-export-video" disabled>
                                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                 <span data-key="btn_export">Exportar a Video MP4</span>
@@ -417,6 +437,51 @@
                                 <span id="lbl-export-anim">Exportar Animación</span>
                             </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- CLI Promotion Section --- -->
+        <section class="section cli-promo-section" id="cli-promo-anchor">
+            <div class="cli-promo-card panel-card">
+                <div class="cli-promo-badge" data-key="cli_badge">¿Prefieres la Terminal?</div>
+                <div class="cli-promo-content">
+                    <div class="cli-promo-text">
+                        <h2 class="cli-promo-title" data-key="cli_title">¿Lo prefieres en CLI? Módulo de Consola ASCII</h2>
+                        <p class="cli-promo-p" data-key="cli_desc">Si eres un entusiasta de la terminal de comandos de Unix/Windows y deseas procesar tus videos a máxima potencia de forma local desde tu consola, puedes descargar la suite interactiva CLI. La última versión funcional de esta suite fue desarrollada completamente por <strong class="glow-text">CoralGamer</strong>.</p>
+                        
+                        <div class="cli-steps">
+                            <div class="cli-step">
+                                <span class="cli-step-number">1</span>
+                                <div class="cli-step-desc">
+                                    <strong data-key="cli_step1_t">Clona el Repositorio Oficial</strong>
+                                    <code class="cli-code">git clone https://github.com/stepanussaruran/ASCII-Video-Player.git</code>
+                                </div>
+                            </div>
+                            <div class="cli-step">
+                                <span class="cli-step-number">2</span>
+                                <div class="cli-step-desc">
+                                    <strong data-key="cli_step2_t">Instala las Dependencias</strong>
+                                    <code class="cli-code">pip install opencv-python numpy Pillow</code>
+                                </div>
+                            </div>
+                            <div class="cli-step">
+                                <span class="cli-step-number">3</span>
+                                <div class="cli-step-desc">
+                                    <strong data-key="cli_step3_t">Ejecuta la Suite Guiada</strong>
+                                    <code class="cli-code">python ASCII_v5_official.py</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="cli-action-box">
+                        <a href="https://github.com/stepanussaruran/ASCII-Video-Player" target="_blank" class="btn cli-promo-btn">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.193 22 16.44 22 12.017 22 6.484 17.522 2 12 2z"/></svg>
+                            <span data-key="cli_btn_text">Ver Repositorio CLI</span>
+                        </a>
+                        <div class="cli-note" data-key="cli_author_note">Desarrollado al 100% por CoralGamer</div>
                     </div>
                 </div>
             </div>
@@ -674,8 +739,13 @@
                 color_green: " CRT Fósforo Verde",
                 color_amber: " CRT Ámbar Retro",
                 color_real: "Color Real RGB",
+                color_cyberpunk: "Neon Cyberpunk (Cian/Rosa)",
+                color_vaporwave: "Retro Vaporwave (Violeta/Teal)",
+                color_matrix_glow: "Lluvia Matrix (Verde/Blanco)",
                 label_contrast: "Contraste de Imagen:",
                 label_brightness: "Brillo de Imagen:",
+                label_gamma: "Corrección de Gamma (Midtonos):",
+                label_dither: "Dithering Floyd-Steinberg",
                 label_invert: "Invertir Colores de Salida",
                 btn_export: "Exportar a Video MP4",
                 btn_exporting: "Compilando vídeo localmente...",
@@ -702,7 +772,15 @@
                 faq_2_a: "El generador procesa semánticamente tu solicitud en Javascript e inicia scripts matemáticos en vivo (como proyección de matrices 3D, autómatas celulares o simulaciones de física de fluidos) traduciéndolos al instante en arte ASCII.",
                 faq_3_q: "¿Es gratuito y sin límites?",
                 faq_3_a: "Sí, es 100% gratuito, libre de anuncios invasivos y sin límites de duración o tamaño de archivo, ya que el poder de procesamiento proviene de tu propio dispositivo.",
-                footer_desc: "Crea, convierte y reproduce arte digital en formato retro ASCII usando tu dispositivo. Cero servidores, máxima velocidad y total privacidad."
+                footer_desc: "Crea, convierte y reproduce arte digital en formato retro ASCII usando tu dispositivo. Cero servidores, máxima velocidad y total privacidad.",
+                cli_badge: "¿Prefieres la Terminal?",
+                cli_title: "¿Lo prefieres en CLI? Módulo de Consola ASCII",
+                cli_desc: "Si eres un entusiasta de la terminal de comandos de Unix/Windows y deseas procesar tus videos a máxima potencia de forma local desde tu consola, puedes descargar la suite interactiva CLI. La última versión funcional de esta suite fue desarrollada completamente por <strong class=\"glow-text\">CoralGamer</strong>.",
+                cli_step1_t: "Clona el Repositorio Oficial",
+                cli_step2_t: "Instala las Dependencias",
+                cli_step3_t: "Ejecuta la Suite Guiada",
+                cli_btn_text: "Ver Repositorio CLI",
+                cli_author_note: "Desarrollado al 100% por CoralGamer"
             },
             en: {
                 title: "Free Online Video to ASCII Converter & AI Prompt Generator",
@@ -729,8 +807,13 @@
                 color_green: "Green Phosphor CRT",
                 color_amber: "Retro Amber CRT",
                 color_real: "RGB Real Color",
+                color_cyberpunk: "Neon Cyberpunk (Cyan/Pink)",
+                color_vaporwave: "Retro Vaporwave (Violet/Teal)",
+                color_matrix_glow: "Matrix Rain (Green/White)",
                 label_contrast: "Image Contrast:",
                 label_brightness: "Image Brightness:",
+                label_gamma: "Gamma Correction (Midtones):",
+                label_dither: "Floyd-Steinberg Dithering",
                 label_invert: "Invert Output Colors",
                 btn_export: "Export to MP4 Video",
                 btn_exporting: "Compiling video locally...",
@@ -757,7 +840,15 @@
                 faq_2_a: "The prompt engine parses your request semantically in Javascript and boots up interactive mathematical animations (like 3D matrix projection, fluid simulations, or cellular automata) rendered directly to characters.",
                 faq_3_q: "Is it free and without limits?",
                 faq_3_a: "Yes, it is 100% free, free from intrusive ads, and has no limits on duration or file size since the processing power comes from your own device.",
-                footer_desc: "Create, convert, and play retro digital ASCII art using your device. Zero servers, maximum speed, and complete privacy."
+                footer_desc: "Create, convert, and play retro digital ASCII art using your device. Zero servers, maximum speed, and complete privacy.",
+                cli_badge: "Prefer Command Line?",
+                cli_title: "Prefer CLI? ASCII Console Module",
+                cli_desc: "If you are an enthusiast of the Unix/Windows command line terminal and want to process your videos at maximum performance locally from your console, you can download the interactive CLI suite. The latest functional version of this suite was fully developed by <strong class=\"glow-text\">CoralGamer</strong>.",
+                cli_step1_t: "Clone the Official Repository",
+                cli_step2_t: "Install Dependencies",
+                cli_step3_t: "Run the Guided Suite",
+                cli_btn_text: "View CLI Repository",
+                cli_author_note: "100% Developed by CoralGamer"
             },
             fr: {
                 title: "Convertisseur Vidéo en ASCII Gratuit & Générateur de Prompts IA",
@@ -784,8 +875,13 @@
                 color_green: "Phosphore Vert CRT",
                 color_amber: "Ambre Rétro CRT",
                 color_real: "Couleur Réelle RGB",
+                color_cyberpunk: "Néon Cyberpunk (Cyan/Rose)",
+                color_vaporwave: "Rétro Vaporwave (Violet/Teal)",
+                color_matrix_glow: "Pluie Matrix (Vert/Blanc)",
                 label_contrast: "Contraste d'Image :",
                 label_brightness: "Luminosité d'Image :",
+                label_gamma: "Correction Gamma (Tons Moyens) :",
+                label_dither: "Dithering Floyd-Steinberg",
                 label_invert: "Inverser les Couleurs",
                 btn_export: "Exporter en Vidéo MP4",
                 btn_exporting: "Compilation vidéo locale...",
@@ -839,8 +935,13 @@
                 color_green: "Fósforo Verde CRT",
                 color_amber: "Âmbar Retrô CRT",
                 color_real: "Cor Real RGB",
+                color_cyberpunk: "Neon Cyberpunk (Ciano/Rosa)",
+                color_vaporwave: "Retro Vaporwave (Violeta/Teal)",
+                color_matrix_glow: "Chuva Matrix (Verde/Branco)",
                 label_contrast: "Contraste da Imagem:",
                 label_brightness: "Brilho da Imagem:",
+                label_gamma: "Correção de Gamma (Tons Médios):",
+                label_dither: "Dithering Floyd-Steinberg",
                 label_invert: "Inverter Cores de Saída",
                 btn_export: "Exportar para Vídeo MP4",
                 btn_exporting: "Compilando vídeo localmente...",
@@ -894,8 +995,13 @@
                 color_green: "Grüner Phosphor CRT",
                 color_amber: "Retro Amber CRT",
                 color_real: "Echte RGB-Farbe",
+                color_cyberpunk: "Neon Cyberpunk (Cyan/Pink)",
+                color_vaporwave: "Retro-Vaporwave (Violett/Teal)",
+                color_matrix_glow: "Matrix-Regen (Grün/Weiß)",
                 label_contrast: "Bildkontrast:",
                 label_brightness: "Bildhelligkeit:",
+                label_gamma: "Gamma-Korrektur (Mitteltöne):",
+                label_dither: "Floyd-Steinberg-Dithering",
                 label_invert: "Ausgabefarben invertieren",
                 btn_export: "In MP4-Video exportieren",
                 btn_exporting: "Kompiliere Video lokal...",

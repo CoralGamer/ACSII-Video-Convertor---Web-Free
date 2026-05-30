@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-key]').forEach(el => {
             const key = el.getAttribute('data-key');
             if (dict[key]) {
-                // If it contains span HTML tags, inject as innerHTML, else textContent
-                if (dict[key].includes('<span')) {
+                // If it contains HTML tags, inject as innerHTML, else textContent
+                if (dict[key].includes('<')) {
                     el.innerHTML = dict[key];
                 } else {
                     el.textContent = dict[key];
@@ -201,6 +201,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const valContrast = document.getElementById('val-contrast');
     const sliderBrightness = document.getElementById('slider-brightness');
     const valBrightness = document.getElementById('val-brightness');
+    const sliderGamma = document.getElementById('slider-gamma');
+    const valGamma = document.getElementById('val-gamma');
+    const checkDither = document.getElementById('check-dither');
     const checkInvert = document.getElementById('check-invert');
     const btnExportVideo = document.getElementById('btn-export-video');
 
@@ -315,6 +318,8 @@ document.addEventListener('DOMContentLoaded', () => {
             colorMode: selectColor.value,
             contrast: sliderContrast.value,
             brightness: sliderBrightness.value,
+            gamma: sliderGamma ? parseFloat(sliderGamma.value) : 1.0,
+            dither: checkDither ? checkDither.checked : false,
             invert: checkInvert.checked
         });
     }
@@ -343,6 +348,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    if (sliderGamma) {
+        sliderGamma.addEventListener('input', () => {
+            valGamma.textContent = parseFloat(sliderGamma.value).toFixed(1);
+            updateConverterOptions();
+        });
+    }
+
+    if (checkDither) checkDither.addEventListener('change', updateConverterOptions);
     if (checkInvert) checkInvert.addEventListener('change', updateConverterOptions);
 
     // Dynamic Video Scrubber Update Loops

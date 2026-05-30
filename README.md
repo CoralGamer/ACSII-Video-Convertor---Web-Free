@@ -76,20 +76,28 @@ Para maximizar el tráfico orgánico desde Google, el proyecto incorpora:
 
 ## ⚖️ Licencia
 
-Distribuido bajo la **Licencia MIT**. Consulta el archivo `LICENSE` en la raíz del proyecto para más información.
+Este proyecto está licenciado bajo la **Licencia MIT**.
 
----
+```
+MIT License
 
-## 💡 Desafío de Colaboración: Generador IA Local Sencillo y sin Costos (Issues Abiertos)
+Copyright (c) 2026 CoralGamer
 
-> [!IMPORTANT]
-> **¿Te gustaría colaborar en el proyecto? (Call to Action / Issue Abierto)**
->
-> Actualmente, nuestro **Generador de Prompts IA a ASCII** funciona mediante **mapeo procedimental determinista de lenguaje natural** (es decir, asocia palabras clave a algoritmos matemáticos precargados de Matrix, Fuego, 3D, etc.). Esto garantiza que sea **100% gratuito, ultra-rápido, sin cargos de tokens y sin necesidad de APIs externas**.
->
-> **El Desafío**: Queremos ir un paso más allá. ¿Es posible integrar un modelo de lenguaje / IA generativa open-source sumamente liviano (como **WebLLM** o **transformers.js**) que corra **completamente del lado del usuario (en el cliente)** de forma gratuita y local?
-> 
-> *   **Objetivo**: Permitir al usuario escribir *cualquier prompt arbitrario* y que un micro-modelo local dibuje o estructure un render en caracteres ASCII, sin consumir tokens, sin cobrar nada y sin depender de servidores.
-> *   **Requisitos**: Debe ser sumamente sencillo, cargarse en segundo plano (Lazy load) y ejecutarse directamente en el navegador del usuario final.
->
-> Si tienes una idea, propuesta de diseño o un prototipo funcional para hacer esto realidad, por favor abre un **Issue** o envía un **Pull Request (PR)**. ¡Hagamos que el arte generativo por IA local sea verdaderamente libre y gratuito para todos!
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
