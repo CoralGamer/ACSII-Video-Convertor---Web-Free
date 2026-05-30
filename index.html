@@ -133,7 +133,7 @@
     <header>
         <div class="container header-wrapper">
             <div class="logo" id="header-logo">
-                <div class="logo-icon">A</div>
+                <img src="assets/favicon.svg" alt="ASCII Player Logo" class="logo-img" style="width: 36px; height: 36px; border-radius: 8px; filter: drop-shadow(0 0 4px var(--color-primary));">
                 <span>ASCII Player</span>
             </div>
             
@@ -246,7 +246,7 @@
                             <div class="player-time" id="player-time-display">00:00 / 00:00</div>
 
                             <button class="ctrl-icon-btn" id="btn-loop">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 1 1 21.306 7M20 9h-5.582"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
                             </button>
                             <button class="ctrl-icon-btn" id="btn-mute">
                                 <svg id="unmute-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
@@ -330,10 +330,20 @@
                             </label>
                         </div>
 
+                        <div class="control-group">
+                            <label class="control-label" for="select-export-format">
+                                <span data-key="label_export_format">Formato de Exportación:</span>
+                            </label>
+                            <select class="select-input" id="select-export-format">
+                                <option value="mp4" selected>MP4 (.mp4)</option>
+                                <option value="webm">WebM (.webm)</option>
+                            </select>
+                        </div>
+
                         <div class="control-group" style="display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
                             <button class="btn" id="btn-export-video" disabled>
                                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                <span data-key="btn_export">Exportar a Video MP4</span>
+                                <span data-key="btn_export">Exportar Video</span>
                             </button>
                         </div>
                     </div>
@@ -431,10 +441,20 @@
                             </select>
                         </div>
 
+                        <div class="control-group">
+                            <label class="control-label" for="select-prompt-export-format">
+                                <span data-key="label_export_format">Formato de Exportación:</span>
+                            </label>
+                            <select class="select-input" id="select-prompt-export-format">
+                                <option value="mp4" selected>MP4 (.mp4)</option>
+                                <option value="webm">WebM (.webm)</option>
+                            </select>
+                        </div>
+
                         <div class="control-group" style="display: flex; align-items: center; justify-content: center;">
                             <button class="btn" id="btn-export-prompt-video" style="margin-top: 1rem;">
                                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                <span id="lbl-export-anim">Exportar Animación</span>
+                                <span id="lbl-export-anim" data-key="lbl_export_anim">Exportar Animación</span>
                             </button>
                         </div>
                     </div>
@@ -900,7 +920,9 @@
                 label_gamma: "Corrección de Gamma (Midtonos):",
                 label_dither: "Dithering Floyd-Steinberg",
                 label_invert: "Invertir Colores de Salida",
-                btn_export: "Exportar a Video MP4",
+                label_export_format: "Formato de Exportación:",
+                lbl_export_anim: "Exportar Animación",
+                btn_export: "Exportar Video",
                 btn_exporting: "Compilando vídeo localmente...",
                 placeholder_prompt: "Escribe un prompt como \"lluvia matrix\", \"cubo 3D rotando\", \"fuego cyberpunk\"...",
                 btn_generate: "Generar",
@@ -968,7 +990,9 @@
                 label_gamma: "Gamma Correction (Midtones):",
                 label_dither: "Floyd-Steinberg Dithering",
                 label_invert: "Invert Output Colors",
-                btn_export: "Export to MP4 Video",
+                label_export_format: "Export Format:",
+                lbl_export_anim: "Export Animation",
+                btn_export: "Export Video",
                 btn_exporting: "Compiling video locally...",
                 placeholder_prompt: "Enter a prompt like \"matrix rain\", \"3D rotating cube\", \"cyberpunk fire\", \"water waves\"...",
                 btn_generate: "Generate",
@@ -1036,7 +1060,9 @@
                 label_gamma: "Correction Gamma (Tons Moyens) :",
                 label_dither: "Dithering Floyd-Steinberg",
                 label_invert: "Inverser les Couleurs",
-                btn_export: "Exporter en Vidéo MP4",
+                label_export_format: "Format d'exportation :",
+                lbl_export_anim: "Exporter l'Animation",
+                btn_export: "Exporter la Vidéo",
                 btn_exporting: "Compilation vidéo locale...",
                 placeholder_prompt: "Entrez une invite comme \"pluie matrix\", \"cube rotatif 3D\", \"feu cyberpunk\", \"vagues d'eau\"...",
                 btn_generate: "Générer",
@@ -1061,7 +1087,15 @@
                 faq_2_a: "Le moteur de prompt analyse sémantiquement votre requête en Javascript et lance des animations mathématiques interactives (comme une projection 3D, des fluides ou des automates cellulaires) rendues en caractères.",
                 faq_3_q: "Est-ce gratuit et sans limites ?",
                 faq_3_a: "Oui, c'est 100% gratuit, sans publicité invasive et sans limites de durée ni de taille, puisque la puissance de traitement provient de votre propre appareil.",
-                footer_desc: "Créez, convertissez et lisez des œuvres ASCII numériques rétro en utilisant votre appareil. Zéro serveur, vitesse maximale et confidentialité totale."
+                footer_desc: "Créez, convertissez et lisez des œuvres ASCII numériques rétro en utilisant votre appareil. Zéro serveur, vitesse maximale et confidentialité totale.",
+                cli_badge: "Vous préférez le Terminal ?",
+                cli_title: "Vous le préférez en CLI ? Module de Console ASCII",
+                cli_desc: "Si vous êtes un passionné du terminal de commande Unix/Windows et souhaitez traiter vos vidéos à pleine puissance localement depuis votre console, vous pouvez télécharger la suite interactive CLI. La dernière version fonctionnelle de cette suite a été entièrement développée par <strong class=\"glow-text\">CoralGamer</strong>.",
+                cli_step1_t: "Clonez le Dépôt Officiel",
+                cli_step2_t: "Installez les Dépendances",
+                cli_step3_t: "Exécutez la Suite Guidée",
+                cli_btn_text: "Voir le Dépôt CLI",
+                cli_author_note: "Développé à 100% par CoralGamer"
             },
             pt: {
                 title: "Conversor de Vídeo para ASCII Grátis & Gerador de Prompts IA",
@@ -1096,7 +1130,9 @@
                 label_gamma: "Correção de Gamma (Tons Médios):",
                 label_dither: "Dithering Floyd-Steinberg",
                 label_invert: "Inverter Cores de Saída",
-                btn_export: "Exportar para Vídeo MP4",
+                label_export_format: "Formato de Exportação:",
+                lbl_export_anim: "Exportar Animação",
+                btn_export: "Exportar Vídeo",
                 btn_exporting: "Compilando vídeo localmente...",
                 placeholder_prompt: "Escreva um prompt como \"chuva matrix\", \"cubo 3D girando\", \"fogo cyberpunk\", \"ondas de água\"...",
                 btn_generate: "Gerar",
@@ -1121,7 +1157,15 @@
                 faq_2_a: "O motor de prompts interpreta semanticamente sua solicitação em Javascript e inicia scripts matemáticos dinâmicos (como projeção de matrizes 3D ou simulações de fluidos) renderizados em texto.",
                 faq_3_q: "É gratuito e sem limites?",
                 faq_3_a: "Sim, é 100% gratuito, sem anúncios invasivos e sem limites de duração ou tamanho de arquivo, já que o processamento ocorre no seu próprio dispositivo.",
-                footer_desc: "Crie, converta e reproduza arte digital em formato retro ASCII usando seu dispositivo. Zero servidores, máxima velocidade e privacidade total."
+                footer_desc: "Crie, converta e reproduza arte digital em formato retro ASCII usando seu dispositivo. Zero servidores, máxima velocidade e privacidade total.",
+                cli_badge: "Prefere o Terminal?",
+                cli_title: "Prefere em CLI? Módulo de Consola ASCII",
+                cli_desc: "Se você é um entusiasta do terminal de comandos do Unix/Windows e deseja processar seus vídeos na potência máxima localmente a partir de seu console, pode baixar a suíte interativa CLI. A última versão funcional desta suíte foi totalmente desenvolvida por <strong class=\"glow-text\">CoralGamer</strong>.",
+                cli_step1_t: "Clone o Repositório Oficial",
+                cli_step2_t: "Instale as Dependências",
+                cli_step3_t: "Execute a Suíte Guiada",
+                cli_btn_text: "Ver Repositório CLI",
+                cli_author_note: "Desenvolvido 100% por CoralGamer"
             },
             de: {
                 title: "Kostenloser Online-Video-zu-ASCII-Konverter & KI-Prompt-Generator",
@@ -1156,7 +1200,9 @@
                 label_gamma: "Gamma-Korrektur (Mitteltöne):",
                 label_dither: "Floyd-Steinberg-Dithering",
                 label_invert: "Ausgabefarben invertieren",
-                btn_export: "In MP4-Video exportieren",
+                label_export_format: "Exportformat:",
+                lbl_export_anim: "Animation exportieren",
+                btn_export: "Video exportieren",
                 btn_exporting: "Kompiliere Video lokal...",
                 placeholder_prompt: "Geben Sie einen Prompt ein wie \"Matrix-Regen\", \"rotierender 3D-Würfel\", \"Cyberpunk-Feuer\", \"Wasserwellen\"...",
                 btn_generate: "Generieren",
@@ -1181,7 +1227,15 @@
                 faq_2_a: "Die Prompt-Engine analysiert Ihre Anfrage semantisch in Javascript und startet interaktive mathematische Animationen (wie 3D-Projektionen, Fluidsimulationen oder zelluläre Automaten), die in Zeichen gerendert werden.",
                 faq_3_q: "Ist es kostenlos und unbegrenzt?",
                 faq_3_a: "Ja, es ist 100 % kostenlos, frei von aufdringlicher Werbung und hat keine Beschränkungen für Dauer oder Dateigröße, da die Rechenleistung von Ihrem eigenen Gerät kommt.",
-                footer_desc: "Erstellen, konvertieren und spielen Sie Retro-Digital-ASCII-Kunst mit Ihrem Gerät ab. Keine Server, maximale Geschwindigkeit und absolute Privatsphäre."
+                footer_desc: "Erstellen, konvertieren und spielen Sie Retro-Digital-ASCII-Kunst mit Ihrem Gerät ab. Keine Server, maximale Geschwindigkeit und absolute Privatsphäre.",
+                cli_badge: "Bevorzugen Sie das Terminal?",
+                cli_title: "Bevorzugen Sie CLI? ASCII-Konsolenmodul",
+                cli_desc: "Wenn Sie ein Enthusiast des Unix-/Windows-Befehlszeilenterminals sind und Ihre Videos mit maximaler Leistung lokal von Ihrer Konsole aus verarbeiten möchten, können Sie die interaktive CLI-Suite herunterladen. Die neueste funktionierende Version dieser Suite wurde vollständig von <strong class=\"glow-text\">CoralGamer</strong> entwickelt.",
+                cli_step1_t: "Klonen Sie das offizielle Repository",
+                cli_step2_t: "Installieren Sie die Abhängigkeiten",
+                cli_step3_t: "Führen Sie die geführte Suite aus",
+                cli_btn_text: "CLI-Repository anzeigen",
+                cli_author_note: "Zu 100 % von CoralGamer entwickelt"
             }
         };
     </script>

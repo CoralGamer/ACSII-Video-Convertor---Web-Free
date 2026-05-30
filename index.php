@@ -56,7 +56,9 @@ $translations = [
         'label_gamma' => 'Corrección de Gamma (Midtonos):',
         'label_dither' => 'Dithering Floyd-Steinberg',
         'label_invert' => 'Invertir Colores de Salida',
-        'btn_export' => 'Exportar a Video MP4',
+        'label_export_format' => 'Formato de Exportación:',
+        'lbl_export_anim' => 'Exportar Animación',
+        'btn_export' => 'Exportar Video',
         'btn_exporting' => 'Compilando vídeo localmente...',
         'placeholder_prompt' => 'Escribe un prompt como "lluvia matrix", "cubo 3D rotando", "fuego cyberpunk", "ondas de agua"...',
         'btn_generate' => 'Generar',
@@ -123,7 +125,9 @@ $translations = [
         'label_gamma' => 'Gamma Correction (Midtones):',
         'label_dither' => 'Floyd-Steinberg Dithering',
         'label_invert' => 'Invert Output Colors',
-        'btn_export' => 'Export to MP4 Video',
+        'label_export_format' => 'Export Format:',
+        'lbl_export_anim' => 'Export Animation',
+        'btn_export' => 'Export Video',
         'btn_exporting' => 'Compiling video locally...',
         'placeholder_prompt' => 'Enter a prompt like "matrix rain", "3D rotating cube", "cyberpunk fire", "water waves"...',
         'btn_generate' => 'Generate',
@@ -190,7 +194,9 @@ $translations = [
         'label_gamma' => 'Correction Gamma (Tons Moyens) :',
         'label_dither' => 'Dithering Floyd-Steinberg',
         'label_invert' => 'Inverser les Couleurs',
-        'btn_export' => 'Exporter en Vidéo MP4',
+        'label_export_format' => "Format d'exportation :",
+        'lbl_export_anim' => "Exporter l'Animation",
+        'btn_export' => 'Exporter la Vidéo',
         'btn_exporting' => 'Compilation vidéo locale...',
         'placeholder_prompt' => 'Entrez une invite comme "pluie matrix", "cube rotatif 3D", "feu cyberpunk", "vagues d\'eau"...',
         'btn_generate' => 'Générer',
@@ -257,7 +263,9 @@ $translations = [
         'label_gamma' => 'Correção de Gamma (Tons Médios):',
         'label_dither' => 'Dithering Floyd-Steinberg',
         'label_invert' => 'Inverter Cores de Saída',
-        'btn_export' => 'Exportar para Vídeo MP4',
+        'label_export_format' => 'Formato de Exportação:',
+        'lbl_export_anim' => 'Exportar Animação',
+        'btn_export' => 'Exportar Vídeo',
         'btn_exporting' => 'Compilando vídeo localmente...',
         'placeholder_prompt' => 'Escreva um prompt como "chuva matrix", "cubo 3D girando", "fogo cyberpunk", "ondas de água"...',
         'btn_generate' => 'Gerar',
@@ -324,7 +332,9 @@ $translations = [
         'label_gamma' => 'Gamma-Korrektur (Mitteltöne):',
         'label_dither' => 'Floyd-Steinberg-Dithering',
         'label_invert' => 'Ausgabefarben invertieren',
-        'btn_export' => 'In MP4-Video exportieren',
+        'label_export_format' => 'Exportformat:',
+        'lbl_export_anim' => 'Animation exportieren',
+        'btn_export' => 'Video exportieren',
         'btn_exporting' => 'Kompiliere Video lokal...',
         'placeholder_prompt' => 'Geben Sie einen Prompt ein wie "Matrix-Regen", "rotierender 3D-Würfel", "Cyberpunk-Feuer", "Wasserwellen"...',
         'btn_generate' => 'Generieren',
@@ -498,7 +508,7 @@ $t = $translations[$lang];
     <header>
         <div class="container header-wrapper">
             <div class="logo" id="header-logo">
-                <div class="logo-icon">A</div>
+                <img src="assets/favicon.svg" alt="ASCII Player Logo" class="logo-img" style="width: 36px; height: 36px; border-radius: 8px; filter: drop-shadow(0 0 4px var(--color-primary));">
                 <span>ASCII Player</span>
             </div>
             
@@ -611,7 +621,7 @@ $t = $translations[$lang];
                             <div class="player-time" id="player-time-display">00:00 / 00:00</div>
 
                             <button class="ctrl-icon-btn" id="btn-loop">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 1 1 21.306 7M20 9h-5.582"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
                             </button>
                             <button class="ctrl-icon-btn" id="btn-mute">
                                 <svg id="unmute-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
@@ -693,6 +703,16 @@ $t = $translations[$lang];
                                 <input type="checkbox" id="check-invert">
                                 <span data-key="label_invert"><?php echo htmlspecialchars($t['label_invert']); ?></span>
                             </label>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="select-export-format">
+                                <span data-key="label_export_format"><?php echo htmlspecialchars($t['label_export_format']); ?></span>
+                            </label>
+                            <select class="select-input" id="select-export-format">
+                                <option value="mp4" selected>MP4 (.mp4)</option>
+                                <option value="webm">WebM (.webm)</option>
+                            </select>
                         </div>
 
                         <div class="control-group" style="display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
@@ -796,10 +816,20 @@ $t = $translations[$lang];
                             </select>
                         </div>
 
+                        <div class="control-group">
+                            <label class="control-label" for="select-prompt-export-format">
+                                <span data-key="label_export_format"><?php echo htmlspecialchars($t['label_export_format']); ?></span>
+                            </label>
+                            <select class="select-input" id="select-prompt-export-format">
+                                <option value="mp4" selected>MP4 (.mp4)</option>
+                                <option value="webm">WebM (.webm)</option>
+                            </select>
+                        </div>
+
                         <div class="control-group" style="display: flex; align-items: center; justify-content: center;">
                             <button class="btn" id="btn-export-prompt-video" style="margin-top: 1rem;">
                                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                <?php echo $lang === 'es' ? 'Exportar Animación' : 'Export Animation'; ?>
+                                <span id="lbl-export-anim" data-key="lbl_export_anim"><?php echo htmlspecialchars($t['lbl_export_anim']); ?></span>
                             </button>
                         </div>
                     </div>
@@ -810,31 +840,31 @@ $t = $translations[$lang];
         <!-- --- CLI Promotion Section --- -->
         <section class="section cli-promo-section" id="cli-promo-anchor">
             <div class="cli-promo-card panel-card">
-                <div class="cli-promo-badge"><?php echo htmlspecialchars($t['cli_badge']); ?></div>
+                <div class="cli-promo-badge" data-key="cli_badge"><?php echo htmlspecialchars($t['cli_badge']); ?></div>
                 <div class="cli-promo-content">
                     <div class="cli-promo-text">
-                        <h2 class="cli-promo-title"><?php echo htmlspecialchars($t['cli_title']); ?></h2>
-                        <p class="cli-promo-p"><?php echo $t['cli_desc']; ?></p>
+                        <h2 class="cli-promo-title" data-key="cli_title"><?php echo htmlspecialchars($t['cli_title']); ?></h2>
+                        <p class="cli-promo-p" data-key="cli_desc"><?php echo $t['cli_desc']; ?></p>
                         
                         <div class="cli-steps">
                             <div class="cli-step">
                                 <span class="cli-step-number">1</span>
                                 <div class="cli-step-desc">
-                                    <strong><?php echo htmlspecialchars($t['cli_step1_t']); ?></strong>
+                                    <strong data-key="cli_step1_t"><?php echo htmlspecialchars($t['cli_step1_t']); ?></strong>
                                     <code class="cli-code">git clone https://github.com/stepanussaruran/ASCII-Video-Player.git</code>
                                 </div>
                             </div>
                             <div class="cli-step">
                                 <span class="cli-step-number">2</span>
                                 <div class="cli-step-desc">
-                                    <strong><?php echo htmlspecialchars($t['cli_step2_t']); ?></strong>
+                                    <strong data-key="cli_step2_t"><?php echo htmlspecialchars($t['cli_step2_t']); ?></strong>
                                     <code class="cli-code">pip install opencv-python numpy Pillow</code>
                                 </div>
                             </div>
                             <div class="cli-step">
                                 <span class="cli-step-number">3</span>
                                 <div class="cli-step-desc">
-                                    <strong><?php echo htmlspecialchars($t['cli_step3_t']); ?></strong>
+                                    <strong data-key="cli_step3_t"><?php echo htmlspecialchars($t['cli_step3_t']); ?></strong>
                                     <code class="cli-code">python ASCII_v5_official.py</code>
                                 </div>
                             </div>
@@ -844,9 +874,9 @@ $t = $translations[$lang];
                     <div class="cli-action-box">
                         <a href="https://github.com/stepanussaruran/ASCII-Video-Player" target="_blank" class="btn cli-promo-btn">
                             <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.193 22 16.44 22 12.017 22 6.484 17.522 2 12 2z"/></svg>
-                            <span><?php echo htmlspecialchars($t['cli_btn_text']); ?></span>
+                            <span data-key="cli_btn_text"><?php echo htmlspecialchars($t['cli_btn_text']); ?></span>
                         </a>
-                        <div class="cli-note"><?php echo htmlspecialchars($t['cli_author_note']); ?></div>
+                        <div class="cli-note" data-key="cli_author_note"><?php echo htmlspecialchars($t['cli_author_note']); ?></div>
                     </div>
                 </div>
             </div>

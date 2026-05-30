@@ -296,8 +296,8 @@ class ASCIIConverter {
         }
     }
 
-    // Fully client-side exporter using MediaRecorder
-    startRecording(onProgress, onComplete) {
+    // Fully client-side exporter using MediaRecorder with dynamic format selection
+    startRecording(format, onProgress, onComplete) {
         if (this.isRecording) return;
         this.isRecording = true;
         this.recordedBlobs = [];
@@ -333,15 +333,58 @@ class ASCIIConverter {
             const combinedStream = new MediaStream(tracks);
 
             // Configure MediaRecorder options
-            let options = { mimeType: 'video/webm;codecs=vp9' };
-            if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-                options = { mimeType: 'video/webm;codecs=vp8' };
+            let options = {};
+            let actualMimeType = '';
+
+            if (format === 'mp4') {
+                const mp4Types = [
+                    'video/mp4;codecs=h264',
+                    'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+                    'video/mp4'
+                ];
+                let foundMp4 = false;
+                for (const type of mp4Types) {
+                    if (MediaRecorder.isTypeSupported(type)) {
+                        options = { mimeType: type };
+                        actualMimeType = type;
+                        foundMp4 = true;
+                        break;
+                    }
+                }
+                
+                if (!foundMp4) {
+                    console.warn("video/mp4 is not natively supported by this browser. Falling back to video/webm.");
+                    const webmTypes = [
+                        'video/webm;codecs=vp9',
+                        'video/webm;codecs=vp8',
+                        'video/webm'
+                    ];
+                    for (const type of webmTypes) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            options = { mimeType: type };
+                            actualMimeType = type;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                const webmTypes = [
+                    'video/webm;codecs=vp9',
+                    'video/webm;codecs=vp8',
+                    'video/webm'
+                ];
+                for (const type of webmTypes) {
+                    if (MediaRecorder.isTypeSupported(type)) {
+                        options = { mimeType: type };
+                        actualMimeType = type;
+                        break;
+                    }
+                }
             }
-            if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-                options = { mimeType: 'video/webm' };
-            }
-            if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+
+            if (!options.mimeType) {
                 options = { mimeType: '' }; // Fallback to browser default
+                actualMimeType = 'video/webm';
             }
 
             try {
@@ -364,7 +407,7 @@ class ASCIIConverter {
             };
 
             this.mediaRecorder.onstop = () => {
-                const superBuffer = new Blob(this.recordedBlobs, { type: 'video/webm' });
+                const superBuffer = new Blob(this.recordedBlobs, { type: actualMimeType || 'video/webm' });
                 const videoURL = window.URL.createObjectURL(superBuffer);
                 this.isRecording = false;
                 onComplete(videoURL);
@@ -389,7 +432,13 @@ class ASCIIConverter {
                 if (duration && !isNaN(duration) && duration !== Infinity) {
                     progress = Math.min(99, Math.round((this.video.currentTime / duration) * 100));
                 }
-                onProgress(progress, `Procesando y grabando... ${progress}%`);
+                
+                const isFallback = format === 'mp4' && !MediaRecorder.isTypeSupported('video/mp4');
+                const statusMsg = isFallback 
+                    ? `Procesando (Fallback WebM a MP4)... ${progress}%`
+                    : `Procesando y grabando... ${progress}%`;
+                
+                onProgress(progress, statusMsg);
 
                 // Stop if video has ended or is near the end
                 const isNearEnd = duration && !isNaN(duration) && duration !== Infinity && this.video.currentTime >= duration - 0.1;

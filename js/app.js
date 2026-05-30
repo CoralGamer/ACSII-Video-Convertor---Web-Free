@@ -454,6 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportProgress = document.getElementById('export-progress');
     const exportBar = document.getElementById('export-bar');
     const btnCancelExport = document.getElementById('btn-cancel-export');
+    const selectExportFormat = document.getElementById('select-export-format');
 
     if (btnExportVideo) {
         btnExportVideo.addEventListener('click', () => {
@@ -464,11 +465,20 @@ document.addEventListener('DOMContentLoaded', () => {
             exportProgress.textContent = '0%';
             exportBar.style.width = '0%';
 
+            const format = selectExportFormat ? selectExportFormat.value : 'mp4';
+
             converter.startRecording(
+                format,
                 // Progress callback
                 (percentage, msg) => {
                     exportProgress.textContent = `${percentage}%`;
                     exportBar.style.width = `${percentage}%`;
+                    
+                    // Show custom status message if any
+                    const statusTextEl = document.getElementById('export-status');
+                    if (statusTextEl) {
+                        statusTextEl.textContent = msg;
+                    }
                 },
                 // Completion callback
                 (url, error) => {
@@ -483,7 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const a = document.createElement('a');
                         a.style.display = 'none';
                         a.href = url;
-                        a.download = `ascii-video-export-${Date.now()}.webm`;
+                        a.download = `ascii-video-export-${Date.now()}.${format}`;
                         document.body.appendChild(a);
                         a.click();
                         setTimeout(() => {
@@ -598,32 +608,92 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const selectPromptExportFormat = document.getElementById('select-prompt-export-format');
+            const format = selectPromptExportFormat ? selectPromptExportFormat.value : 'mp4';
+
             // Hook recording from AI render canvas using MediaRecorder
             const fps = 24;
             const stream = canvasPromptRender.captureStream(fps);
             const recordedChunks = [];
 
-            let options = { mimeType: 'video/webm;codecs=vp9' };
-            if (!MediaRecorder.isTypeSupported(options.mimeType)) options = { mimeType: 'video/webm' };
+            let options = {};
+            let actualMimeType = '';
+
+            if (format === 'mp4') {
+                const mp4Types = [
+                    'video/mp4;codecs=h264',
+                    'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+                    'video/mp4'
+                ];
+                let foundMp4 = false;
+                for (const type of mp4Types) {
+                    if (MediaRecorder.isTypeSupported(type)) {
+                        options = { mimeType: type };
+                        actualMimeType = type;
+                        foundMp4 = true;
+                        break;
+                    }
+                }
+                
+                if (!foundMp4) {
+                    const webmTypes = [
+                        'video/webm;codecs=vp9',
+                        'video/webm;codecs=vp8',
+                        'video/webm'
+                    ];
+                    for (const type of webmTypes) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            options = { mimeType: type };
+                            actualMimeType = type;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                const webmTypes = [
+                    'video/webm;codecs=vp9',
+                    'video/webm;codecs=vp8',
+                    'video/webm'
+                ];
+                for (const type of webmTypes) {
+                    if (MediaRecorder.isTypeSupported(type)) {
+                        options = { mimeType: type };
+                        actualMimeType = type;
+                        break;
+                    }
+                }
+            }
+
+            if (!options.mimeType) {
+                options = { mimeType: '' };
+                actualMimeType = 'video/webm';
+            }
 
             const recorder = new MediaRecorder(stream, options);
             
-            // Show temporary export overlay in content-prompt
+            // Show temporary export overlay inside the button by replacing the text span, leaving SVG untouched
+            const lblExportAnim = document.getElementById('lbl-export-anim');
             btnExportPromptVideo.disabled = true;
-            btnExportPromptVideo.textContent = currentLang === 'es' ? 'Grabando (5s)...' : 'Recording (5s)...';
+
+            const isFallback = format === 'mp4' && !MediaRecorder.isTypeSupported('video/mp4');
+            const recordingText = isFallback 
+                ? (currentLang === 'es' ? 'Grabando (WebM)...' : (currentLang === 'fr' ? 'Enr. (WebM)...' : (currentLang === 'pt' ? 'Gravando (WebM)...' : (currentLang === 'de' ? 'Aufnahme (WebM)...' : 'Recording (WebM)...'))))
+                : (currentLang === 'es' ? 'Grabando (5s)...' : (currentLang === 'fr' ? 'Enregistrement (5s)...' : (currentLang === 'pt' ? 'Gravando (5s)...' : (currentLang === 'de' ? 'Aufnahme (5s)...' : 'Recording (5s)...'))));
+
+            if (lblExportAnim) lblExportAnim.textContent = recordingText;
 
             recorder.ondataavailable = (e) => {
                 if (e.data.size > 0) recordedChunks.push(e.data);
             };
 
             recorder.onstop = () => {
-                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const blob = new Blob(recordedChunks, { type: actualMimeType || 'video/webm' });
                 const url = URL.createObjectURL(blob);
                 
                 // Automatic download trigger
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `ascii-ai-prompt-${Date.now()}.webm`;
+                a.download = `ascii-ai-prompt-${Date.now()}.${format}`;
                 document.body.appendChild(a);
                 a.click();
                 setTimeout(() => {
@@ -632,7 +702,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 100);
 
                 btnExportPromptVideo.disabled = false;
-                btnExportPromptVideo.textContent = currentLang === 'es' ? 'Exportar Animación' : 'Export Animation';
+                if (lblExportAnim) {
+                    lblExportAnim.textContent = (window.staticTranslations && window.staticTranslations[currentLang] && window.staticTranslations[currentLang]['lbl_export_anim']) 
+                        || (currentLang === 'es' ? 'Exportar Animación' : 'Export Animation');
+                }
             };
 
             // Record a beautiful 5 seconds loop segment
