@@ -155,31 +155,123 @@ document.addEventListener('DOMContentLoaded', () => {
         translateStaticPage(currentLang);
     }
 
-    // Fetch real-time GitHub repository stargazers count
+    // Immediately load cached star count from localStorage to avoid flashing '--' and improve perceived loading speed
+    const cachedStars = localStorage.getItem('github_stars_count');
+    if (cachedStars) {
+        const headerCountEl = document.getElementById('github-stars-count');
+        if (headerCountEl) headerCountEl.textContent = cachedStars;
+        
+        const bodyCountEl = document.getElementById('github-stars-count-body');
+        if (bodyCountEl) bodyCountEl.textContent = cachedStars;
+    }
+
+    // Dynamic UI synchronizer that animates updates with a glowing pulse
+    function updateStarsUI(count) {
+        const prevCount = localStorage.getItem('github_stars_count') || '--';
+        localStorage.setItem('github_stars_count', count);
+        
+        // If the number actually changed, trigger an interactive flash/glow to highlight verification
+        const isChanged = prevCount !== '--' && String(prevCount) !== String(count);
+
+        const headerCountEl = document.getElementById('github-stars-count');
+        if (headerCountEl) {
+            headerCountEl.textContent = count;
+            if (isChanged) {
+                headerCountEl.classList.remove('number-glow-active');
+                void headerCountEl.offsetWidth; // Force layout recalculation
+                headerCountEl.classList.add('number-glow-active');
+            }
+        }
+        
+        const bodyCountEl = document.getElementById('github-stars-count-body');
+        if (bodyCountEl) {
+            bodyCountEl.textContent = count;
+            if (isChanged) {
+                bodyCountEl.classList.remove('number-glow-active');
+                void bodyCountEl.offsetWidth; // Force layout recalculation
+                bodyCountEl.classList.add('number-glow-active');
+            }
+        }
+    }
+
+    // Fetch real-time GitHub repository stargazers count (with cache-busting to ensure real-time updates)
     async function fetchGitHubStars() {
         try {
-            const response = await fetch('https://api.github.com/repos/CoralGamer/ACSII-Video-Convertor---Web-Free');
+            // Append timestamp to query to bypass browser cache and force GitHub API to fetch fresh data
+            const response = await fetch('https://api.github.com/repos/CoralGamer/ACSII-Video-Convertor---Web-Free?t=' + Date.now(), {
+                headers: {
+                    'Accept': 'application/vnd.github.v3+json'
+                },
+                cache: 'no-store'
+            });
             if (response.ok) {
                 const data = await response.json();
                 const starsCount = data.stargazers_count;
-                
-                // Update header stars badge
-                const headerCountEl = document.getElementById('github-stars-count');
-                if (headerCountEl) {
-                    headerCountEl.textContent = starsCount;
-                }
-                
-                // Update body promotion card
-                const bodyCountEl = document.getElementById('github-stars-count-body');
-                if (bodyCountEl) {
-                    bodyCountEl.textContent = starsCount;
-                }
+                updateStarsUI(starsCount);
             }
         } catch (e) {
             console.warn("Failed to fetch GitHub stars:", e);
         }
     }
+
+    // Perform initial fetch
     fetchGitHubStars();
+
+    // Re-verify and update stars automatically when the user returns to the tab (tab focus/visibility change)
+    window.addEventListener('focus', () => {
+        fetchGitHubStars();
+    });
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            fetchGitHubStars();
+        }
+    });
+
+    // Provide instant feedback: Auto-increment local UI value immediately when the user clicks the "Dar Estrella / Star" links
+    document.querySelectorAll('.btn-github-star, .github-stars-badge').forEach(link => {
+        link.addEventListener('click', () => {
+            const hasStarred = localStorage.getItem('has_starred_this_session');
+            if (!hasStarred) {
+                localStorage.setItem('has_starred_this_session', 'true');
+                
+                // Get current value
+                const currentVal = localStorage.getItem('github_stars_count');
+                let count = parseInt(currentVal, 10);
+                if (isNaN(count)) {
+                    count = 0;
+                }
+                
+                // Instantly update UI with the incremented value for zero-latency feedback
+                const newCount = count + 1;
+                updateStarsUI(newCount);
+                
+                // Pulse the elements with a cyan glow
+                const headerBadge = document.getElementById('header-github-stars');
+                if (headerBadge) {
+                    headerBadge.classList.remove('star-pulse-active');
+                    void headerBadge.offsetWidth;
+                    headerBadge.classList.add('star-pulse-active');
+                }
+                
+                const supportBadge = document.querySelector('.github-support-card');
+                if (supportBadge) {
+                    supportBadge.classList.remove('star-pulse-active');
+                    void supportBadge.offsetWidth;
+                    supportBadge.classList.add('star-pulse-active');
+                }
+            }
+            
+            // Poll in background a few times with delay to capture the real GitHub API registration once complete
+            let checkAttempts = 0;
+            const checkInterval = setInterval(() => {
+                checkAttempts++;
+                fetchGitHubStars();
+                if (checkAttempts >= 4) {
+                    clearInterval(checkInterval);
+                }
+            }, 3000);
+        });
+    });
 
     // -------------------------------------------------------------
     // 2. Tab Navigation
