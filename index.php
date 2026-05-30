@@ -977,6 +977,159 @@ $t = $translations[$lang];
                     </section>
                 </div>
             </article>
+            <?php elseif ($lang === 'fr'): ?>
+            <!-- Article in French -->
+            <article class="seo-article panel-card" id="seo-article-fr">
+                <header class="seo-article-header">
+                    <span class="seo-badge">Guide Ultime & Manuel Technique</span>
+                    <h2 class="seo-h2">Comment Convertir une Vidéo en ASCII & Générer de l'Art Textuel avec l'IA</h2>
+                    <p class="seo-lead">Découvrez la science, l'histoire et la technologie derrière notre convertisseur gratuit de vidéo en ASCII en ligne. Apprenez à créer de superbes animations de texte rétro et des graphismes 3D directement dans votre navigateur avec un traitement 100% local et privé.</p>
+                </header>
+                
+                <hr class="seo-divider">
+
+                <div class="seo-article-content">
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">1. Qu'est-ce que la conversion de vidéo en ASCII ?</h3>
+                        <p class="seo-p">La conversion de vidéo en ASCII est un processus de rendu numérique qui traduit chaque image d'un fichier vidéo numérique en une grille de caractères textuels. L'art ASCII (American Standard Code for Information Interchange) remonte aux premières décennies de l'informatique, lorsque les téléimprimeurs et les terminaux BBS manquaient de capacités graphiques matricielles. Aujourd'hui, il est devenu une esthétique rétro-futuriste et cyberpunk hautement appréciée par les artistes numériques du monde entier.</p>
+                        <p class="seo-p">Notre lecteur vidéo ASCII à la pointe de la technologie automatise ce processus de cartographie lumineuse en temps réel, vous permettant de revivre la nostalgie des terminaux à écran à phosphore vert et ambre directement sur une interface moderne et premium.</p>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">2. Comment fonctionne notre convertisseur de vidéo en ASCII en ligne gratuit ?</h3>
+                        <p class="seo-p">Contrairement aux applications web typiques qui nécessitent de télécharger des fichiers vidéo volumineux vers des serveurs distants, notre convertisseur fonctionne entièrement sur un calcul local 100% côté client. Voici la répartition technique détaillée du pipeline de rendu :</p>
+                        <ul class="seo-list">
+                            <li><strong>Décodage vidéo local :</strong> Le navigateur décode localement votre fichier vidéo MP4 ou WebM via l'API HTML5 Video, en le lisant dans un tampon de mémoire hors écran.</li>
+                            <li><strong>Sous-échantillonnage et analyse des pixels :</strong> Chaque image vidéo est dessinée sur un canvas temporaire, où les sous-pixels rouge, vert et bleu (RGB) sont extraits pour calculer la valeur moyenne de luminance à l'aide de la formule standard : <code>Y = 0.2126*R + 0.7152*G + 0.0722*B</code>.</li>
+                            <li><strong>Cartographie des caractères par densité :</strong> L'index de luminosité en niveaux de gris résultant est cartographié mathématiquement à un index spécifique de notre palette de caractères textuels sélectionnée. Les pixels sombres sont cartographiés à des espaces vides ou des points clairsemés, alors que les pixels brillants s'alignent avec des caractères de haute densité comme <code>@</code> ou <code>#</code>.</li>
+                            <li><strong>Balayage CRT et filtrage des couleurs :</strong> La chaîne ASCII cartographiée est imprimée dynamiquement sur la fenêtre d'affichage du terminal avec des polices à largeur fixe (monospacées), simulant des balayages CRT classiques en phosphore (Vert/Ambre) ou un style RGB en couleur réelle vibrante.</li>
+                            <li><strong>Enregistrement et exportation directe du navigateur :</strong> En cliquant sur exporter, nous capturons le flux de canvas de sortie compilé ainsi que le canal audio d'origine, en les compilant dans un fichier WebM/MP4 téléchargeable via l'API <code>MediaRecorder</code> du navigateur.</li>
+                        </ul>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">3. Générateur d'art ASCII procédural à partir d'invites textuelles d'IA</h3>
+                        <p class="seo-p">Vous n'avez pas de fichier vidéo local sous la main ? Notre générateur interactif d'invites d'IA vers du texte ASCII analyse les invites en langage naturel pour construire et exécuter des scripts visuels basés sur les mathématiques en temps réel. Si vous saisissez des instructions telles que <em>"pluie matrix"</em>, <em>"cube rotatif 3D"</em> ou <em>"feu cellulaire cyberpunk"</em>, le moteur d'IA sémantique lance des simulations fluides dédiées et des matrices géométriques :</p>
+                        <ul class="seo-list">
+                            <li><strong>Pluie de code Matrix en ASCII :</strong> Une reconstitution physique réaliste de la cascade de terminaux Matrix, avec des caractères tombant à des vitesses indépendantes avec des traînées luminescentes qui s'estompent.</li>
+                            <li><strong>Projection logicielle 3D :</strong> Un moteur mathématique qui effectue des transformations de coordonnées 3D, en appliquant des matrices de rotation (tangage, lacet, roulis) pour dessiner des géométries en fil de fer comme des sphères, des tores et des cubes avec de vrais algorithmes d'ombrage de lumière.</li>
+                            <li><strong>Automate cellulaire de feu Cyberpunk :</strong> Équations de grille de dispersion de chaleur en temps réel qui simulent des flammes montantes chaudes à l'aide de couches de couleur bleu néon, rose ou ambre.</li>
+                        </ul>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">4. Avantages clés de la conversion 100% hors ligne côté client</h3>
+                        <p class="seo-p">L'utilisation du calcul côté client au lieu de serveurs distants offre trois avantages concurrentiels massifs :</p>
+                        <ol class="seo-list-ordered">
+                            <li><strong>Sécurité et confidentialité absolues :</strong> Vos vidéos ne quittent jamais votre machine locale. Elles ne sont jamais transmises sur Internet, éliminant complètement les risques de fuite de confidentialité.</li>
+                            <li><strong>Pas de limites de taille de fichier :</strong> Comme il n'y a aucun coût de bande passante de téléchargement, vous pouvez convertir des vidéos haute définition et très longues sans quotas de données ni restrictions de taille.</li>
+                            <li><strong>Taux de rafraîchissement extrêmes :</strong> Les vitesses de rendu dépendent entièrement de votre propre matériel GPU/CPU local, atteignant des taux de rafraîchissement fluides supérieurs à 60 FPS sur des ordinateurs modernes standard.</li>
+                        </ol>
+                    </section>
+                </div>
+            </article>
+            <?php elseif ($lang === 'pt'): ?>
+            <!-- Article in Portuguese -->
+            <article class="seo-article panel-card" id="seo-article-pt">
+                <header class="seo-article-header">
+                    <span class="seo-badge">Guia Definitivo & Manual Técnico</span>
+                    <h2 class="seo-h2">Como Converter Vídeo para ASCII & Gerar Arte Textual com Prompts de IA</h2>
+                    <p class="seo-lead">Descubra a ciência, a história e a tecnologia por trás do nosso conversor online gratuito de vídeo para ASCII. Aprenda a criar animações de texto retrô impressionantes e gráficos 3D diretamente no seu navegador com processamento 100% local e privado.</p>
+                </header>
+                
+                <hr class="seo-divider">
+
+                <div class="seo-article-content">
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">1. O que é a conversão de vídeo para ASCII?</h3>
+                        <p class="seo-p">A conversão de vídeo para ASCII é um processo de renderização digital que traduz cada quadro de um arquivo de vídeo digital em uma grade de caracteres de texto. A arte ASCII (American Standard Code for Information Interchange) remonta às primeiras décadas da computação, quando os teletipos e terminais BBS careciam de recursos gráficos matriciais. Hoje, ela evoluiu para uma estética retro-futurista e cyberpunk altamente apreciada por artistas digitais em todo o mundo.</p>
+                        <p class="seo-p">Nosso reprodutor de vídeo ASCII de última geração automatiza este processo de mapeamento de luz em tempo real, permitindo que você reviva a nostalgia dos terminais de tela de fósforo verde e âmbar diretamente em uma interface moderna premium.</p>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">2. Como funciona o nosso conversor online gratuito de vídeo para ASCII?</h3>
+                        <p class="seo-p">Ao contrário dos aplicativos web comuns que exigem o upload de arquivos de vídeo volumosos para servidores remotos, nosso conversor funciona inteiramente em computação local 100% no lado do cliente. Aqui está a análise técnica detalhada do pipeline de renderização:</p>
+                        <ul class="seo-list">
+                            <li><strong>Decodificação de vídeo local:</strong> O navegador decodifica seu arquivo de vídeo MP4 ou WebM localmente via API HTML5 Video, reproduzindo-o dentro de um buffer de memória fora da tela.</li>
+                            <li><strong>Subamostragem e análise de pixels:</strong> Cada quadro de vídeo é desenhado em um canvas temporário, onde os subpixels vermelho, verde e azul (RGB) são extraídos para calcular o valor médio de luminância usando a fórmula padrão: <code>Y = 0.2126*R + 0.7152*G + 0.0722*B</code>.</li>
+                            <li><strong>Mapeamento de densidade de caracteres:</strong> O índice de brilho em tons de cinza resultante é mapeado matematicamente para um índice específico de nossa paleta selecionada de caracteres de texto. Pixels escuros são mapeados para espaços em branco ou pontos esparsos, enquanto pixels brilhantes se alinham com caracteres de alta densidade como <code>@</code> ou <code>#</code>.</li>
+                            <li><strong>Varredura CRT e filtragem de cores:</strong> A string ASCII mapeada é impressa dinamicamente na janela de visualização do terminal com fontes de largura fixa (monoespaçadas), simulando varreduras clássicas de fósforo CRT (Verde/Âmbar) ou estilo RGB em cores reais vibrantes.</li>
+                            <li><strong>Gravação e exportação direta do navegador:</strong> Ao clicar em exportar, capturamos o stream de canvas de saída compilado juntamente com o canal de áudio original, compilando-os em um arquivo WebM/MP4 para download usando a API <code>MediaRecorder</code> do navegador.</li>
+                        </ul>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">3. Gerador de arte ASCII animada por prompts e IA</h3>
+                        <p class="seo-p">Não tem um arquivo de vídeo local pronto? Nosso gerador interativo de prompt de IA para texto ASCII analisa prompts em linguagem natural para construir e executar scripts visuais baseados em matemática em tempo real. Se você inserir instruções como <em>"chuva matrix"</em>, <em>"cubo 3D rotativo"</em> ou <em>"fogo celular cyberpunk"</em>, o motor de IA semântica inicia simulações de fluidos dedicadas e matrizes geométricas:</p>
+                        <ul class="seo-list">
+                            <li><strong>Chuva de código Matrix em ASCII:</strong> Uma reconstituição física realista da cascata do terminal Matrix, com caracteres caindo em velocidades independentes com rastros brilhantes que se apagam.</li>
+                            <li><strong>Projeção de software 3D:</strong> Um motor matemático que realiza transformações de coordenadas 3D, aplicando matrizes de rotação (pitch, yaw, roll) para desenhar geometrias de aramado como esferas, toros e cubos com algoritmos reais de sombreamento de luz.</li>
+                            <li><strong>Autômato celular de fogo Cyberpunk:</strong> Equações de grade de dispersão de calor em tempo real que simulam chamas subindo usando camadas de cores azul neon, rosa ou âmbar.</li>
+                        </ul>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">4. Principais vantagens da conversão 100% offline no lado do cliente</h3>
+                        <p class="seo-p">Aproveitar a computação no lado do cliente em vez de servidores remotos oferece três enormes vantagens competitivas:</p>
+                        <ol class="seo-list-ordered">
+                            <li><strong>Segurança e privacidade absolutas:</strong> Seus vídeos nunca saem de sua máquina local. Eles nunca são transmitidos pela internet, eliminando completamente os riscos de vazamento de privacidade.</li>
+                            <li><strong>Sem limites de tamanho de arquivo:</strong> Como não há custo de largura de banda de upload, você pode converter vídeos de alta definição e muito longos sem limites de dados ou restrições de tamanho.</li>
+                            <li><strong>Taxas de quadros extremas:</strong> As velocidades de renderização dependem inteiramente do seu próprio hardware GPU/CPU local, alcançando taxas de quadros fluidas acima de 60 FPS em computadores modernos padrão.</li>
+                        </ol>
+                    </section>
+                </div>
+            </article>
+            <?php elseif ($lang === 'de'): ?>
+            <!-- Article in German -->
+            <article class="seo-article panel-card" id="seo-article-de">
+                <header class="seo-article-header">
+                    <span class="seo-badge">Ultimative Anleitung & Technisches Handbuch</span>
+                    <h2 class="seo-h2">Wie man Videos in ASCII konvertiert & Textkunst mit KI-Prompts generiert</h2>
+                    <p class="seo-lead">Entdecken Sie die Wissenschaft, Geschichte und Technologie hinter unserem kostenlosen Online-Video-zu-ASCII-Konverter. Lernen Sie, atemberaubende Retro-Textanimationen und 3D-Grafiken direkt in Ihrem Browser mit 100 % privater, clientseitiger Berechnung zu erstellen.</p>
+                </header>
+                
+                <hr class="seo-divider">
+
+                <div class="seo-article-content">
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">1. Was ist die Video-zu-ASCII-Konvertierung?</h3>
+                        <p class="seo-p">Die Konvertierung von Video zu ASCII ist ein digitaler Rendering-Prozess, der jedes Bild einer digitalen Videodatei in ein Raster aus Textzeichen übersetzt. ASCII-Kunst (American Standard Code for Information Interchange) geht auf die frühen Jahrzehnte des Computers zurück, als Fernschreiber und BBS-Terminals noch keine Bitmap-Grafikfunktionen hatten. Heute hat es sich zu einer retro-futuristischen und Cyberpunk-Ästhetik entwickelt, die von digitalen Künstlern weltweit sehr geschätzt wird.</p>
+                        <p class="seo-p">Unser hochmoderner ASCII-Videoplayer automatisiert diesen Lichtmapping-Prozess in Echtzeit und ermöglicht es Ihnen, die Nostalgie von grünen und bernsteinfarbenen Phosphorbildschirmen direkt auf einer modernen Premium-Benutzeroberfläche neu zu erleben.</p>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">2. Wie funktioniert unser kostenloser Online-Video-zu-ASCII-Konverter technisch?</h3>
+                        <p class="seo-p">Im Gegensatz zu typischen Web-Apps, bei denen sperrige Videodateien auf Remote-Server hochgeladen werden müssen, läuft unser Konverter vollständig auf einer 100 % clientseitigen lokalen Berechnung. Hier ist die detaillierte technische Aufschlüsselung der Rendering-Pipeline:</p>
+                        <ul class="seo-list">
+                            <li><strong>Lokales Video-Dekodieren:</strong> Der Browser dekodiert Ihre hochgeladene MP4- oder WebM-Videodatei lokal über die HTML5-Video-API und gibt sie in einem Offscreen-Speicherpuffer wieder.</li>
+                            <li><strong>Downsampling & Pixelanalyse:</strong> Jedes Videobild wird auf ein temporäres Canvas gezeichnet, wo die roten, grünen und blauen (RGB) Subpixel extrahiert werden, um den durchschnittlichen Luminanzwert mithilfe der Standardformel zu berechnen: <code>Y = 0.2126*R + 0.7152*G + 0.0722*B</code>.</li>
+                            <li><strong>Dichte-Zeichen-Mapping:</strong> Der resultierende Graustufen-Helligkeitsindex wird mathematisch auf einen bestimmten Index unserer ausgewählten Textzeichenpalette abgebildet. Dunkle Pixel werden auf Leerzeichen oder spärliche Punkte abgebildet, während helle Pixel mit hochdichten Zeichen wie <code>@</code> oder <code>#</code> übereinstimmen.</li>
+                            <li><strong>CRT-Scanline & Farbfilterung:</strong> Die gemappte ASCII-Zeichenfolge wird dynamisch mit Schriftarten fester Breite (Monospace) auf das Terminal-Viewport gedruckt und simuliert klassische CRT-Phosphor-Sweeps (Grün/Bernstein) oder lebendige Echtfarben-RGB-Stylings.</li>
+                            <li><strong>Direkte Browser-Aufnahme & Export:</strong> Beim Klicken auf Exportieren erfassen wir den kompilierten Ausgabe-Canvas-Stream zusammen mit dem Original-Audiokanal und kompilieren sie mithilfe der MediaRecorder-API des Browsers in eine herunterladbare WebM/MP4-Datei.</li>
+                        </ul>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">3. Prozeduraler ASCII-Kunst-Generator aus KI-Text-Prompts</h3>
+                        <p class="seo-p">Sie haben keine lokale Videodatei bereit? Unser interaktiver KI-Prompt-zu-ASCII-Textgenerator analysiert Prompts in natürlicher Sprache, um mathematisch gesteuerte visuelle Skripte in Echtzeit zu erstellen und auszuführen. Wenn Sie Anweisungen wie <em>"Matrix Regen"</em>, <em>"rotierender 3D-Würfel"</em> oder <em>"Cyberpunk-Zellfeuer"</em> eingeben, startet die semantische KI-Engine spezielle Fluidsimulationen und geometrische Matrizen:</p>
+                        <ul class="seo-list">
+                            <li><strong>Matrix-Code-Regen in ASCII:</strong> Eine realistische Physik-Nachbildung des Matrix-Terminal-Wasserfalls mit Zeichen, die mit unabhängigen Geschwindigkeiten mit leuchtenden, verblassenden Spuren fallen.</li>
+                            <li><strong>3D-Software-Projektion:</strong> Eine mathematische Engine, die 3D-Koordinatentransformationen durchführt und Rotationsmatrizen (Pitch, Yaw, Roll) anwendet, um Drahtgittergeometrien wie Kugeln, Tori und Würfel mit echten Beleuchtungsschatten-Algorithmen zu zeichnen.</li>
+                            <li><strong>Zellulärer Automat Cyberpunk Feuer:</strong> Echtzeit-Wärmedispersionsgittergleichungen, die aufsteigende heiße Flammen unter Verwendung von neon-cyanen, pinken oder bernsteinfarbenen Farbschichten simulieren.</li>
+                        </ul>
+                    </section>
+
+                    <section class="seo-subsection">
+                        <h3 class="seo-h3">4. Hauptvorteile des 100 % Offline-Client-Side-Konvertierens</h3>
+                        <p class="seo-p">Die Nutzung von clientseitigem Computing anstelle von Remote-Backend-Servern bietet drei enorme Wettbewerbsvorteile:</p>
+                        <ol class="seo-list-ordered">
+                            <li><strong>Absolute Sicherheit und Privatsphäre:</strong> Ihre Videos verlassen niemals Ihren lokalen Computer. Sie werden niemals über das Internet übertragen, wodurch das Risiko von Datenschutzverletzungen vollständig ausgeschlossen wird.</li>
+                            <li><strong>Keine Upload-Dateibeschränkungen:</strong> Da keine Upload-Bandbreitenkosten anfallen, können Sie hochauflösende und sehr lange Videos ohne Datenobergrenzen oder Größenbeschränkungen konvertieren.</li>
+                            <li><strong>Extreme Bildraten:</strong> Die Rendering-Geschwindigkeiten hängen vollständig von Ihrer eigenen lokalen GPU/CPU-Hardware ab und erreichen flüssige Bildraten von über 60 FPS auf Standard-Modernen Computern.</li>
+                        </ol>
+                    </section>
+                </div>
+            </article>
             <?php else: ?>
             <!-- Article in English -->
             <article class="seo-article panel-card" id="seo-article-en">

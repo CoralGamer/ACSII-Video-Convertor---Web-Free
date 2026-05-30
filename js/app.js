@@ -92,17 +92,29 @@ document.addEventListener('DOMContentLoaded', () => {
         document.title = dict['title'];
         document.documentElement.lang = lang;
 
-        // Show/hide correct SEO articles based on language (ES / fallback to EN)
+        // Show/hide correct SEO articles based on language (ES / EN / FR / PT / DE)
         const articleEs = document.getElementById('seo-article-es');
         const articleEn = document.getElementById('seo-article-en');
-        if (articleEs && articleEn) {
-            if (lang === 'es') {
-                articleEs.style.display = 'block';
-                articleEn.style.display = 'none';
-            } else {
-                articleEs.style.display = 'none';
-                articleEn.style.display = 'block';
-            }
+        const articleFr = document.getElementById('seo-article-fr');
+        const articlePt = document.getElementById('seo-article-pt');
+        const articleDe = document.getElementById('seo-article-de');
+
+        if (articleEs) articleEs.style.display = 'none';
+        if (articleEn) articleEn.style.display = 'none';
+        if (articleFr) articleFr.style.display = 'none';
+        if (articlePt) articlePt.style.display = 'none';
+        if (articleDe) articleDe.style.display = 'none';
+
+        if (lang === 'es' && articleEs) {
+            articleEs.style.display = 'block';
+        } else if (lang === 'fr' && articleFr) {
+            articleFr.style.display = 'block';
+        } else if (lang === 'pt' && articlePt) {
+            articlePt.style.display = 'block';
+        } else if (lang === 'de' && articleDe) {
+            articleDe.style.display = 'block';
+        } else if (articleEn) {
+            articleEn.style.display = 'block'; // Fallback to English
         }
     }
 
