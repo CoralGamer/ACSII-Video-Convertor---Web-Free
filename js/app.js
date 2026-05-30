@@ -456,6 +456,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCancelExport = document.getElementById('btn-cancel-export');
     const selectExportFormat = document.getElementById('select-export-format');
 
+    // Format Compatibility Helper
+    function checkFormatCompatibility(selectElement, warningBoxId) {
+        if (!selectElement) return;
+        const format = selectElement.value;
+        const warningBox = document.getElementById(warningBoxId);
+        if (!warningBox) return;
+
+        let isSupported = true;
+        if (format === 'mp4') {
+            isSupported = MediaRecorder.isTypeSupported('video/mp4;codecs=h264') ||
+                          MediaRecorder.isTypeSupported('video/mp4;codecs=avc1.42E01E,mp4a.40.2') ||
+                          MediaRecorder.isTypeSupported('video/mp4');
+        } else if (format === 'mkv') {
+            isSupported = MediaRecorder.isTypeSupported('video/x-matroska;codecs=vp9') ||
+                          MediaRecorder.isTypeSupported('video/x-matroska;codecs=vp8') ||
+                          MediaRecorder.isTypeSupported('video/x-matroska');
+        } else if (format === 'mov') {
+            isSupported = MediaRecorder.isTypeSupported('video/quicktime;codecs=h264') ||
+                          MediaRecorder.isTypeSupported('video/quicktime');
+        } else if (format === 'avi') {
+            isSupported = false; // Always fallback
+        } else {
+            isSupported = true; // WebM is always supported
+        }
+
+        if (!isSupported) {
+            warningBox.style.display = 'flex';
+        } else {
+            warningBox.style.display = 'none';
+        }
+    }
+
+    if (selectExportFormat) {
+        selectExportFormat.addEventListener('change', () => {
+            checkFormatCompatibility(selectExportFormat, 'export-format-warning');
+        });
+        // Initial check
+        checkFormatCompatibility(selectExportFormat, 'export-format-warning');
+    }
+
     if (btnExportVideo) {
         btnExportVideo.addEventListener('click', () => {
             if (!converter || !converter.isProcessing) return;
@@ -601,6 +641,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (selectPromptTheme) selectPromptTheme.addEventListener('change', updateAIParameters);
 
     // Prompt animation exporter
+    const selectPromptExportFormat = document.getElementById('select-prompt-export-format');
+    if (selectPromptExportFormat) {
+        selectPromptExportFormat.addEventListener('change', () => {
+            checkFormatCompatibility(selectPromptExportFormat, 'prompt-export-format-warning');
+        });
+        // Initial check
+        checkFormatCompatibility(selectPromptExportFormat, 'prompt-export-format-warning');
+    }
+
     if (btnExportPromptVideo) {
         btnExportPromptVideo.addEventListener('click', () => {
             if (!aiEngine || !aiEngine.isPlaying) {
@@ -608,7 +657,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const selectPromptExportFormat = document.getElementById('select-prompt-export-format');
             const format = selectPromptExportFormat ? selectPromptExportFormat.value : 'mp4';
 
             // Hook recording from AI render canvas using MediaRecorder
@@ -649,6 +697,103 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 }
+            } else if (format === 'mkv') {
+                const mkvTypes = [
+                    'video/x-matroska;codecs=vp9',
+                    'video/x-matroska;codecs=vp8',
+                    'video/x-matroska;codecs=h264',
+                    'video/x-matroska'
+                ];
+                let foundMkv = false;
+                for (const type of mkvTypes) {
+                    if (MediaRecorder.isTypeSupported(type)) {
+                        options = { mimeType: type };
+                        actualMimeType = type;
+                        foundMkv = true;
+                        break;
+                    }
+                }
+                if (!foundMkv) {
+                    const webmTypes = [
+                        'video/webm;codecs=vp9',
+                        'video/webm'
+                    ];
+                    for (const type of webmTypes) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            options = { mimeType: type };
+                            actualMimeType = type;
+                            break;
+                        }
+                    }
+                }
+            } else if (format === 'mov') {
+                const movTypes = [
+                    'video/quicktime;codecs=h264',
+                    'video/quicktime'
+                ];
+                let foundMov = false;
+                for (const type of movTypes) {
+                    if (MediaRecorder.isTypeSupported(type)) {
+                        options = { mimeType: type };
+                        actualMimeType = type;
+                        foundMov = true;
+                        break;
+                    }
+                }
+                if (!foundMov) {
+                    const mp4Types = [
+                        'video/mp4;codecs=h264',
+                        'video/mp4'
+                    ];
+                    for (const type of mp4Types) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            options = { mimeType: type };
+                            actualMimeType = type;
+                            foundMov = true;
+                            break;
+                        }
+                    }
+                }
+                if (!foundMov) {
+                    const webmTypes = [
+                        'video/webm;codecs=vp9',
+                        'video/webm'
+                    ];
+                    for (const type of webmTypes) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            options = { mimeType: type };
+                            actualMimeType = type;
+                            break;
+                        }
+                    }
+                }
+            } else if (format === 'avi') {
+                const mp4Types = [
+                    'video/mp4;codecs=h264',
+                    'video/mp4'
+                ];
+                let foundAviBase = false;
+                for (const type of mp4Types) {
+                    if (MediaRecorder.isTypeSupported(type)) {
+                        options = { mimeType: type };
+                        actualMimeType = type;
+                        foundAviBase = true;
+                        break;
+                    }
+                }
+                if (!foundAviBase) {
+                    const webmTypes = [
+                        'video/webm;codecs=vp9',
+                        'video/webm'
+                    ];
+                    for (const type of webmTypes) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            options = { mimeType: type };
+                            actualMimeType = type;
+                            break;
+                        }
+                    }
+                }
             } else {
                 const webmTypes = [
                     'video/webm;codecs=vp9',
@@ -675,10 +820,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const lblExportAnim = document.getElementById('lbl-export-anim');
             btnExportPromptVideo.disabled = true;
 
-            const isFallback = format === 'mp4' && !MediaRecorder.isTypeSupported('video/mp4');
+            let isFallback = false;
+            if (format === 'mp4' && !MediaRecorder.isTypeSupported('video/mp4')) isFallback = true;
+            if (format === 'mkv' && !MediaRecorder.isTypeSupported('video/x-matroska')) isFallback = true;
+            if (format === 'mov' && !MediaRecorder.isTypeSupported('video/quicktime')) isFallback = true;
+            
+            const formatLabel = format.toUpperCase();
             const recordingText = isFallback 
-                ? (currentLang === 'es' ? 'Grabando (WebM)...' : (currentLang === 'fr' ? 'Enr. (WebM)...' : (currentLang === 'pt' ? 'Gravando (WebM)...' : (currentLang === 'de' ? 'Aufnahme (WebM)...' : 'Recording (WebM)...'))))
-                : (currentLang === 'es' ? 'Grabando (5s)...' : (currentLang === 'fr' ? 'Enregistrement (5s)...' : (currentLang === 'pt' ? 'Gravando (5s)...' : (currentLang === 'de' ? 'Aufnahme (5s)...' : 'Recording (5s)...'))));
+                ? (currentLang === 'es' ? `Grabando (${formatLabel} Fallback)...` : (currentLang === 'fr' ? `Enr. (${formatLabel})...` : (currentLang === 'pt' ? `Gravando (${formatLabel})...` : (currentLang === 'de' ? `Aufnahme (${formatLabel})...` : `Recording (${formatLabel})...`))))
+                : (currentLang === 'es' ? `Grabando ${formatLabel}...` : (currentLang === 'fr' ? `Enregistrement ${formatLabel}...` : (currentLang === 'pt' ? `Gravando ${formatLabel}...` : (currentLang === 'de' ? `Aufnahme ${formatLabel}...` : `Recording ${formatLabel}...`))));
 
             if (lblExportAnim) lblExportAnim.textContent = recordingText;
 

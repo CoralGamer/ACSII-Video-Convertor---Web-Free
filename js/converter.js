@@ -367,6 +367,108 @@ class ASCIIConverter {
                         }
                     }
                 }
+            } else if (format === 'mkv') {
+                const mkvTypes = [
+                    'video/x-matroska;codecs=vp9',
+                    'video/x-matroska;codecs=vp8',
+                    'video/x-matroska;codecs=h264',
+                    'video/x-matroska'
+                ];
+                let foundMkv = false;
+                for (const type of mkvTypes) {
+                    if (MediaRecorder.isTypeSupported(type)) {
+                        options = { mimeType: type };
+                        actualMimeType = type;
+                        foundMkv = true;
+                        break;
+                    }
+                }
+                if (!foundMkv) {
+                    console.warn("video/x-matroska is not natively supported by this browser. Falling back to video/webm.");
+                    const webmTypes = [
+                        'video/webm;codecs=vp9',
+                        'video/webm;codecs=vp8',
+                        'video/webm'
+                    ];
+                    for (const type of webmTypes) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            options = { mimeType: type };
+                            actualMimeType = type;
+                            break;
+                        }
+                    }
+                }
+            } else if (format === 'mov') {
+                const movTypes = [
+                    'video/quicktime;codecs=h264',
+                    'video/quicktime'
+                ];
+                let foundMov = false;
+                for (const type of movTypes) {
+                    if (MediaRecorder.isTypeSupported(type)) {
+                        options = { mimeType: type };
+                        actualMimeType = type;
+                        foundMov = true;
+                        break;
+                    }
+                }
+                if (!foundMov) {
+                    // Try MP4 first as it's highly compatible with MOV
+                    const mp4Types = [
+                        'video/mp4;codecs=h264',
+                        'video/mp4'
+                    ];
+                    for (const type of mp4Types) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            options = { mimeType: type };
+                            actualMimeType = type;
+                            foundMov = true;
+                            break;
+                        }
+                    }
+                }
+                if (!foundMov) {
+                    const webmTypes = [
+                        'video/webm;codecs=vp9',
+                        'video/webm;codecs=vp8',
+                        'video/webm'
+                    ];
+                    for (const type of webmTypes) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            options = { mimeType: type };
+                            actualMimeType = type;
+                            break;
+                        }
+                    }
+                }
+            } else if (format === 'avi') {
+                // No standard native video/avi encoder exists. We use video/mp4 (or video/webm as fallback) and rename.
+                const mp4Types = [
+                    'video/mp4;codecs=h264',
+                    'video/mp4'
+                ];
+                let foundAviBase = false;
+                for (const type of mp4Types) {
+                    if (MediaRecorder.isTypeSupported(type)) {
+                        options = { mimeType: type };
+                        actualMimeType = type;
+                        foundAviBase = true;
+                        break;
+                    }
+                }
+                if (!foundAviBase) {
+                    const webmTypes = [
+                        'video/webm;codecs=vp9',
+                        'video/webm'
+                    ];
+                    for (const type of webmTypes) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            options = { mimeType: type };
+                            actualMimeType = type;
+                            break;
+                        }
+                    }
+                }
             } else {
                 const webmTypes = [
                     'video/webm;codecs=vp9',
@@ -433,10 +535,16 @@ class ASCIIConverter {
                     progress = Math.min(99, Math.round((this.video.currentTime / duration) * 100));
                 }
                 
-                const isFallback = format === 'mp4' && !MediaRecorder.isTypeSupported('video/mp4');
+                // Determine if a fallback occurred
+                let isFallback = false;
+                if (format === 'mp4' && !MediaRecorder.isTypeSupported('video/mp4')) isFallback = true;
+                if (format === 'mkv' && !MediaRecorder.isTypeSupported('video/x-matroska')) isFallback = true;
+                if (format === 'mov' && !MediaRecorder.isTypeSupported('video/quicktime')) isFallback = true;
+                
+                const formatLabel = format.toUpperCase();
                 const statusMsg = isFallback 
-                    ? `Procesando (Fallback WebM a MP4)... ${progress}%`
-                    : `Procesando y grabando... ${progress}%`;
+                    ? `Procesando (Fallback WebM a ${formatLabel})... ${progress}%`
+                    : `Procesando y grabando ${formatLabel}... ${progress}%`;
                 
                 onProgress(progress, statusMsg);
 

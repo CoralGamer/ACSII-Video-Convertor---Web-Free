@@ -1746,3 +1746,18 @@ footer {
         overflow-x: auto;
     }
 }
+
+.format-warning-box {
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px dashed rgba(245, 158, 11, 0.4);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: #f59e0b;
+    display: none;
+    align-items: flex-start;
+    gap: 0.5rem;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.05);
+}

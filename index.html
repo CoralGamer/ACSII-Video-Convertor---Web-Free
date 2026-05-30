@@ -195,9 +195,9 @@
                             <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 16a4 4 0 0 1-.88-7.903A5 5 0 1 1 15.9 6L16 6a5 5 0 0 1 1 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                         </div>
                         <p data-key="upload_title">Arrastra tu archivo de video aquí</p>
-                        <span data-key="upload_sub">o haz clic para buscar en tu dispositivo (Formatos: MP4, WebM)</span>
+                        <span data-key="upload_sub">o haz clic para buscar en tu dispositivo (Formatos: MP4, WebM, OGG, MOV, MKV, AVI...)</span>
                         <span style="font-size:0.75rem; max-width: 400px; margin-top: 1rem; opacity:0.65;" data-key="upload_notice">Nota: Su video nunca sale de su computadora. Se procesa completamente en su navegador.</span>
-                        <input type="file" class="uploader-file-input" id="video-input" accept="video/mp4,video/webm">
+                        <input type="file" class="uploader-file-input" id="video-input" accept="video/*">
                     </div>
 
                     <!-- Terminal Output Mockup -->
@@ -337,7 +337,14 @@
                             <select class="select-input" id="select-export-format">
                                 <option value="mp4" selected>MP4 (.mp4)</option>
                                 <option value="webm">WebM (.webm)</option>
+                                <option value="mkv">MKV (.mkv)</option>
+                                <option value="mov">MOV (.mov)</option>
+                                <option value="avi">AVI (.avi)</option>
                             </select>
+                        </div>
+                        <div class="format-warning-box" id="export-format-warning">
+                            <span>⚠️</span>
+                            <span data-key="warn_format_compatibility">Tu navegador no soporta codificación nativa de este formato. Se usará WebM como fallback. Te recomendamos usar WebM directamente o reproducir el archivo con VLC Player si tienes problemas.</span>
                         </div>
 
                         <div class="control-group" style="display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
@@ -448,7 +455,14 @@
                             <select class="select-input" id="select-prompt-export-format">
                                 <option value="mp4" selected>MP4 (.mp4)</option>
                                 <option value="webm">WebM (.webm)</option>
+                                <option value="mkv">MKV (.mkv)</option>
+                                <option value="mov">MOV (.mov)</option>
+                                <option value="avi">AVI (.avi)</option>
                             </select>
+                        </div>
+                        <div class="format-warning-box" id="prompt-export-format-warning">
+                            <span>⚠️</span>
+                            <span data-key="warn_format_compatibility">Tu navegador no soporta codificación nativa de este formato. Se usará WebM como fallback. Te recomendamos usar WebM directamente o reproducir el archivo con VLC Player si tienes problemas.</span>
                         </div>
 
                         <div class="control-group" style="display: flex; align-items: center; justify-content: center;">
@@ -898,7 +912,7 @@
                 tab_video: "Conversor de Video",
                 tab_prompt: "Prompts IA a ASCII",
                 upload_title: "Arrastra tu archivo de video aquí",
-                upload_sub: "o haz clic para buscar en tu dispositivo (Formatos: MP4, WebM)",
+                upload_sub: "o haz clic para buscar en tu dispositivo (Formatos: MP4, WebM, OGG, MOV, MKV, AVI, etc.)",
                 upload_notice: "Nota: Su video nunca sale de su computadora. Se procesa completamente en su navegador.",
                 panel_adjustments: "Ajustes del Renderizado",
                 label_columns: "Ancho de Resolución (Columnas):",
@@ -924,6 +938,7 @@
                 lbl_export_anim: "Exportar Animación",
                 btn_export: "Exportar Video",
                 btn_exporting: "Compilando vídeo localmente...",
+                warn_format_compatibility: "Tu navegador no soporta codificación nativa de este formato. Se usará WebM como fallback. Te recomendamos usar WebM directamente o reproducir el archivo con VLC Player si tienes problemas.",
                 placeholder_prompt: "Escribe un prompt como \"lluvia matrix\", \"cubo 3D rotando\", \"fuego cyberpunk\"...",
                 btn_generate: "Generar",
                 sug_title: "Prueba estas ideas:",
@@ -968,7 +983,7 @@
                 tab_video: "Video Converter",
                 tab_prompt: "AI Prompt to ASCII",
                 upload_title: "Drag & drop your video file here",
-                upload_sub: "or click to browse your device (Formats: MP4, WebM)",
+                upload_sub: "or click to browse your device (Formats: MP4, WebM, OGG, MOV, MKV, AVI, etc.)",
                 upload_notice: "Note: Your video never leaves your computer. It is processed entirely in your browser.",
                 panel_adjustments: "Render Adjustments",
                 label_columns: "Resolution Width (Columns):",
@@ -994,6 +1009,7 @@
                 lbl_export_anim: "Export Animation",
                 btn_export: "Export Video",
                 btn_exporting: "Compiling video locally...",
+                warn_format_compatibility: "Your browser does not support native encoding for this format. WebM will be used as a fallback. We recommend using WebM directly or playing with VLC Player if you encounter issues.",
                 placeholder_prompt: "Enter a prompt like \"matrix rain\", \"3D rotating cube\", \"cyberpunk fire\", \"water waves\"...",
                 btn_generate: "Generate",
                 sug_title: "Try these ideas:",
@@ -1038,7 +1054,7 @@
                 tab_video: "Convertisseur Vidéo",
                 tab_prompt: "IA Prompt à ASCII",
                 upload_title: "Glissez-déposez votre fichier vidéo ici",
-                upload_sub: "ou cliquez pour parcourir votre appareil (Formats : MP4, WebM)",
+                upload_sub: "ou cliquez pour parcourir votre appareil (Formats : MP4, WebM, OGG, MOV, MKV, AVI, etc.)",
                 upload_notice: "Remarque : Votre vidéo ne quitte jamais votre ordinateur. Elle est traitée entièrement dans votre navigateur.",
                 panel_adjustments: "Ajustements de Rendu",
                 label_columns: "Largeur de Résolution (Colonnes) :",
@@ -1064,6 +1080,7 @@
                 lbl_export_anim: "Exporter l'Animation",
                 btn_export: "Exporter la Vidéo",
                 btn_exporting: "Compilation vidéo locale...",
+                warn_format_compatibility: "Votre navigateur ne supporte pas l'encodage natif de ce format. WebM sera utilisé en secours. Nous vous recommandons d'utiliser WebM directement ou de lire avec VLC Player en cas de problème.",
                 placeholder_prompt: "Entrez une invite comme \"pluie matrix\", \"cube rotatif 3D\", \"feu cyberpunk\", \"vagues d'eau\"...",
                 btn_generate: "Générer",
                 sug_title: "Essayez ces idées :",
@@ -1108,7 +1125,7 @@
                 tab_video: "Conversor de Vídeo",
                 tab_prompt: "Prompts IA para ASCII",
                 upload_title: "Arraste seu arquivo de vídeo aqui",
-                upload_sub: "ou clique para buscar no seu dispositivo (Formatos: MP4, WebM)",
+                upload_sub: "ou clique para buscar no seu dispositivo (Formatos: MP4, WebM, OGG, MOV, MKV, AVI, etc.)",
                 upload_notice: "Nota: O seu vídeo nunca sai do seu computador. É processado inteiramente no seu navegador.",
                 panel_adjustments: "Ajustes de Renderização",
                 label_columns: "Largura de Resolução (Colunas):",
@@ -1134,6 +1151,7 @@
                 lbl_export_anim: "Exportar Animação",
                 btn_export: "Exportar Vídeo",
                 btn_exporting: "Compilando vídeo localmente...",
+                warn_format_compatibility: "Seu navegador não suporta codificação nativa para este formato. WebM será usado como fallback. Recomendamos usar WebM diretamente ou reproduzir com o VLC Player se tiver problemas.",
                 placeholder_prompt: "Escreva um prompt como \"chuva matrix\", \"cubo 3D girando\", \"fogo cyberpunk\", \"ondas de água\"...",
                 btn_generate: "Gerar",
                 sug_title: "Experimente estas ideias:",
@@ -1178,7 +1196,7 @@
                 tab_video: "Video-Konverter",
                 tab_prompt: "KI-Prompt zu ASCII",
                 upload_title: "Ziehen Sie Ihre Videodatei hierher",
-                upload_sub: "oder klicken Sie, um Ihr Gerät zu durchsuchen (Formate: MP4, WebM)",
+                upload_sub: "oder klicken Sie, um Ihr Gerät zu durchsuchen (Formate: MP4, WebM, OGG, MOV, MKV, AVI, etc.)",
                 upload_notice: "Hinweis: Ihr Video verlässt Ihren Computer nie. Es wird vollständig in Ihrem Browser verarbeitet.",
                 panel_adjustments: "Render-Einstellungen",
                 label_columns: "Auflösungsbreite (Spalten):",
@@ -1204,6 +1222,7 @@
                 lbl_export_anim: "Animation exportieren",
                 btn_export: "Video exportieren",
                 btn_exporting: "Kompiliere Video lokal...",
+                warn_format_compatibility: "Ihr Browser unterstützt keine native Codierung für dieses Format. WebM wird als Fallback verwendet. Wir empfehlen, WebM direkt zu verwenden oder bei Problemen mit dem VLC Player abzuspielen.",
                 placeholder_prompt: "Geben Sie einen Prompt ein wie \"Matrix-Regen\", \"rotierender 3D-Würfel\", \"Cyberpunk-Feuer\", \"Wasserwellen\"...",
                 btn_generate: "Generieren",
                 sug_title: "Probieren Sie diese Ideen aus:",
