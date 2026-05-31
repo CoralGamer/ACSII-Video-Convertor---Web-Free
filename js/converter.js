@@ -300,6 +300,86 @@ class ASCIIConverter {
     startRecording(format, onProgress, onComplete) {
         if (this.isRecording) return;
         this.isRecording = true;
+
+        if (format === 'gif') {
+            this.recordedBlobs = [];
+            this.wasLooping = this.video.loop;
+            this.video.loop = false;
+            this.video.pause();
+            this.video.currentTime = 0;
+
+            onProgress(0, "Preparando captura de fotogramas GIF...");
+
+            setTimeout(() => {
+                const frames = [];
+                const maxFrames = 25; // 2.5 seconds loop at 10 FPS
+                const frameDelay = 100; // Capture every 100ms
+                
+                this.video.play();
+                this.start();
+
+                let frameCounter = 0;
+                this.checkProgressInterval = setInterval(() => {
+                    if (!this.isRecording) {
+                        clearInterval(this.checkProgressInterval);
+                        return;
+                    }
+
+                    // Extract high-contrast JPEG data-url from main canvas
+                    frames.push(this.canvas.toDataURL('image/jpeg', 0.8));
+                    frameCounter++;
+
+                    const progress = Math.round((frameCounter / maxFrames) * 100);
+                    // Stage 1: Frame capture takes up 0-40% of progress bar
+                    onProgress(Math.min(40, Math.round(progress * 0.4)), `Capturando fotogramas... ${frameCounter}/${maxFrames}`);
+
+                    const duration = this.video.duration;
+                    const isNearEnd = duration && !isNaN(duration) && duration !== Infinity && this.video.currentTime >= duration - 0.1;
+
+                    if (frameCounter >= maxFrames || this.video.ended || isNearEnd) {
+                        clearInterval(this.checkProgressInterval);
+                        this.video.pause();
+                        this.stop();
+
+                        // Stage 2: Web Workers compilation
+                        onProgress(45, "Compilando GIF en Workers locales (hilos en segundo plano)...");
+
+                        if (typeof gifshot !== 'undefined') {
+                            gifshot.createGIF({
+                                images: frames,
+                                gifWidth: this.canvas.width / 2, // Downsample for fast local rendering & file economy
+                                gifHeight: this.canvas.height / 2,
+                                interval: 0.1,
+                                numWorkers: 2
+                            }, (obj) => {
+                                this.isRecording = false;
+
+                                // Restore loop state
+                                if (this.wasLooping !== undefined) {
+                                    this.video.loop = this.wasLooping;
+                                }
+
+                                if (!obj.error) {
+                                    onProgress(100, "¡GIF compilado exitosamente!");
+                                    onComplete(obj.image);
+                                } else {
+                                    onComplete(null, "Error al codificar el GIF en el cliente.");
+                                }
+                            });
+                        } else {
+                            this.isRecording = false;
+                            if (this.wasLooping !== undefined) {
+                                this.video.loop = this.wasLooping;
+                            }
+                            onComplete(null, "Librería de codificación GIF (gifshot) no está cargada.");
+                        }
+                    }
+                }, frameDelay);
+
+            }, 500);
+            return;
+        }
+
         this.recordedBlobs = [];
 
         // Save original playing states

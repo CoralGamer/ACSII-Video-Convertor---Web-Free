@@ -777,6 +777,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const format = selectPromptExportFormat ? selectPromptExportFormat.value : 'mp4';
 
+            // Clean GIF exporter branching using gifshot workers
+            if (format === 'gif') {
+                const lblExportAnim = document.getElementById('lbl-export-anim');
+                btnExportPromptVideo.disabled = true;
+                
+                const frames = [];
+                const maxFrames = 25; // 2.5 seconds loop at 10 FPS
+                const frameDelay = 100; // Capture a frame every 100ms
+                
+                let frameCounter = 0;
+                const captureInterval = setInterval(() => {
+                    // Extract frame as lightweight high-contrast JPEG
+                    frames.push(canvasPromptRender.toDataURL('image/jpeg', 0.8));
+                    frameCounter++;
+                    
+                    if (lblExportAnim) {
+                        lblExportAnim.textContent = currentLang === 'es' 
+                            ? `Capturando... ${frameCounter}/${maxFrames}` 
+                            : `Capturing... ${frameCounter}/${maxFrames}`;
+                    }
+                    
+                    if (frameCounter >= maxFrames) {
+                        clearInterval(captureInterval);
+                        
+                        if (lblExportAnim) {
+                            lblExportAnim.textContent = currentLang === 'es' 
+                                ? 'Compilando GIF...' 
+                                : 'Compiling GIF...';
+                        }
+                        
+                        if (typeof gifshot !== 'undefined') {
+                            gifshot.createGIF({
+                                images: frames,
+                                gifWidth: canvasPromptRender.width / 2, // Downsample for blazing-fast Web Workers compilation
+                                gifHeight: canvasPromptRender.height / 2,
+                                interval: 0.1,
+                                numWorkers: 2
+                            }, (obj) => {
+                                btnExportPromptVideo.disabled = false;
+                                if (lblExportAnim) {
+                                    lblExportAnim.textContent = (window.staticTranslations && window.staticTranslations[currentLang] && window.staticTranslations[currentLang]['lbl_export_anim']) 
+                                        || (currentLang === 'es' ? 'Exportar Animación' : 'Export Animation');
+                                }
+                                
+                                if (!obj.error) {
+                                    const a = document.createElement('a');
+                                    a.href = obj.image;
+                                    a.download = `ascii-ai-prompt-${Date.now()}.gif`;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    setTimeout(() => {
+                                        document.body.removeChild(a);
+                                    }, 100);
+                                } else {
+                                    alert(currentLang === 'es' ? 'Error al compilar el GIF.' : 'Error compiling GIF.');
+                                }
+                            });
+                        } else {
+                            btnExportPromptVideo.disabled = false;
+                            if (lblExportAnim) {
+                                lblExportAnim.textContent = currentLang === 'es' ? 'Exportar Animación' : 'Export Animation';
+                            }
+                            alert("Librería gifshot no cargada.");
+                        }
+                    }
+                }, frameDelay);
+                return;
+            }
+
             // Hook recording from AI render canvas using MediaRecorder
             const fps = 24;
             const stream = canvasPromptRender.captureStream(fps);

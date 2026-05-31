@@ -753,6 +753,7 @@ $t = $translations[$lang];
                                 <option value="mkv">MKV (.mkv)</option>
                                 <option value="mov">MOV (.mov)</option>
                                 <option value="avi">AVI (.avi)</option>
+                                <option value="gif">GIF Animado (.gif)</option>
                             </select>
                         </div>
                         <div class="format-warning-box" id="export-format-warning">
@@ -871,6 +872,7 @@ $t = $translations[$lang];
                                 <option value="mkv">MKV (.mkv)</option>
                                 <option value="mov">MOV (.mov)</option>
                                 <option value="avi">AVI (.avi)</option>
+                                <option value="gif">GIF Animado (.gif)</option>
                             </select>
                         </div>
                         <div class="format-warning-box" id="prompt-export-format-warning">
@@ -1342,6 +1344,7 @@ $t = $translations[$lang];
     </footer>
 
     <!-- App initializers scripts links -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.4.5/gifshot.min.js"></script>
     <script src="js/converter.js"></script>
     <script src="js/ai-engine.js"></script>
     <script src="js/app.js"></script>

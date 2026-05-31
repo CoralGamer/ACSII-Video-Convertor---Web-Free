@@ -115,17 +115,21 @@ class AIPromptEngine {
             this.currentMode = 'fire';
             this.colorTheme = 'fire';
             this.charPalette = 'standard';
-        } else {
+        } else if (cleanPrompt.includes('neural') || cleanPrompt.includes('synapse') || cleanPrompt.includes('nodes') || cleanPrompt.includes('red')) {
             // Seed-based NEURAL SYNAPSE galaxy fallback
-            // This generates a completely unique generative structure for custom words!
             this.currentMode = 'neural';
-            
-            // Map seed to themes
             const themes = ['cyberpunk', 'neon', 'matrix', 'fire', 'monochrome'];
             this.colorTheme = themes[this.seedHash % themes.length];
-            
             const palettes = ['standard', 'extended', 'blocks', 'binary'];
             this.charPalette = palettes[(this.seedHash >> 2) % palettes.length];
+        } else {
+            // Generative AI Text-to-Image with dynamic pixel mapping and frame warp!
+            this.currentMode = 'ai-image';
+            this.colorTheme = 'neon'; // High-fidelity color by default
+            this.charPalette = 'extended'; // Deep detailed shading
+            
+            // Start local pixel extraction downloader
+            this.triggerImageGeneration(this.promptText);
         }
     }
 
@@ -196,6 +200,9 @@ class AIPromptEngine {
                 break;
             case 'fire':
                 this.drawFire(ctx, w, h, time);
+                break;
+            case 'ai-image':
+                this.drawAIImageWarp(ctx, w, h, time);
                 break;
             case 'neural':
             default:
@@ -489,6 +496,104 @@ class AIPromptEngine {
         ctx.fillText(`[NEURAL AI MAP PROCESSING PROMPT: "${this.promptText.toUpperCase()}"]`, 20, 25);
         ctx.fillText(`[SEED SECTOR CODE: #${this.seedHash.toString(16).toUpperCase()}]`, 20, 37);
         ctx.fillText(`[SYNAPSES ENTRANCES: ${this.nodes.length} ACTIVE NODES]`, 20, 49);
+    }
+
+    triggerImageGeneration(prompt) {
+        this.loadedImage = null;
+        this.cachedCanvas = null;
+        this.cachedPixels = null;
+
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&nologo=true&seed=${this.seedHash}`;
+
+        img.onload = () => {
+            if (this.currentMode !== 'ai-image' || this.promptText !== prompt) return;
+            this.loadedImage = img;
+
+            const cacheW = this.cols * 2;
+            const cacheH = this.rows * 2;
+
+            this.cachedCanvas = document.createElement('canvas');
+            this.cachedCanvas.width = cacheW;
+            this.cachedCanvas.height = cacheH;
+
+            const cacheCtx = this.cachedCanvas.getContext('2d');
+            cacheCtx.drawImage(img, 0, 0, cacheW, cacheH);
+            this.cachedPixels = cacheCtx.getImageData(0, 0, cacheW, cacheH);
+        };
+
+        img.onerror = (e) => {
+            console.error("Generative Text-to-Image API error:", e);
+            this.currentMode = 'neural';
+            this.colorTheme = 'fire';
+        };
+    }
+
+    drawAIImageWarp(ctx, w, h, time) {
+        if (!this.loadedImage || !this.cachedPixels) {
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, w, h);
+            
+            ctx.fillStyle = '#00f2fe';
+            ctx.font = 'bold 16px monospace';
+            ctx.textAlign = 'center';
+            
+            const blink = Math.floor(time * 2.0) % 2 === 0 ? '█' : ' ';
+            ctx.fillText(`SINTETIZANDO IMAGEN POR IA${blink}`, w / 2, h / 2 - 10);
+            
+            ctx.font = '10px monospace';
+            ctx.fillStyle = 'rgba(0, 242, 254, 0.7)';
+            ctx.fillText(`PROMPT: "${this.promptText.toUpperCase()}"`, w / 2, h / 2 + 15);
+            ctx.fillText("PROCESANDO PÍXELES 100% LOCAL...", w / 2, h / 2 + 32);
+            return;
+        }
+
+        const dstW = this.cols * 2;
+        const dstH = this.rows * 2;
+
+        if (this.cachedPixels.width !== dstW || this.cachedPixels.height !== dstH) {
+            const cacheW = dstW;
+            const cacheH = dstH;
+            this.cachedCanvas = document.createElement('canvas');
+            this.cachedCanvas.width = cacheW;
+            this.cachedCanvas.height = cacheH;
+            const cacheCtx = this.cachedCanvas.getContext('2d');
+            cacheCtx.drawImage(this.loadedImage, 0, 0, cacheW, cacheH);
+            this.cachedPixels = cacheCtx.getImageData(0, 0, cacheW, cacheH);
+        }
+
+        const tempImgData = this.procCtx.createImageData(dstW, dstH);
+        const dst = tempImgData.data;
+        const src = this.cachedPixels.data;
+        const srcW = this.cachedPixels.width;
+        const srcH = this.cachedPixels.height;
+
+        for (let y = 0; y < dstH; y++) {
+            for (let x = 0; x < dstW; x++) {
+                const nx = x / dstW;
+                const ny = y / dstH;
+
+                const dx = Math.sin(time * 1.2 + ny * 5.0) * 0.025;
+                const dy = Math.cos(time * 1.2 + nx * 5.0) * 0.025;
+
+                let sx = Math.floor((nx + dx) * srcW);
+                let sy = Math.floor((ny + dy) * srcH);
+
+                if (sx < 0) sx = 0; if (sx >= srcW) sx = srcW - 1;
+                if (sy < 0) sy = 0; if (sy >= srcH) sy = srcH - 1;
+
+                const srcIdx = (sy * srcW + sx) * 4;
+                const dstIdx = (y * dstW + x) * 4;
+
+                dst[dstIdx] = src[srcIdx];
+                dst[dstIdx + 1] = src[srcIdx + 1];
+                dst[dstIdx + 2] = src[srcIdx + 2];
+                dst[dstIdx + 3] = src[srcIdx + 3];
+            }
+        }
+
+        this.procCtx.putImageData(tempImgData, 0, 0);
     }
 
     /* --- ASCII Mapping Algorithm --- */
