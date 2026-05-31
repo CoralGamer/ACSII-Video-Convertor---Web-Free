@@ -23,47 +23,7 @@
   </details>
 </div>
 
----
 
-## ⚡ Galería de Exhibición Visual (Visual Tour)
-
-<table align="center" style="width: 100%; text-align: center; border-collapse: collapse;">
-  <tr>
-    <td width="50%"><strong>🖥️ Interfaz Avanzada de Renderizado (Dashboard)</strong></td>
-    <td width="50%"><strong>🎨 Mapeo de Color Real RGB y Caracteres (Dithering)</strong></td>
-  </tr>
-  <tr>
-    <td><img src="assets/readme/app-interface.png" alt="Panel de Control Web" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); max-width: 100%;" /></td>
-    <td><img src="assets/readme/dithering-color-render.png" alt="Difuminado en Color Real RGB" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); max-width: 100%;" /></td>
-  </tr>
-  <tr>
-    <td colspan="2"><br/></td>
-  </tr>
-  <tr>
-    <td width="50%"><strong>🤖 Generador Procedimental por Prompts (IA Engine)</strong></td>
-    <td width="50%"><strong>🔋 Proyecciones 3D CRT Fósforo Verde (3D Engine)</strong></td>
-  </tr>
-  <tr>
-    <td><img src="assets/readme/ai-prompt-generator.png" alt="Generador de IA a ASCII en Vivo" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); max-width: 100%;" /></td>
-    <td><img src="assets/readme/3d-cube-render.png" alt="Cubo Giratorio 3D Fósforo Verde" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); max-width: 100%;" /></td>
-  </tr>
-  <tr>
-    <td colspan="2"><br/></td>
-  </tr>
-  <tr>
-    <td width="50%"><strong>📽️ Degradados Cyberpunk y Matrix Lluvia (Temas)</strong></td>
-    <td width="50%"><strong>⭐ Sincronización y Resplandor de Valoración (GitHub Sync)</strong></td>
-  </tr>
-  <tr>
-    <td><img src="assets/readme/matrix-neon-render.png" alt="Renders de Temas Matrix y Neón" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); max-width: 100%;" /></td>
-    <td><img src="assets/readme/github-stars-sync.png" alt="Módulo de Sincronización GitHub Stars" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); max-width: 100%;" /></td>
-  </tr>
-</table>
-
-> [!NOTE]
-> *Asegúrate de hacer commit y push a todos los archivos dentro de `assets/readme/` en tu repositorio remoto para que GitHub pueda leer y mostrar estos recursos locales correctamente.*
-
----
 
 ## ✨ Características Premium Destacadas
 
