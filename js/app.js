@@ -801,15 +801,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return copilotGenerator;
         }
 
-        if (window.transformers) {
-            window.transformers.env.allowLocalModels = false;
-        } else {
-            throw new Error(currentLang === 'es' ? 'Librería de IA local (Transformers.js) no cargada.' : 'Local AI Library (Transformers.js) is not loaded.');
-        }
+        onProgress(currentLang === 'es' ? 'Inicializando motor de IA local...' : 'Initializing local AI engine...', 2);
+
+        // Dynamically import the ES Module from the CDN at runtime
+        const transformers = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.1');
+        
+        // Configure environment
+        transformers.env.allowLocalModels = false;
 
         onProgress(currentLang === 'es' ? 'Cargando pesos de IA local...' : 'Loading local AI weights...', 5);
         
-        copilotGenerator = await window.transformers.pipeline('text-generation', modelName, {
+        copilotGenerator = await transformers.pipeline('text-generation', modelName, {
             progress_callback: (data) => {
                 if (data.status === 'downloading') {
                     const percent = Math.round((data.loaded / (data.total || 1)) * 100);
