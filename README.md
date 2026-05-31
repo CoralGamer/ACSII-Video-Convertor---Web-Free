@@ -1,90 +1,137 @@
 # 🎬 ASCII Player — Conversor de Video a ASCII & Generador de Prompts IA
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-![Deployment](https://img.shields.io/badge/Deploy-GitHub_Pages-blue?style=for-the-badge&logo=github)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/CoralGamer/ACSII-Video-Convertor---Web-Free/main/assets/readme/banner.png" alt="Conversor ASCII Banner" width="100%" style="border-radius: 12px; margin-bottom: 20px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);" />
 
-Una aplicación web de última generación, premium e interactiva que te permite reproducir y **convertir videos locales a texto ASCII animado** en tempo real, así como generar increíbles gráficos procedimentales mediante **prompts en lenguaje natural** al estilo de una Inteligencia Artificial.
+  <p><strong>Una suite interactiva web de última generación para renderizar videos locales y sintetizar complejas simulaciones matemáticas 3D en arte de caracteres ASCII neón, de forma 100% local, privada y a más de 60 FPS.</strong></p>
 
-Todo funciona de forma **100% local en tu navegador**, utilizando la GPU y CPU de tu propio dispositivo. ¡Tus archivos nunca se suben a ningún servidor, garantizando total privacidad, seguridad y velocidad sin límites!
+  <p>
+    <a href="https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/"><img src="https://img.shields.io/badge/Demo_En_Vivo-Probar_Ahora-00f2fe?style=for-the-badge&logo=google-chrome&logoColor=black" alt="Probar Demo" /></a>
+    <a href="https://github.com/CoralGamer/ACSII-Video-Convertor---Web-Free/stargazers"><img src="https://img.shields.io/github/stars/CoralGamer/ACSII-Video-Convertor---Web-Free?style=for-the-badge&logo=github&color=yellow" alt="Estrellas en GitHub" /></a>
+    <img src="https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge" alt="Licencia MIT" />
+  </p>
 
-Desplegado oficialmente en: **[https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/](https://coralgamer.github.io/ACSII-Video-Convertor---Web-Free/)**
-
----
-
-## ✨ Características Premium y Funciones Actuales
-
-*   **📽️ Conversor de Video Local (Sin Servidores)**: Arrastra y suelta (`Drag & Drop`) cualquier video (MP4 o WebM). Se procesa a nivel de cliente en milisegundos.
-*   **⚡ Ajuste de Resolución Ultra-Rápido**: Controla la cantidad de columnas (de 40 a 180 columnas de resolución de texto) adaptando el renderizado en tiempo real.
-*   **👁️ Profundidad y Escala de Grises Avanzada**:
-    *   **Dithering Floyd-Steinberg**: Difusión de error de cuantización en tiempo real sobre una cuadrícula Float32 para generar texturas orgánicas suaves y eliminar el efecto de bandas de color en la consola ASCII.
-    *   **Control Deslizante de Gamma**: Modifica de forma no lineal los tonos medios mediante curvas exponenciales de luminosidad para rescatar detalles en sombras y brillos.
-*   **🎨 Paletas de Colores Neón e Hiper-Detalle**:
-    *   *Monocromo CRT Blanco y Negro*: Estilo de consola clásico de alta intensidad.
-    *   *CRT Fósforo Verde*: El emblemático look de terminal Matrix o Fallout.
-    *   *CRT Ámbar Retro*: Aspecto vintage de computadoras de los años 80.
-    *   *Color Real RGB*: Mapea cada caracter ASCII al color exacto de los píxeles originales.
-    *   *Neon Cyberpunk*: Gradiente de barrido dinámico Cian y Magenta con resplandor digital.
-    *   *Retro Vaporwave*: Degradado Sunset Teal y Rosa pastel de estética ochentera.
-    *   *Lluvia Matrix (Verde/Blanco)*: Acentos dinámicos en verde esmeralda con cabezas de lluvia en blanco brillante para zonas de alta luminosidad.
-*   **✨ Generador de Prompts IA a ASCII (100% Local)**:
-    *   Escribe instrucciones como `matrix digital rain`, `3d rotating wireframe cube`, `cyberpunk cellular fire`, `mandelbrot zoom`, etc.
-    *   El motor procedimental interpreta las palabras clave e inicia complejas simulaciones físicas, autómatas celulares de fuego y proyecciones trigonométricas 3D en caracteres ASCII.
-*   **🔊 Grabación y Exportación Directa Corregida**:
-    *   Captura el flujo visual del canvas junto con el canal de audio del reproductor mediante la API `MediaRecorder` del navegador de forma segura.
-    *   **Solución a Congelamientos**: Desactiva el bucle automáticamente al exportar para permitir que la pista finalice de manera natural, cuenta con try-catch integrado para evitar fallos si el video no posee pista de audio, y añade una salvaguarda de fin de video por tiempo (`currentTime >= duration - 0.1`).
-*   **💻 Banner CLI Especializado**:
-    *   Integración de panel interactivo que enseña a los desarrolladores a clonar y correr la suite interactiva de comandos en terminal de consola. La última versión funcional de esta suite fue desarrollada al 100% por **CoralGamer** a través del repositorio: `https://github.com/stepanussaruran/ASCII-Video-Player`.
-*   **🌍 Multi-Idioma Inteligente y Manuales Completos**: Enrutamiento estático optimizado para indexación SEO multilingüe en **Español, Inglés, Francés, Portugués y Alemán**. Incluye la traducción completa del **Manual Técnico y Guía Definitiva de Indexación** para cada uno de los 5 idiomas.
-*   **👾 Favicon Cyberpunk SVG**: Icono de consola de comandos diseñado con trazados vectoriales SVG e integrado tanto en HTML estático como dinámico.
+  <p>
+    <iframe src="https://github.com/sponsors/CoralGamer/button" title="Sponsor CoralGamer" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
+  </p>
+</div>
 
 ---
 
-## 🛠️ Arquitectura Técnica y Tecnologías
+## ⚡ Galería de Exhibición Visual (Visual Tour)
 
-La aplicación web ha sido construida exclusivamente con tecnologías vanilla para maximizar el rendimiento de renderizado a más de 60 FPS:
-
-1.  **HTML5 Video & Offscreen Canvas**: Decodificación local de cuadros y análisis del búfer de píxeles en memoria.
-2.  **Luminance Color Formula (NTSC BT.709)**: Conversión de componentes de color a escala de grises ponderando el espectro de color humano:
-    $$Y = 0.2126 \cdot R + 0.7152 \cdot G + 0.0722 \cdot B$$
-3.  **Algoritmo Floyd-Steinberg**: Distribución recursiva del error de aproximación lumínica hacia los píxeles adyacentes de la grilla ($X+1, Y-1, Y, Y+1$ con pesos de difracción $7/16, 3/16, 5/16, 1/16$) para simular tonos continuos a través de patrones de densidad de caracteres.
-4.  **Gamma Mapping Math**: Corrección no lineal dinámica expresada mediante la función de potencia exponencial:
-    $$\text{Gris}_{\text{final}} = \left(\frac{\text{Gris}_{\text{inicial}}}{255.0}\right)^{\frac{1}{\text{Gamma}}} \cdot 255.0$$
-5.  **MediaRecorder API**: Grabación síncrona en cliente del render en canvas con pistas de audio locales para descargas instantáneas en WebM/MP4.
-6.  **3D Math Software Engine**: Renderizador 3D por software escrito en JS que realiza transformaciones de matrices de rotación en los tres ejes (Pitch, Yaw, Roll) y proyección de perspectiva.
+<table align="center" style="width: 100%; text-align: center; border-collapse: collapse;">
+  <tr>
+    <td width="50%"><strong>🖥️ Interfaz Avanzada de Renderizado</strong></td>
+    <td width="50%"><strong>🌀 Mapeo de Color Real RGB y Caracteres</strong></td>
+  </tr>
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/CoralGamer/ACSII-Video-Convertor---Web-Free/main/assets/readme/app-interface.png" alt="Interfaz Web del Conversor" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" /></td>
+    <td><img src="https://raw.githubusercontent.com/CoralGamer/ACSII-Video-Convertor---Web-Free/main/assets/readme/dithering-color-render.png" alt="Render en Color Real y Dithering" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" /></td>
+  </tr>
+  <tr>
+    <td colspan="2"><br/></td>
+  </tr>
+  <tr>
+    <td width="50%"><strong>🤖 Generador Procedimental por Prompts</strong></td>
+    <td width="50%"><strong>🔋 Proyecciones 3D CRT Fósforo Verde</strong></td>
+  </tr>
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/CoralGamer/ACSII-Video-Convertor---Web-Free/main/assets/readme/ai-prompt-generator.png" alt="Generador IA de Prompts" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" /></td>
+    <td><img src="https://raw.githubusercontent.com/CoralGamer/ACSII-Video-Convertor---Web-Free/main/assets/readme/3d-cube-render.png" alt="Cubo Rotando en 3D en CRT" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" /></td>
+  </tr>
+  <tr>
+    <td colspan="2"><br/></td>
+  </tr>
+  <tr>
+    <td width="50%"><strong>✨ Degradados Cyberpunk y Matrix Lluvia</strong></td>
+    <td width="50%"><strong>⭐ Sincronización y Resplandor de Valoración</strong></td>
+  </tr>
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/CoralGamer/ACSII-Video-Convertor---Web-Free/main/assets/readme/matrix-neon-render.png" alt="Lluvia Matrix y Cyberpunk" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" /></td>
+    <td><img src="https://raw.githubusercontent.com/CoralGamer/ACSII-Video-Convertor---Web-Free/main/assets/readme/github-stars-sync.png" alt="Badge y Tarjeta Interactiva de Estrellas" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" /></td>
+  </tr>
+</table>
 
 ---
 
-## 🚀 Cómo Ejecutar en Local
+## ✨ Características Premium Destacadas
 
-Puedes correr la aplicación localmente de forma extremadamente sencilla:
+*   **📽️ Conversor de Video Local Multiformato (100% Seguro)**: Arrastra y suelta (`Drag & Drop`) cualquier vídeo de tu dispositivo (soporta formatos abiertos y propietarios como **MP4, WebM, OGG, MOV, MKV, AVI, etc.**). El procesamiento ocurre en tu PC y tu archivo nunca toca la red.
+*   **👁️ Profundidad Visual y Texturas Orgánicas**:
+    *   **Difusión de Error Floyd-Steinberg**: Distribuye el residuo de cuantización lumínica sobre una grilla Float32 dinámica para simular gradientes de luz continuos y orgánicos, eliminando el desagradable efecto "banding" típico de los visualizadores ASCII convencionales.
+    *   **Ajuste No-Lineal de Gamma**: Aumenta o disminuye el contraste de los tonos medios con precisión matemática para rescatar detalles intrincados ocultos en las sombras oscuras o en las altas luces del metraje.
+*   **🎨 Filtros y Paletas de Colores de Alta Fidelidad**:
+    *   *Monocromo CRT Blanco*: Contraste nítido sobre consola terminal oscura.
+    *   *CRT Fósforo Verde / Ámbar Retro*: Look nostálgico que evoca las terminales VT100 y las legendarias computadoras retro de los 80.
+    *   *Color Real RGB*: Conserva la paleta de colores nativa de tu video asignando colores RGB de 24 bits dinámicamente a cada caracter individual.
+    *   *Cyberpunk & Vaporwave*: Degradados interactivos en tonos Cian, Violeta, Rosa y Fucsia que simulan un barrido CRT futurista.
+    *   *Lluvia Matrix Inteligente*: Aplica tonos esmeralda oscuros en las sombras del render y resplandores blancos incandescentes en las crestas más brillantes, simulando el look cinemático de lluvia digital de la saga Matrix.
+*   **🤖 Generador de Prompts IA a ASCII Procedimental**:
+    *   Escribe solicitudes como `matrix rain`, `3d rotating cube`, `neon cyberpunk fire`, `ocean waves`, `fractal zoom`, etc.
+    *   El motor dinámico de Javascript interpreta la semántica del prompt e inicializa simulaciones físicas y proyecciones tridimensionales en tiempo real directamente sobre el canvas ASCII.
+*   **🔊 Grabador y Exportador Súper Compatible**:
+    *   Graba el resultado del renderizado a través de la API `MediaRecorder` del navegador.
+    *   Permite seleccionar dinámicamente tu contenedor y formato preferido (**MP4, WebM, MKV, MOV, AVI**) con negociación inteligente de códecs nativos y fallbacks automáticos.
+*   **⭐ Reputación e Interacción GitHub en Tiempo Real**:
+    *   Cuenta con una tarjeta y badge interactivos que consultan dinámicamente la API de GitHub mediante una arquitectura cache-first con almacenamiento local.
+    *   **Sincronización por Enfoque**: Re-consulta el estado real de stargazers de inmediato cuando el usuario regresa a la pestaña (evitando refrescos manuales).
+    *   **Cero Latencia**: Incrementa automáticamente el contador en el navegador y desencadena un hermoso destello animado de confirmación al hacer clic para dar soporte al repositorio.
 
-1.  Clona este repositorio o descarga la carpeta `web-app/`.
-2.  **Método Directo**: Simplemente abre el archivo `index.html` en tu navegador favorito.
-3.  **Servidor Local (Recomendado para evitar bloqueos CORS en algunos recursos externos)**:
-    *   Si tienes Python instalado, ejecuta:
+---
+
+## 🛠️ Arquitectura Técnica y Ecuaciones del Render
+
+El reproductor y convertidor de ASCII se destaca por su rigurosidad técnica para lograr un render a más de 60 cuadros por segundo:
+
+### 1. Luminancia Relativa (Fórmula NTSC BT.709)
+Convertimos los canales rojo, verde y azul a una señal de gris ponderada que representa fielmente la sensibilidad del ojo humano a los espectros lumínicos:
+$$Y = 0.2126 \cdot R + 0.7152 \cdot G + 0.0722 \cdot B$$
+
+### 2. Dithering por Difusión de Error Floyd-Steinberg
+Para cada píxel en la grilla espacial, el error de aproximación entre la luminosidad original y el caracter asignado se divide dinámicamente y se propaga hacia los píxeles vecinos siguiendo una grilla de pesos de dispersión:
+$$\text{Vecinos:} \quad (X+1, Y) \to \frac{7}{16}, \quad (X-1, Y+1) \to \frac{3}{16}, \quad (X, Y+1) \to \frac{5}{16}, \quad (X+1, Y+1) \to \frac{1}{16}$$
+
+### 3. Ajuste de Gamma
+Permite realizar modificaciones no-lineales a los tonos medios del vídeo por medio de la potencia fraccionaria:
+$$\text{Gris}_{\text{final}} = \left(\frac{\text{Gris}_{\text{inicial}}}{255.0}\right)^{\frac{1}{\text{Gamma}}} \cdot 255.0$$
+
+---
+
+## 🚀 Guía de Uso Local y Desarrollo
+
+Ejecutar la suite web de forma local en tu computadora es extremadamente fácil:
+
+1.  **Clonado**:
+    ```bash
+    git clone https://github.com/CoralGamer/ACSII-Video-Convertor---Web-Free.git
+    cd ACSII-Video-Convertor---Web-Free
+    ```
+2.  **Lanzamiento Directo**:
+    *   Simplemente abre el archivo `index.html` en cualquier navegador web moderno de escritorio o dispositivo móvil.
+3.  **Lanzamiento Servidor (Recomendado para evitar bloqueos de CORS locales)**:
+    *   Si utilizas **Python 3**:
         ```bash
         python -m http.server 8000
         ```
-    *   Si tienes Node.js, ejecuta:
+    *   Si utilizas **Node.js**:
         ```bash
         npx http-server ./ -p 8000
         ```
-    *   Abre `http://localhost:8000` en tu navegador.
+    *   Visita `http://localhost:8000` en tu navegador.
 
 ---
 
-## 📈 Estructura SEO Avanzada e Indexación
+## 💻 ¿Prefieres la Consola de Comandos (CLI)?
 
-Para maximizar el tráfico orgánico desde Google, el proyecto incorpora:
-*   **Grafo JSON-LD Schema.org**: Estructura multilenguaje que fusiona tarjetas enriquecidas de **WebApplication**, **FAQPage** y **HowTo** en el código.
-*   **Robots & Sitemap**: Configurados para el rastreo selectivo multilingüe.
-*   **Artículos Educativos de Autoridad**: Redactados y optimizados semánticamente en el pie de página de la app, traduciéndose de forma completa a los 5 idiomas admitidos por la landing.
+Si eres un programador amante de la terminal que desea realizar renderizados masivos por lotes a máxima velocidad con aceleración local en Linux, macOS o Windows, puedes utilizar nuestra potente herramienta interactiva para terminal.
+
+La última versión oficial optimizada para terminal está disponible en el repositorio de **stepanussaruran** y ha sido potenciada al 100% por **CoralGamer**:
+👉 **[Ver Suite de Terminal ASCII-Video-Player](https://github.com/stepanussaruran/ASCII-Video-Player)**
 
 ---
 
-## ⚖️ Licencia
+## ⚖️ Licencia y Créditos
 
-Este proyecto está licenciado bajo la **Licencia MIT**. Puedes consultar el texto íntegro y de libre uso en el archivo [LICENSE](LICENSE) ubicado en la raíz de esta carpeta.
+*   **Licencia**: Distribuido bajo la **Licencia MIT**. Siéntete libre de modificar, distribuir y monetizar esta suite. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+*   **Créditos de Autoría**: Desarrollado y optimizado por **CoralGamer** basándose en la idea estructural de conversión ASCII original.

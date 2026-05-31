@@ -1903,6 +1903,20 @@ footer {
     fill: var(--color-primary);
     filter: drop-shadow(0 0 2px var(--color-primary));
 }
+.github-support-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.github-support-action iframe {
+    transition: transform var(--transition-fast);
+}
+
+.github-support-action iframe:hover {
+    transform: scale(1.06);
+}
 
 .btn-github-star {
     display: inline-flex;
@@ -1933,6 +1947,10 @@ footer {
         flex-direction: column;
         gap: 2rem;
         align-items: flex-start;
+    }
+    .github-support-action {
+        width: 100%;
+        align-items: center;
     }
     .btn-github-star {
         width: 100%;
