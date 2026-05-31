@@ -14,8 +14,8 @@ class ASCIIConverter {
         this.procCanvas = document.createElement('canvas');
         this.procCtx = this.procCanvas.getContext('2d', { willReadFrequently: true });
 
-        // Configuration state
-        this.cols = 100;
+        // Configuration state - Amplified high-resolution default
+        this.cols = 160;
         this.charPaletteName = 'blocks';
         this.colorMode = 'monochrome'; // 'monochrome', 'amber', 'green', 'colorized', 'cyberpunk', 'vaporwave', 'matrix-glow'
         this.contrast = 0; // -100 to 100
@@ -104,17 +104,17 @@ class ASCIIConverter {
         const palette = this.palettes[this.charPaletteName] || this.palettes.standard;
         const paletteLen = palette.length;
 
-        // Prep canvas dimensions for rendering text
-        const fontSize = 10;
-        this.canvas.width = this.cols * 6; // ~6px width per monospace character
-        this.canvas.height = rows * 10;    // 10px line-height
+        // Prep canvas dimensions for rendering text - Amplified high-res spacing
+        const fontSize = 16;
+        this.canvas.width = this.cols * 9.6; // 9.6px width per monospace character (0.6 ratio)
+        this.canvas.height = rows * 16;    // 16px line-height
 
         // Clear canvas
         this.ctx.fillStyle = '#000000';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Configure font style
-        this.ctx.font = `${fontSize}px 'Fira Code', monospace`;
+        this.ctx.font = `bold ${fontSize}px 'Fira Code', 'Courier New', monospace`;
         this.ctx.textBaseline = 'top';
 
         // Variables for contrast/brightness formulas
@@ -224,9 +224,9 @@ class ASCIIConverter {
                 const b = colorBuffer[idx * 3 + 2];
                 const gray = grayBuffer[idx];
 
-                // Drawing coordinates
-                const charX = x * 6;
-                const charY = y * 10;
+                // Drawing coordinates - high resolution spacing
+                const charX = x * 9.6;
+                const charY = y * 16;
 
                 // Colorize canvas drawing with expanded cyber color systems
                 if (this.colorMode === 'colorized') {

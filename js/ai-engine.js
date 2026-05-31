@@ -15,9 +15,9 @@ class AIPromptEngine {
         this.procCanvas = document.createElement('canvas');
         this.procCtx = this.procCanvas.getContext('2d', { willReadFrequently: true });
 
-        // Default configurations
-        this.cols = 100;
-        this.rows = 40;
+        // Default configurations - Amplified high-resolution defaults
+        this.cols = 160;
+        this.rows = 65;
         this.speed = 1.0;
         this.colorTheme = 'cyberpunk';
         this.charPalette = 'standard';
@@ -912,14 +912,14 @@ class AIPromptEngine {
         const imgData = downCtx.getImageData(0, 0, this.cols, this.rows);
         const pixels = imgData.data;
 
-        // Prep visible display canvas dimensions
-        const fontSize = 10;
-        this.canvas.width = this.cols * 6;
-        this.canvas.height = this.rows * 10;
+        // Prep visible display canvas dimensions - Amplified high-res spacing
+        const fontSize = 16;
+        this.canvas.width = this.cols * 9.6; // 9.6px width per monospace character (0.6 ratio)
+        this.canvas.height = this.rows * 16;    // 16px line-height
         
         this.ctx.fillStyle = '#000000';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.font = `${fontSize}px 'Fira Code', monospace`;
+        this.ctx.font = `bold ${fontSize}px 'Fira Code', 'Courier New', monospace`;
         this.ctx.textBaseline = 'top';
 
         const palette = this.palettes[this.charPalette] || this.palettes.standard;
@@ -944,8 +944,8 @@ class AIPromptEngine {
 
                 rowText += char;
 
-                const charX = x * 6;
-                const charY = y * 10;
+                const charX = x * 9.6;
+                const charY = y * 16;
 
                 // Handle themed color profiles
                 if (this.colorTheme === 'matrix') {
