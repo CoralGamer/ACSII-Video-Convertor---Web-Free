@@ -16,7 +16,7 @@ class ASCIIConverter {
 
         // Configuration state
         this.cols = 100;
-        this.charPaletteName = 'standard';
+        this.charPaletteName = 'blocks';
         this.colorMode = 'monochrome'; // 'monochrome', 'amber', 'green', 'colorized', 'cyberpunk', 'vaporwave', 'matrix-glow'
         this.contrast = 0; // -100 to 100
         this.brightness = 0; // -100 to 100

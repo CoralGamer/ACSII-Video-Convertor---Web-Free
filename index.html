@@ -283,9 +283,9 @@
                         <div class="control-group">
                             <label class="control-label" for="select-palette" data-key="label_palette">Paleta de Caracteres:</label>
                             <select class="select-input" id="select-palette">
-                                <option value="standard" selected data-key="palette_std">Estándar (Básico)</option>
+                                <option value="standard" data-key="palette_std">Estándar (Básico)</option>
                                 <option value="extended" data-key="palette_ext">Extendido (Detallado)</option>
-                                <option value="blocks" data-key="palette_blocks">Bloques (Pixel Art)</option>
+                                <option value="blocks" selected data-key="palette_blocks">Bloques (Pixel Art)</option>
                                 <option value="binary" data-key="palette_bin">Binario (Matrix)</option>
                             </select>
                         </div>
@@ -392,6 +392,49 @@
                             <div class="suggestion-chip" data-prompt="dynamic marine ocean sine waves" data-key="sug_ocean">Ondas del Océano</div>
                             <div class="suggestion-chip" data-prompt="mandelbrot infinite fractal zoom math" data-key="sug_fractal">Zoom de Fractal</div>
                         </div>
+
+                        <!-- AI Copilot Panel (Experimental local WASM model) -->
+                        <div class="ai-copilot-panel">
+                            <div class="ai-copilot-header">
+                                <label class="switch-container">
+                                    <input type="checkbox" id="check-ai-copilot">
+                                    <span class="switch-slider"></span>
+                                </label>
+                                <span class="ai-copilot-title">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/></svg>
+                                    <span data-key="copilot_title">Copiloto IA Local (WASM / WebGPU)</span>
+                                </span>
+                                <span class="ai-copilot-badge">COPILOTO LOCAL</span>
+                            </div>
+                            <div class="ai-copilot-content" id="ai-copilot-content" style="display: none;">
+                                <div class="copilot-controls">
+                                    <div class="control-group compact">
+                                        <label for="select-copilot-model" data-key="label_copilot_model">Modelo Local:</label>
+                                        <select class="select-input compact" id="select-copilot-model">
+                                            <option value="Xenova/distilgpt2" selected>Tiny GPT-2 (80 MB - Súper Rápido)</option>
+                                            <option value="Xenova/LaMini-GPT-124M">LaMini GPT-124M (120 MB - Creativo)</option>
+                                        </select>
+                                    </div>
+                                    <div class="control-group compact">
+                                        <label for="slider-copilot-temp" id="lbl-copilot-temp">Creatividad: <span>0.8</span></label>
+                                        <input type="range" class="slider-input compact" id="slider-copilot-temp" min="0.2" max="1.5" step="0.1" value="0.8">
+                                    </div>
+                                    <div class="control-group compact">
+                                        <label for="slider-copilot-length" id="lbl-copilot-length">Longitud Máxima: <span>30</span></label>
+                                        <input type="range" class="slider-input compact" id="slider-copilot-length" min="10" max="60" step="5" value="30">
+                                    </div>
+                                </div>
+                                <div class="copilot-status" id="copilot-status" style="display: none;">
+                                    <div class="status-header">
+                                        <span class="status-text" id="copilot-status-text">Cargando modelo local en el navegador...</span>
+                                        <span class="status-percentage" id="copilot-status-percentage">0%</span>
+                                    </div>
+                                    <div class="status-progress-bar">
+                                        <div class="status-progress-fill" id="copilot-status-fill" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- AI display screen -->
@@ -439,9 +482,9 @@
                         <div class="control-group">
                             <label class="control-label" for="select-prompt-palette" data-key="label_palette">Paleta de Caracteres:</label>
                             <select class="select-input" id="select-prompt-palette">
-                                <option value="standard" selected data-key="palette_std">Estándar (Básico)</option>
+                                <option value="standard" data-key="palette_std">Estándar (Básico)</option>
                                 <option value="extended" data-key="palette_ext">Extendido (Detallado)</option>
-                                <option value="blocks" data-key="palette_blocks">Bloques (Pixel Art)</option>
+                                <option value="blocks" selected data-key="palette_blocks">Bloques (Pixel Art)</option>
                                 <option value="binary" data-key="palette_bin">Binario (Matrix)</option>
                             </select>
                         </div>
@@ -1013,7 +1056,9 @@
                 star_title: "¡Danos una estrella en GitHub! ⭐",
                 star_desc: "Si te gusta este convertidor retro 100% gratuito y privado, apoya nuestro trabajo dándole una estrella a nuestro repositorio oficial de GitHub. Tu apoyo nos ayuda a seguir expandiendo el motor de arte ASCII y mantenerlo libre de servidores para siempre.",
                 star_live_counter: "Estrellas actuales en tiempo real:",
-                star_btn: "Dar Estrella en GitHub"
+                star_btn: "Dar Estrella en GitHub",
+                copilot_title: "Copiloto IA Local (WASM / WebGPU)",
+                label_copilot_model: "Modelo Local:"
             },
             en: {
                 title: "Free Online Video to ASCII Converter & AI Prompt Generator",
@@ -1089,7 +1134,9 @@
                 star_title: "Give us a star on GitHub! ⭐",
                 star_desc: "If you love this 100% free and private retro converter, support our work by giving a star to our official GitHub repository. Your support helps us keep expanding the ASCII art engine and keep it server-free forever.",
                 star_live_counter: "Current stars in real-time:",
-                star_btn: "Star on GitHub"
+                star_btn: "Star on GitHub",
+                copilot_title: "Local AI Copilot (WASM / WebGPU)",
+                label_copilot_model: "Local Model:"
             },
             fr: {
                 title: "Convertisseur Vidéo en ASCII Gratuit & Générateur de Prompts IA",
@@ -1324,8 +1371,12 @@
 
     <!-- App initializers scripts links -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.4.5/gifshot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.1"></script>
     <script src="js/converter.js"></script>
     <script src="js/ai-engine.js"></script>
     <script src="js/app.js"></script>
+<!-- Toast Notification Container -->
+<div class="toast-container" id="toast-container"></div>
+
 </body>
 </html>

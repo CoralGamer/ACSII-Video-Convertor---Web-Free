@@ -5,6 +5,45 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // ---- Toast Notification System ----
+    function showToast(title, message, type = 'ai', duration = 5500) {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        toast.className = `toast-notification`;
+        toast.style.setProperty('--toast-duration', `${duration}ms`);
+        
+        let iconHtml = '🤖';
+        if (type === 'success') iconHtml = '✓';
+        else if (type === 'warning') iconHtml = '⚠';
+        else if (type === 'info') iconHtml = 'ℹ';
+
+        toast.innerHTML = `
+            <div class="toast-icon toast-${type}">${iconHtml}</div>
+            <div class="toast-body">
+                <div class="toast-title">${title}</div>
+                <div class="toast-message">${message}</div>
+            </div>
+            <div class="toast-progress">
+                <div class="toast-progress-bar"></div>
+            </div>
+        `;
+
+        container.appendChild(toast);
+
+        // Auto remove
+        setTimeout(() => {
+            toast.classList.add('toast-exit');
+            toast.addEventListener('animationend', (e) => {
+                if (e.animationName === 'toastSlideOut') {
+                    toast.remove();
+                }
+            });
+        }, duration);
+    }
+    window.showToast = showToast;
+
     // -------------------------------------------------------------
     // 1. Language Handling & Client-side Translation Engine
     // -------------------------------------------------------------
@@ -696,10 +735,211 @@ document.addEventListener('DOMContentLoaded', () => {
         aiEngine = new AIPromptEngine(promptOutputText, canvasPromptRender);
     }
 
-    function runPrompt() {
-        if (!aiEngine) return;
-        const text = promptInput.value.trim();
+    // ---- AI Copilot Local WASM / WebGPU Hookups ----
+    const checkAICopilot = document.getElementById('check-ai-copilot');
+    const aiCopilotContent = document.getElementById('ai-copilot-content');
+    const selectCopilotModel = document.getElementById('select-copilot-model');
+    const sliderCopilotTemp = document.getElementById('slider-copilot-temp');
+    const valCopilotTemp = document.getElementById('val-copilot-temp');
+    const sliderCopilotLength = document.getElementById('slider-copilot-length');
+    const valCopilotLength = document.getElementById('val-copilot-length');
+    const copilotStatus = document.getElementById('copilot-status');
+    const copilotStatusText = document.getElementById('copilot-status-text');
+    const copilotStatusPercentage = document.getElementById('copilot-status-percentage');
+    const copilotStatusFill = document.getElementById('copilot-status-fill');
+
+    // Restore user preferences
+    if (checkAICopilot && aiCopilotContent) {
+        const isCopilotEnabled = localStorage.getItem('ai_copilot_enabled') === 'true';
+        checkAICopilot.checked = isCopilotEnabled;
+        aiCopilotContent.style.display = isCopilotEnabled ? 'block' : 'none';
+        if (isCopilotEnabled) {
+            checkAICopilot.closest('.ai-copilot-panel').classList.add('active');
+        }
+
+        checkAICopilot.addEventListener('change', () => {
+            const active = checkAICopilot.checked;
+            localStorage.setItem('ai_copilot_enabled', active);
+            aiCopilotContent.style.display = active ? 'block' : 'none';
+            const panel = checkAICopilot.closest('.ai-copilot-panel');
+            if (active) {
+                panel.classList.add('active');
+                if (typeof window.showToast === 'function') {
+                    window.showToast(
+                        currentLang === 'es' ? 'Copiloto IA Activado' : 'AI Copilot Activated',
+                        currentLang === 'es' 
+                            ? 'Los prompts se procesarán localmente en tu CPU/GPU mediante WebAssembly.' 
+                            : 'Prompts will be processed locally on your CPU/GPU using WebAssembly.',
+                        'ai', 
+                        4500
+                    );
+                }
+            } else {
+                panel.classList.remove('active');
+            }
+        });
+    }
+
+    if (sliderCopilotTemp && valCopilotTemp) {
+        sliderCopilotTemp.addEventListener('input', () => {
+            valCopilotTemp.textContent = sliderCopilotTemp.value;
+        });
+    }
+    if (sliderCopilotLength && valCopilotLength) {
+        sliderCopilotLength.addEventListener('input', () => {
+            valCopilotLength.textContent = sliderCopilotLength.value;
+        });
+    }
+
+    // Singleton model holders
+    let copilotGenerator = null;
+    let lastLoadedModel = '';
+    let isCopilotGenerating = false;
+
+    async function getCopilotGenerator(modelName, onProgress) {
+        if (copilotGenerator && lastLoadedModel === modelName) {
+            return copilotGenerator;
+        }
+
+        if (window.transformers) {
+            window.transformers.env.allowLocalModels = false;
+        } else {
+            throw new Error(currentLang === 'es' ? 'Librería de IA local (Transformers.js) no cargada.' : 'Local AI Library (Transformers.js) is not loaded.');
+        }
+
+        onProgress(currentLang === 'es' ? 'Cargando pesos de IA local...' : 'Loading local AI weights...', 5);
+        
+        copilotGenerator = await window.transformers.pipeline('text-generation', modelName, {
+            progress_callback: (data) => {
+                if (data.status === 'downloading') {
+                    const percent = Math.round((data.loaded / (data.total || 1)) * 100);
+                    onProgress(
+                        currentLang === 'es' 
+                            ? `Descargando archivo: ${data.file.split('/').pop()}` 
+                            : `Downloading file: ${data.file.split('/').pop()}`,
+                        percent
+                    );
+                } else if (data.status === 'done') {
+                    onProgress(currentLang === 'es' ? 'Archivo cargado en navegador' : 'File loaded in browser', 100);
+                }
+            }
+        });
+
+        lastLoadedModel = modelName;
+        return copilotGenerator;
+    }
+
+    async function enhancePromptLocal(promptText) {
+        if (!promptText) return '';
+        
+        const modelName = selectCopilotModel.value;
+        
+        // Show status panel
+        copilotStatus.style.display = 'block';
+        btnRunPrompt.disabled = true;
+        isCopilotGenerating = true;
+
+        const updateProgress = (text, percent) => {
+            copilotStatusText.textContent = text;
+            copilotStatusPercentage.textContent = `${percent}%`;
+            copilotStatusFill.style.width = `${percent}%`;
+        };
+
+        try {
+            const generator = await getCopilotGenerator(modelName, updateProgress);
+            
+            updateProgress(currentLang === 'es' ? 'Pensando expansión creativa...' : 'Thinking creative expansion...', 95);
+
+            // Creative expansion prompts depending on model
+            let fullInputText = `Enhance detailed retro art prompt: "${promptText}". Details: ${promptText},`;
+            if (modelName.includes('LaMini')) {
+                fullInputText = `Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\nExpand this raw art prompt into a highly creative, detailed description: "${promptText}"\n\n### Response:\n`;
+            }
+            
+            const temp = parseFloat(sliderCopilotTemp.value);
+            const maxLength = parseInt(sliderCopilotLength.value);
+
+            const result = await generator(fullInputText, {
+                max_new_tokens: maxLength,
+                temperature: temp,
+                do_sample: temp > 0.15,
+                top_k: 40,
+                top_p: 0.9,
+                repetition_penalty: 1.15
+            });
+
+            let generatedText = result[0].generated_text || '';
+            
+            // Post-processing to clean completions
+            let enhanced = '';
+            if (modelName.includes('LaMini')) {
+                const parts = generatedText.split('### Response:\n');
+                enhanced = (parts[parts.length - 1] || '').trim();
+            } else {
+                // DistilGPT2 completions: extract generated suffix
+                enhanced = generatedText.substring(fullInputText.length).trim();
+            }
+
+            // Cleanup generated text formatting
+            enhanced = enhanced.replace(/^["'\s]+|["'\s]+$/g, ''); // strip quotes
+            // Remove incomplete sentences at the end
+            const lastPeriod = enhanced.lastIndexOf('.');
+            const lastComma = enhanced.lastIndexOf(',');
+            const cleanIndex = Math.max(lastPeriod, lastComma);
+            if (cleanIndex > 0 && cleanIndex < enhanced.length - 1) {
+                enhanced = enhanced.substring(0, cleanIndex + 1);
+            }
+            
+            const finalPrompt = `${promptText}, ${enhanced}`.trim();
+            updateProgress(currentLang === 'es' ? '¡Prompt optimizado con éxito!' : 'Prompt optimized successfully!', 100);
+            
+            if (typeof window.showToast === 'function') {
+                window.showToast(
+                    currentLang === 'es' ? 'IA Copilot: Prompt Enriquecido' : 'AI Copilot: Prompt Enriched',
+                    currentLang === 'es' 
+                        ? 'Inferencia local completada. Ejecutando renderizado visual Canvas.' 
+                        : 'Local inference completed. Executing Canvas visual rendering.',
+                    'success', 
+                    4500
+                );
+            }
+
+            setTimeout(() => {
+                copilotStatus.style.display = 'none';
+            }, 3000);
+
+            return finalPrompt;
+        } catch (error) {
+            console.error("Local AI inference failed:", error);
+            updateProgress(`Error: ${error.message}`, 0);
+            if (typeof window.showToast === 'function') {
+                window.showToast(
+                    currentLang === 'es' ? 'Error en Inferencia Local' : 'Local Inference Error',
+                    error.message,
+                    'warning',
+                    5000
+                );
+            }
+            setTimeout(() => {
+                copilotStatus.style.display = 'none';
+            }, 5000);
+            return promptText; // fallback to original input
+        } finally {
+            btnRunPrompt.disabled = false;
+            isCopilotGenerating = false;
+        }
+    }
+
+    async function runPrompt() {
+        if (!aiEngine || isCopilotGenerating) return;
+        let text = promptInput.value.trim();
         if (text === '') return;
+
+        // Intercept with Local Copilot WASM expansion if enabled
+        if (checkAICopilot && checkAICopilot.checked) {
+            text = await enhancePromptLocal(text);
+            promptInput.value = text; // Write back expanded prompt into UI
+        }
 
         aiEngine.stop();
         aiEngine.parsePrompt(text);

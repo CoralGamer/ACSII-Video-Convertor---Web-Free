@@ -131,6 +131,65 @@ class AIPromptEngine {
             // Start local pixel extraction downloader
             this.triggerImageGeneration(this.promptText);
         }
+
+        // Explanatory Toast Notification
+        if (typeof window.showToast === 'function') {
+            const isEs = (document.documentElement.lang === 'es' || (navigator.language || '').startsWith('es'));
+            let title = '';
+            let message = '';
+            
+            switch (this.currentMode) {
+                case 'matrix':
+                    title = isEs ? 'Lluvia Digital Procedimental' : 'Procedural Digital Rain';
+                    message = isEs 
+                        ? 'Generando una cascada animada de código binario en tiempo real adaptada al tema Matrix.' 
+                        : 'Generating a live animated binary code cascade in real-time configured with the Matrix theme.';
+                    break;
+                case 'cube':
+                    title = isEs ? 'Motor Procedimental 3D' : '3D Procedural Engine';
+                    message = isEs 
+                        ? 'Proyección matemática tridimensional de un cubo giratorio en perspectiva sobre el canvas de caracteres.' 
+                        : 'Mathematical 3D projection of a rotating perspective cube onto the character canvas.';
+                    break;
+                case 'heart':
+                    title = isEs ? 'Ecuación Paramétrica' : 'Parametric Equation';
+                    message = isEs 
+                        ? 'Renderizado de curva de vector cardíaco palpitante usando fórmulas matemáticas polares en tonos de fuego.' 
+                        : 'Rendering a pulsating cardiac vector curve using polar mathematical formulas with the fire theme.';
+                    break;
+                case 'dvd':
+                    title = isEs ? 'Logotipo de Rebote DVD' : 'Bouncing DVD Logo';
+                    message = isEs 
+                        ? 'Simulando el clásico rebote de pantalla vectorial con detección de colisiones físicas en los bordes.' 
+                        : 'Simulating the classic screen bounce vector with physics collision detection on the canvas boundaries.';
+                    break;
+                case 'equalizer':
+                    title = isEs ? 'Espectro de Audio' : 'Audio Wave Spectrum';
+                    message = isEs 
+                        ? 'Calculando ondas de espectro gráfico de audio procedimentales dinámicas en tonos cyberpunk.' 
+                        : 'Computing dynamic procedural audio spectrum graphics bars mapped to cyberpunk neon hues.';
+                    break;
+                case 'fire':
+                    title = isEs ? 'Física de Fluidos y Partículas' : 'Fluid & Particle Physics';
+                    message = isEs 
+                        ? 'Autómata celular de calor ascendente y física de partículas fluidas calientes sobre la grilla ASCII.' 
+                        : 'Rising heat cellular automata and hot fluid particle physics computed over the ASCII grid.';
+                    break;
+                case 'neural':
+                    title = isEs ? 'Red Galáctica de Sinapsis' : 'Synaptic Galaxy Network';
+                    message = isEs 
+                        ? `Nodos y conexiones neuronales interactivas generadas proceduralmente a partir del hash único del texto: ${this.seedHash}.` 
+                        : `Interactive neural nodes and synaptic connections procedurally generated from your prompt's unique hash: ${this.seedHash}.`;
+                    break;
+                case 'ai-image':
+                    title = isEs ? 'Pipeline de IA Text-to-Image' : 'Generative AI Text-to-Image';
+                    message = isEs 
+                        ? 'El Smart Prompt Augmentor enriquece tu texto. Usamos el modelo Flux (768px) + post-procesamiento (auto-contraste, enfoque Gaussiano, filtro Sobel) y deformación Perlin bilineal.' 
+                        : 'Smart Prompt Augmentor enriches your prompt. Running Flux model (768px) + 3-stage post-processing (contrast, unsharp mask, Sobel edge) and Perlin bilinear warping.';
+                    break;
+            }
+            window.showToast(title, message, this.currentMode === 'ai-image' ? 'ai' : 'info', 6500);
+        }
     }
 
     setOptions(options) {
@@ -498,36 +557,200 @@ class AIPromptEngine {
         ctx.fillText(`[SYNAPSES ENTRANCES: ${this.nodes.length} ACTIVE NODES]`, 20, 49);
     }
 
+    // ---- Smart Prompt Augmentation ----
+    augmentPrompt(rawPrompt) {
+        const qualityBoost = [
+            'highly detailed', 'sharp focus', 'cinematic lighting',
+            'vibrant colors', '4k resolution', 'professional photography',
+            'dramatic composition', 'masterpiece quality'
+        ];
+        // Don't double-add if user already included quality terms
+        const lower = rawPrompt.toLowerCase();
+        const extras = qualityBoost.filter(q => !lower.includes(q.split(' ')[0]));
+        return `${rawPrompt}, ${extras.join(', ')}`;
+    }
+
     triggerImageGeneration(prompt) {
         this.loadedImage = null;
         this.cachedCanvas = null;
         this.cachedPixels = null;
+        this.enhancedPixels = null;
+
+        const enhancedPrompt = this.augmentPrompt(prompt);
 
         const img = new Image();
         img.crossOrigin = "anonymous";
-        img.src = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&nologo=true&seed=${this.seedHash}`;
+        // Higher resolution (768) + flux model for significantly better quality
+        img.src = `https://image.pollinations.ai/prompt/${encodeURIComponent(enhancedPrompt)}?width=768&height=768&nologo=true&model=flux&seed=${this.seedHash}`;
 
         img.onload = () => {
             if (this.currentMode !== 'ai-image' || this.promptText !== prompt) return;
             this.loadedImage = img;
 
-            const cacheW = this.cols * 2;
-            const cacheH = this.rows * 2;
+            // Use a high-res intermediate cache for post-processing
+            const cacheW = Math.max(this.cols * 2, 400);
+            const cacheH = Math.max(this.rows * 2, 220);
 
             this.cachedCanvas = document.createElement('canvas');
             this.cachedCanvas.width = cacheW;
             this.cachedCanvas.height = cacheH;
 
-            const cacheCtx = this.cachedCanvas.getContext('2d');
+            const cacheCtx = this.cachedCanvas.getContext('2d', { willReadFrequently: true });
             cacheCtx.drawImage(img, 0, 0, cacheW, cacheH);
+
+            // Apply full post-processing pipeline
+            this.applyPostProcessing(cacheCtx, cacheW, cacheH);
+
             this.cachedPixels = cacheCtx.getImageData(0, 0, cacheW, cacheH);
         };
 
         img.onerror = (e) => {
             console.error("Generative Text-to-Image API error:", e);
-            this.currentMode = 'neural';
-            this.colorTheme = 'fire';
+            // Try fallback without flux model
+            const fallbackImg = new Image();
+            fallbackImg.crossOrigin = "anonymous";
+            fallbackImg.src = `https://image.pollinations.ai/prompt/${encodeURIComponent(enhancedPrompt)}?width=768&height=768&nologo=true&seed=${this.seedHash}`;
+            fallbackImg.onload = () => {
+                if (this.currentMode !== 'ai-image' || this.promptText !== prompt) return;
+                this.loadedImage = fallbackImg;
+                const cacheW = Math.max(this.cols * 2, 400);
+                const cacheH = Math.max(this.rows * 2, 220);
+                this.cachedCanvas = document.createElement('canvas');
+                this.cachedCanvas.width = cacheW;
+                this.cachedCanvas.height = cacheH;
+                const cacheCtx = this.cachedCanvas.getContext('2d', { willReadFrequently: true });
+                cacheCtx.drawImage(fallbackImg, 0, 0, cacheW, cacheH);
+                this.applyPostProcessing(cacheCtx, cacheW, cacheH);
+                this.cachedPixels = cacheCtx.getImageData(0, 0, cacheW, cacheH);
+            };
+            fallbackImg.onerror = () => {
+                console.error("Fallback Text-to-Image also failed, switching to neural mode");
+                this.currentMode = 'neural';
+                this.colorTheme = 'fire';
+            };
         };
+    }
+
+    // ---- Post-Processing Pipeline ----
+
+    applyPostProcessing(ctx, w, h) {
+        // Step 1: Auto-Contrast (histogram stretch)
+        this.applyAutoContrast(ctx, w, h);
+        // Step 2: Unsharp Mask (sharpen edges for ASCII clarity)
+        this.applyUnsharpMask(ctx, w, h, 1.2);
+        // Step 3: Subtle edge enhancement for character definition
+        this.applyEdgeEnhance(ctx, w, h, 0.3);
+    }
+
+    applyAutoContrast(ctx, w, h) {
+        const imgData = ctx.getImageData(0, 0, w, h);
+        const d = imgData.data;
+        let minL = 255, maxL = 0;
+
+        // Find actual luminance range
+        for (let i = 0; i < d.length; i += 4) {
+            const lum = 0.299 * d[i] + 0.587 * d[i+1] + 0.114 * d[i+2];
+            if (lum < minL) minL = lum;
+            if (lum > maxL) maxL = lum;
+        }
+
+        // Clamp extremes (ignore bottom/top 1% to avoid outlier dominance)
+        const hist = new Uint32Array(256);
+        for (let i = 0; i < d.length; i += 4) {
+            const lum = Math.round(0.299 * d[i] + 0.587 * d[i+1] + 0.114 * d[i+2]);
+            hist[lum]++;
+        }
+        const totalPx = (w * h);
+        const clipLow = totalPx * 0.01;
+        const clipHigh = totalPx * 0.99;
+        let cumul = 0;
+        for (let i = 0; i < 256; i++) {
+            cumul += hist[i];
+            if (cumul >= clipLow) { minL = i; break; }
+        }
+        cumul = 0;
+        for (let i = 255; i >= 0; i--) {
+            cumul += hist[i];
+            if (cumul >= totalPx - clipHigh) { maxL = i; break; }
+        }
+
+        if (maxL <= minL) return; // Already full range or flat image
+
+        const range = maxL - minL;
+        for (let i = 0; i < d.length; i += 4) {
+            d[i]   = Math.min(255, Math.max(0, ((d[i] - minL) / range) * 255));
+            d[i+1] = Math.min(255, Math.max(0, ((d[i+1] - minL) / range) * 255));
+            d[i+2] = Math.min(255, Math.max(0, ((d[i+2] - minL) / range) * 255));
+        }
+
+        ctx.putImageData(imgData, 0, 0);
+    }
+
+    applyUnsharpMask(ctx, w, h, strength) {
+        const imgData = ctx.getImageData(0, 0, w, h);
+        const d = imgData.data;
+        const orig = new Uint8ClampedArray(d); // Copy original
+
+        // 3x3 Gaussian blur approximation kernel
+        const kernel = [1/16, 2/16, 1/16, 2/16, 4/16, 2/16, 1/16, 2/16, 1/16];
+
+        for (let y = 1; y < h - 1; y++) {
+            for (let x = 1; x < w - 1; x++) {
+                for (let c = 0; c < 3; c++) {
+                    let blurred = 0;
+                    let ki = 0;
+                    for (let ky = -1; ky <= 1; ky++) {
+                        for (let kx = -1; kx <= 1; kx++) {
+                            const idx = ((y + ky) * w + (x + kx)) * 4 + c;
+                            blurred += orig[idx] * kernel[ki++];
+                        }
+                    }
+                    const idx = (y * w + x) * 4 + c;
+                    // Unsharp: original + strength * (original - blurred)
+                    d[idx] = Math.min(255, Math.max(0, Math.round(orig[idx] + strength * (orig[idx] - blurred))));
+                }
+            }
+        }
+
+        ctx.putImageData(imgData, 0, 0);
+    }
+
+    applyEdgeEnhance(ctx, w, h, weight) {
+        const imgData = ctx.getImageData(0, 0, w, h);
+        const d = imgData.data;
+        const gray = new Float32Array(w * h);
+
+        // Convert to grayscale
+        for (let i = 0; i < w * h; i++) {
+            const idx = i * 4;
+            gray[i] = 0.299 * d[idx] + 0.587 * d[idx+1] + 0.114 * d[idx+2];
+        }
+
+        // Sobel edge detection (magnitude only)
+        const edges = new Float32Array(w * h);
+        for (let y = 1; y < h - 1; y++) {
+            for (let x = 1; x < w - 1; x++) {
+                const tl = gray[(y-1)*w+(x-1)], tc = gray[(y-1)*w+x], tr = gray[(y-1)*w+(x+1)];
+                const ml = gray[y*w+(x-1)],                          mr = gray[y*w+(x+1)];
+                const bl = gray[(y+1)*w+(x-1)], bc = gray[(y+1)*w+x], br = gray[(y+1)*w+(x+1)];
+
+                const gx = -tl - 2*ml - bl + tr + 2*mr + br;
+                const gy = -tl - 2*tc - tr + bl + 2*bc + br;
+
+                edges[y * w + x] = Math.sqrt(gx * gx + gy * gy);
+            }
+        }
+
+        // Blend edges into original image for enhanced contours
+        for (let i = 0; i < w * h; i++) {
+            const idx = i * 4;
+            const edgeVal = Math.min(255, edges[i] * weight);
+            d[idx]   = Math.min(255, d[idx] + edgeVal);
+            d[idx+1] = Math.min(255, d[idx+1] + edgeVal);
+            d[idx+2] = Math.min(255, d[idx+2] + edgeVal);
+        }
+
+        ctx.putImageData(imgData, 0, 0);
     }
 
     drawAIImageWarp(ctx, w, h, time) {
@@ -535,17 +758,32 @@ class AIPromptEngine {
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, w, h);
             
+            // Animated loading screen with progress dots
+            const dotCount = Math.floor(time * 3) % 4;
+            const dots = '.'.repeat(dotCount);
+            
             ctx.fillStyle = '#00f2fe';
             ctx.font = 'bold 16px monospace';
             ctx.textAlign = 'center';
             
             const blink = Math.floor(time * 2.0) % 2 === 0 ? '█' : ' ';
-            ctx.fillText(`SINTETIZANDO IMAGEN POR IA${blink}`, w / 2, h / 2 - 10);
+            ctx.fillText(`SINTETIZANDO IMAGEN POR IA${dots}${blink}`, w / 2, h / 2 - 20);
+            
+            // Animated loading bar
+            const barW = w * 0.5;
+            const barH = 4;
+            const barX = (w - barW) / 2;
+            const barY = h / 2;
+            ctx.fillStyle = 'rgba(0, 242, 254, 0.2)';
+            ctx.fillRect(barX, barY, barW, barH);
+            const progress = (Math.sin(time * 1.5) + 1) / 2;
+            ctx.fillStyle = '#00f2fe';
+            ctx.fillRect(barX, barY, barW * progress, barH);
             
             ctx.font = '10px monospace';
             ctx.fillStyle = 'rgba(0, 242, 254, 0.7)';
-            ctx.fillText(`PROMPT: "${this.promptText.toUpperCase()}"`, w / 2, h / 2 + 15);
-            ctx.fillText("PROCESANDO PÍXELES 100% LOCAL...", w / 2, h / 2 + 32);
+            ctx.fillText(`PROMPT: "${this.promptText.toUpperCase()}"`, w / 2, h / 2 + 20);
+            ctx.fillText("MODELO FLUX • POST-PROCESAMIENTO AVANZADO", w / 2, h / 2 + 37);
             return;
         }
 
@@ -558,8 +796,10 @@ class AIPromptEngine {
             this.cachedCanvas = document.createElement('canvas');
             this.cachedCanvas.width = cacheW;
             this.cachedCanvas.height = cacheH;
-            const cacheCtx = this.cachedCanvas.getContext('2d');
+            const cacheCtx = this.cachedCanvas.getContext('2d', { willReadFrequently: true });
             cacheCtx.drawImage(this.loadedImage, 0, 0, cacheW, cacheH);
+            // Re-apply post-processing at new size
+            this.applyPostProcessing(cacheCtx, cacheW, cacheH);
             this.cachedPixels = cacheCtx.getImageData(0, 0, cacheW, cacheH);
         }
 
@@ -569,27 +809,90 @@ class AIPromptEngine {
         const srcW = this.cachedPixels.width;
         const srcH = this.cachedPixels.height;
 
+        // Organic breathing: slow global zoom pulse
+        const breathe = 1.0 + Math.sin(time * 0.4) * 0.015;
+        const centerX = 0.5;
+        const centerY = 0.5;
+
         for (let y = 0; y < dstH; y++) {
             for (let x = 0; x < dstW; x++) {
-                const nx = x / dstW;
-                const ny = y / dstH;
+                let nx = x / dstW;
+                let ny = y / dstH;
 
-                const dx = Math.sin(time * 1.2 + ny * 5.0) * 0.025;
-                const dy = Math.cos(time * 1.2 + nx * 5.0) * 0.025;
+                // Apply breathing (zoom from center)
+                nx = centerX + (nx - centerX) * breathe;
+                ny = centerY + (ny - centerY) * breathe;
 
-                let sx = Math.floor((nx + dx) * srcW);
-                let sy = Math.floor((ny + dy) * srcH);
+                // ---- Multi-Layer Flow Field Deformation ----
 
-                if (sx < 0) sx = 0; if (sx >= srcW) sx = srcW - 1;
-                if (sy < 0) sy = 0; if (sy >= srcH) sy = srcH - 1;
+                // Layer 1: Primary slow wave (low frequency, large displacement)
+                let dx = Math.sin(time * 0.8 + ny * 4.0) * 0.018;
+                let dy = Math.cos(time * 0.8 + nx * 4.0) * 0.018;
 
-                const srcIdx = (sy * srcW + sx) * 4;
+                // Layer 2: Secondary medium wave (medium freq, medium displacement)
+                dx += Math.sin(time * 1.5 + ny * 8.0 + nx * 2.0) * 0.010;
+                dy += Math.cos(time * 1.3 + nx * 7.0 + ny * 3.0) * 0.010;
+
+                // Layer 3: High-frequency turbulence (pseudo-Perlin with harmonic summing)
+                dx += Math.sin(time * 2.8 + ny * 16.0 + nx * 9.0) * 0.004;
+                dy += Math.cos(time * 2.5 + nx * 14.0 + ny * 11.0) * 0.004;
+
+                // Layer 4: Rotational swirl (subtle vortex around center)
+                const distFromCenter = Math.sqrt((nx - 0.5) * (nx - 0.5) + (ny - 0.5) * (ny - 0.5));
+                const swirlAngle = distFromCenter * Math.sin(time * 0.3) * 0.5;
+                const cosA = Math.cos(swirlAngle);
+                const sinA = Math.sin(swirlAngle);
+                const relX = nx - 0.5;
+                const relY = ny - 0.5;
+                nx = 0.5 + relX * cosA - relY * sinA;
+                ny = 0.5 + relX * sinA + relY * cosA;
+
+                // Apply displacements
+                nx += dx;
+                ny += dy;
+
+                // ---- Bilinear Interpolation ----
+                const fx = nx * srcW - 0.5;
+                const fy = ny * srcH - 0.5;
+
+                const x0 = Math.floor(fx);
+                const y0 = Math.floor(fy);
+                const x1 = x0 + 1;
+                const y1 = y0 + 1;
+
+                const wx = fx - x0;
+                const wy = fy - y0;
+
+                // Clamp coordinates
+                const cx0 = Math.max(0, Math.min(srcW - 1, x0));
+                const cy0 = Math.max(0, Math.min(srcH - 1, y0));
+                const cx1 = Math.max(0, Math.min(srcW - 1, x1));
+                const cy1 = Math.max(0, Math.min(srcH - 1, y1));
+
+                const i00 = (cy0 * srcW + cx0) * 4;
+                const i10 = (cy0 * srcW + cx1) * 4;
+                const i01 = (cy1 * srcW + cx0) * 4;
+                const i11 = (cy1 * srcW + cx1) * 4;
+
                 const dstIdx = (y * dstW + x) * 4;
 
-                dst[dstIdx] = src[srcIdx];
-                dst[dstIdx + 1] = src[srcIdx + 1];
-                dst[dstIdx + 2] = src[srcIdx + 2];
-                dst[dstIdx + 3] = src[srcIdx + 3];
+                // Bilinear blend for each channel
+                for (let c = 0; c < 3; c++) {
+                    const v00 = src[i00 + c];
+                    const v10 = src[i10 + c];
+                    const v01 = src[i01 + c];
+                    const v11 = src[i11 + c];
+
+                    const top = v00 + (v10 - v00) * wx;
+                    const bot = v01 + (v11 - v01) * wx;
+                    let val = top + (bot - top) * wy;
+
+                    // Gamma correction (slight boost for ASCII readability)
+                    val = Math.pow(val / 255.0, 0.92) * 255.0;
+
+                    dst[dstIdx + c] = Math.min(255, Math.max(0, Math.round(val)));
+                }
+                dst[dstIdx + 3] = 255; // Full alpha
             }
         }
 
@@ -628,12 +931,15 @@ class AIPromptEngine {
             let rowText = '';
             for (let x = 0; x < this.cols; x++) {
                 const idx = (y * this.cols + x) * 4;
-                const r = pixels[idx];
-                const g = pixels[idx + 1];
-                const b = pixels[idx + 2];
+                let r = pixels[idx];
+                let g = pixels[idx + 1];
+                let b = pixels[idx + 2];
 
                 const gray = 0.299 * r + 0.587 * g + 0.114 * b;
-                const charIdx = Math.min(paletteLen - 1, Math.floor((gray / 255.0) * paletteLen));
+                
+                // Improved character selection with gamma curve for better tonal distribution
+                const gammaGray = Math.pow(gray / 255.0, 0.85) * 255.0;
+                const charIdx = Math.min(paletteLen - 1, Math.floor((gammaGray / 255.0) * paletteLen));
                 const char = palette[charIdx] || ' ';
 
                 rowText += char;
@@ -657,11 +963,18 @@ class AIPromptEngine {
                     const bVal = Math.round(239 * mix + (1 - mix) * 254);
                     this.ctx.fillStyle = `rgb(${rVal}, ${gVal}, ${bVal})`;
                 } else if (this.colorTheme === 'neon') {
-                    // Check if node is colorful drawing, else fallback white/neon
-                    if (r === 0 && g === 0 && b === 0) {
-                        this.ctx.fillStyle = '#ffffff';
+                    // Enhanced color preservation for AI images
+                    if (gray < 8) {
+                        // Near-black: subtle dark glow instead of pure black
+                        this.ctx.fillStyle = 'rgba(15, 15, 25, 0.9)';
                     } else {
-                        this.ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                        // Saturation boost: push colors away from gray center
+                        const avg = (r + g + b) / 3;
+                        const satBoost = 1.35;
+                        const boostedR = Math.min(255, Math.max(0, Math.round(avg + (r - avg) * satBoost)));
+                        const boostedG = Math.min(255, Math.max(0, Math.round(avg + (g - avg) * satBoost)));
+                        const boostedB = Math.min(255, Math.max(0, Math.round(avg + (b - avg) * satBoost)));
+                        this.ctx.fillStyle = `rgb(${boostedR}, ${boostedG}, ${boostedB})`;
                     }
                 } else {
                     // Monochrome (White)
